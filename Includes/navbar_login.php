@@ -1,3 +1,7 @@
+<?php
+ session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,8 +63,31 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#home ">Rooms</a>
                             </li>
-                        </ul>
-                        <a href="#" class="btn btn-brand ms-lg-3">Contact Us</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Contact Us</a>
+                            </li>
+                            <?php
+
+                                if(isset($_SESSION['email'])){
+
+                                    ?>
+
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="./login.php"><i class="fa-solid fa-user-large"></i>My Account</a>
+                                        </li>
+
+                                         <a href="./server/logout.php" class="btn btn-brand ms-lg-3">Logout</a>
+                                        </ul>
+                                    <?php
+                                }else{
+                                    ?>
+  
+                                        <a href="#" class="btn btn-brand ms-lg-3">Login</a>
+                                        </ul>
+                                    <?php
+                                }
+                            ?>
+                           
                     </div>
                 </div>
             </nav>

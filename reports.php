@@ -1,3 +1,4 @@
+
 <?php include('./includes/profile_navbar.php') ?>
 
 <div id="layoutSidenav">
@@ -19,7 +20,7 @@
                             <div class="sb-sidenav-menu-heading">Management System</div>
                             <a class="nav-link" href="reports.php" style="background:gray;">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Reports
+                                Report Management
                             </a>
                             <a class="nav-link" href="students_management.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -53,8 +54,8 @@
         <div class="container-fluid px-4">
             <h1 class="mt-4">Database</h1>
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                <li class="breadcrumb-item active">Reports</li>
+                <li class="breadcrumb-item"><a href="admin.php">Dashboard</a></li>
+                <li class="breadcrumb-item active">Report Management</li>
             </ol>
             <div class="card mb-4">
                 <div class="card-body">

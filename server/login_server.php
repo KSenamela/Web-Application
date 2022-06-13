@@ -2,7 +2,6 @@
 
   //This file connects to the database, it must be called first before storing anything in the database
   include "./dbconnect_server.php";
-  session_start();
 
   if(isset($_POST['login'])){
 
@@ -26,14 +25,21 @@
      $result = mysqli_query($conn, $sql);
 
     if ($result->num_rows > 0) {
+
       $row = mysqli_fetch_assoc($result);
       if (password_verify($password, $row['password']) && $row['role'] == $role) {
+
+        session_start();
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['fullname'] = $row['first_name'] . ' ' . $row['last_name'];
+        $_SESSION['role'] = $row['role'];
+        $_SESSION['userId'] = $row['id'];
+
         exit($row['role']);
       }else {
         exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
       }
-      $_SESSION['email'] = $row['email'];
-      $_SESSION['fullname'] = $row['first_name'] + ' ' + $row['last_name'];
+      
       // header("Location: i");
     } else {
       exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');

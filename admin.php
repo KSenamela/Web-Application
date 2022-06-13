@@ -1,12 +1,7 @@
+
+
 <?php 
     include('./includes/profile_navbar.php');
-    // We need to use sessions, so you should always start sessions using the below code.
-    session_start();
-    // If the user is not logged in redirect to the login page...
-    if (!isset($_SESSION['loggedin'])) {
-        header('Location: ./login.php');
-        exit;
-    }
 
 ?>
 
@@ -18,7 +13,7 @@
                         <div class="sb-sidenav-menu-heading">Account Holder</div>
                           <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-user-large"></i></div>
-                            Klaas Senamela
+                            <?php echo $_SESSION['fullname'] ?>
                           </a>
                             <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link" href="admin.php">
@@ -45,7 +40,7 @@
                             </a>
 
                             <div class="sb-sidenav-menu-heading">Account</div>
-                            <a class="nav-link" href="index.php">
+                            <a class="nav-link" href="./server/logout.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
                                 Logout
                             </a>
@@ -54,7 +49,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Admin/Student/Recruiter
+                        <?php echo ucwords($_SESSION['role']) ?>
                     </div>
                 </nav>
             </div>

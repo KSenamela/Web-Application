@@ -1,14 +1,7 @@
+
 <?php 
     include('./includes/profile_navbar.php');
-    // We need to use sessions, so you should always start sessions using the below code.
-    session_start();
-    //If the user is not logged in redirect to the login page...
-    // if (!isset($_SESSION['email'])) {
-    //     exit('not logged in');
-    // }
-
 ?>
-
 <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -17,10 +10,10 @@
                         <div class="sb-sidenav-menu-heading">Account Holder</div>
                           <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-user-large"></i></div>
-                            Klaas
+                            <?php echo $_SESSION['fullname'] ?>
                           </a>
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="student-profile.php">
+                            <a class="nav-link" href="student-profile.php" style="background:gray;">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -34,17 +27,17 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Payment Records
                             </a>
-                            <a class="nav-link" href="recruiters_management.php" style="background:gray;">
+                            <a class="nav-link" href="recruiters_management.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Reports
                             </a>
                             <a class="nav-link" href="payment-tracker.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-comments-dollar"></i></div>
-                                Payment Tracker
+                                Importanf Announcements
                             </a>
 
                             <div class="sb-sidenav-menu-heading">Account</div>
-                            <a class="nav-link" href="index.php">
+                            <a class="nav-link" href="./server/logout.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
                                 Logout
                             </a>
@@ -53,7 +46,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Admin/Student/Recruiter
+                        <?php echo ucwords($_SESSION['role']) ?>
                     </div>
                 </nav>
             </div>
@@ -63,7 +56,6 @@
       <h1 class="mt-4">Database</h1>
       <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-          <li class="breadcrumb-item active">Payment Tracker</li>
       </ol>
       <div class="row">
           <div class="col-xl-3 col-md-6">

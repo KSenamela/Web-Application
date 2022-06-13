@@ -1,3 +1,4 @@
+
 <?php include('./includes/profile_navbar.php') ?>
 
 <div id="layoutSidenav">
@@ -19,7 +20,7 @@
                             <div class="sb-sidenav-menu-heading">Management System</div>
                             <a class="nav-link" href="reports.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Reports
+                                Report Management
                             </a>
                             <a class="nav-link" href="students_management.php" style="background:gray;">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>

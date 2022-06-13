@@ -1,7 +1,13 @@
 <?php 
+    error_reporting(0);
     include('./includes/navbar_login.php');
+    
+    // We need to use sessions, so you should always start sessions using the below code.
+    //If the user is not logged in redirect to the login page...
+
 
 ?>
+
 
 <div class="left flex-grow-1 image-box position-relative">
                 <div class="image-filter position-absolute"></div>
