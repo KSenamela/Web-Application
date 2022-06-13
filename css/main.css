@@ -1,0 +1,72 @@
+.btn-brand {
+    background-color: rgb(0, 48, 73);
+    color: #fff;
+}
+
+.btn-brand:hover {
+    color: #fff;
+    background-color: #092032;
+}
+
+
+.bg-img {
+    background: linear-gradient(rgba(9, 32, 50, 0.8),rgba(9, 32, 50, 0.8)), url(../img/heroPicture.jpg);
+    background-size: cover;
+
+    z-index: -3;
+}
+
+.btn-hero {
+    background-color: #0096DB;
+    color: #fff;
+}
+
+.btn {
+    padding: 9px 24px;
+    font-weight: 500;
+}
+
+.btn-hero:hover {
+    color: #fff;
+    background-color: #045B84;
+}
+
+img {
+    width: 100%;
+}
+
+header.navigation {
+    background-color: rgb(0, 48, 73);
+}
+
+
+.contact-info {
+    
+    margin: 0;
+    color: #fff;
+    /* padding-top: 5px; */
+    /* padding-bottom: 5px; */
+}
+
+.mh-50 {
+    max-height: 80vh;
+}
+
+.social-links a {
+    width: 34px;
+    height: 34px;
+    background-color: rgba(255, 255 ,255, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 100%;
+    text-decoration: none;
+    transition: all .15s ease-in-out;
+}
+
+.social-links a:hover {
+    background-color: #fff;
+    color: rgb(0, 48, 73);
+}

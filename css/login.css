@@ -1,0 +1,219 @@
+.image-box::before {
+    background: linear-gradient(255deg,#e91e63,#03a9f4);
+}
+
+.image-box img {
+    object-fit: cover;
+}
+
+.main-content .left {
+    flex: 1 0;
+}
+
+.image-bg {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-image: url('./img/bathroom.jpg'); */
+    /* transition: all 0.1s ease-in; */
+}
+
+.image-filter {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    background: linear-gradient(255deg,#e91e63,#03a9f4);
+    mix-blend-mode: screen;
+}
+
+.formBx {
+    width: 100%;
+    padding: 40px;
+    background: rgb(255 255 255/0.9);
+    margin: 50px;
+}
+
+.formBx h2{
+    color: #607d8b;
+    font-weight: 600;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-bottom: 4px solid rgba(9, 32, 50, 0.8);
+    display: inline-block;
+    letter-spacing: 1px;
+}
+
+.formBx .inputBx{
+    margin-bottom: 20px;
+}
+
+.formBx .inputBx span{
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: #607d8b; 
+    font-weight: 300;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.formBx .inputBx input{
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    font-weight: 400;
+    border: 1px solid #607d8b;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #607d8b;
+    background: transparent;
+    border-radius: 15px;
+}
+
+
+.formBx .inputBx .btn-drop{
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    font-weight: 400;
+    border: 1px solid #607d8b;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #607d8b;
+    background: transparent;
+    border-radius: 30px;
+}
+.formBx .inputBx .error-message {
+    color: red;
+    font-size: 14px;
+    font-weight: 350;
+
+}
+/* Styling the radio buttons [start]*/
+.formBx .myradio-btn{
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    
+}
+
+.formBx .myradio-btn span{
+    color: #607d8b;
+
+}
+.formBx .myradio-btn .radio-btn{
+
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    
+}
+
+.formBx .myradio-btn .radio-btn .input-radio-btn{
+    display: none;
+}
+
+.formBx .myradio-btn .radio-btn .label-radio-btn{
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: sans-serif;
+    color: #607d8b; 
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.1s;
+}
+.formBx .myradio-btn .radio-btn .label-radio-btn:not(:last-of-type){
+    border-right: 1px solid #607d8b;
+}
+
+.formBx .myradio-btn .radio-btn .input-radio-btn:checked + .label-radio-btn{
+    background: #0096DB;
+    color: #fff;
+}
+
+/* error message styling */
+.formBx .inputBx .inputColorHidden{
+    border: 1px red solid;
+}
+/* Styling the radio buttons [end]*/
+
+.formBx .inputBx input[type="button"]{
+    background: #045B84;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.formBx .inputBx input[type="button"]:hover{
+    background: #0096DB;
+}
+
+.formBx .remember{
+    margin-bottom: 10px;
+    color: #607d8b;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.formBx .inputBx p{
+    color: #607d8b;
+}
+
+
+.formBx .inputBx p a{
+    color: #0096DB; 
+}
+
+@media (max-width: 768px) {
+    div.main-content {
+        position: relative;
+    }
+
+    div.main-content .left {
+        position: absolute !important;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    div.main-content .right {
+        width: 100% !important;
+    }
+
+    .formBx .myradio-btn .radio-btn{
+
+        flex-direction: column;
+        width: 100%;
+        margin-top: 5px;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+        
+    }
+    .formBx .myradio-btn .radio-btn .label-radio-btn:not(:last-of-type){
+        border-right: none;
+    }
+    .formBx .myradio-btn .radio-btn .label-radio-btn{
+        letter-spacing: 1px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-family: sans-serif;
+        color: #607d8b; 
+        cursor: pointer;
+        background: transparent;
+        transition: background 0.1s;
+    }
+}
