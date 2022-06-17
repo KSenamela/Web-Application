@@ -33,7 +33,7 @@
                             </a>
                             <a class="nav-link" href="payment-tracker.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-comments-dollar"></i></div>
-                                Importanf Announcements
+                                Announcements
                             </a>
 
                             <div class="sb-sidenav-menu-heading">Account</div>

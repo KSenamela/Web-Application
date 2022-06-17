@@ -4,7 +4,7 @@
     
     // We need to use sessions, so you should always start sessions using the below code.
     //If the user is not logged in redirect to the login page...
-
+   
 
 ?>
 
@@ -20,7 +20,7 @@
                 <div class="formBx">
                     <h2>Register</h2>
                     <small id="response-msg"></small>
-                    <form action="./server/register_server.php" method="POST" id="form-data" submit=false;>
+                    <form >
                         <!-- First name -->
                         <div class="inputBx">
                             <span>First Name</span>

@@ -64,7 +64,7 @@
                                 <a class="nav-link" href="#home ">Rooms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">Contact Us</a>
+                                <a class="nav-link" href="./contact-us/contact-us.php">Contact Us</a>
                             </li>
                             <?php
 
@@ -82,7 +82,7 @@
                                 }else{
                                     ?>
   
-                                        <a href="#" class="btn btn-brand ms-lg-3">Login</a>
+                                        <a href="./login.php" class="btn btn-brand ms-lg-3">Login</a>
                                         </ul>
                                     <?php
                                 }

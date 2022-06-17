@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./fontawesome/css/all.css" rel="stylesheet" />
+    <link href="./fontawesome/css/all.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/main.css">
@@ -63,7 +63,7 @@
                                 <a class="nav-link" href="">Rooms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">Contact Us</a>
+                                <a class="nav-link" href="./contact-us/contact-us.php">Contact Us</a>
                             </li>
                             <?php
 
@@ -81,7 +81,7 @@
                                 }else{
                                     ?>
   
-                                        <a href="#" class="btn btn-brand ms-lg-3">Login</a>
+                                        <a href="./login.php" class="btn btn-brand ms-lg-3">Login</a>
                                         </ul>
                                     <?php
                                 }

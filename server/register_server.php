@@ -3,7 +3,13 @@ include "./dbconnect_server.php";
 
 
 if (isset($_POST['register'])){
-
+  //destroy all active sessions before registering a new user
+  session_start();
+  unset($_SESSION['email']);
+  unset($_SESSION['fullname']);
+  unset($_SESSION['role']);
+  unset($_SESSION['userId']);
+  session_destroy();
   //Grabbing the user data from JQUERY post request and capitalize the string using ucwords() method
   $first_name = mysqli_real_escape_string($conn,ucwords(trim($_POST['fnamePHP'])));
   $last_name = mysqli_real_escape_string($conn,ucwords(trim($_POST['lnamePHP'])));
@@ -95,9 +101,9 @@ if (isset($_POST['register'])){
       exit('<div class="alert alert-danger">Email address already exists</div>');
 
     }
-  }catch(e){
-    exit('<div class="alert alert-danger">Oops! something went wrong, Please try again.</div>');
-  }
+    }catch(e){
+      exit('<div class="alert alert-danger">Oops! something went wrong, Please try again.</div>');
+    }
   //Query the database
   $sql = "INSERT INTO registration (first_name,last_name, email, password, role) VALUES (?, ?, ?, ?, ?)";
   //initialize the prepared statement object

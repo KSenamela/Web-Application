@@ -2,7 +2,20 @@
 
 <?php 
     include('./includes/profile_navbar.php');
+    include('./server/dbconnect_server.php');
 
+    $query = "SELECT count(*) as count FROM registration";
+    $run_query = mysqli_query($conn, $query);
+    
+    if(mysqli_num_rows($run_query) > 0){
+        foreach($run_query as $row){
+        ?>
+
+            <div class="card-body text-center"><?= $row['count']?></div>
+
+        <?php
+        }
+    }
 ?>
 
 <div id="layoutSidenav">
@@ -63,25 +76,67 @@
                 <div class="row">
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-primary text-white mb-4">
-                            <div class="card-body text-center">5</div>
+                            <?php
+
+                                $query = "SELECT count(*) as count FROM registration";
+                                $run_query = mysqli_query($conn, $query);
+
+                                if(mysqli_num_rows($run_query) > 0){
+                                    foreach($run_query as $row){
+                                    ?>
+
+                                        <div class="card-body text-center"><?= $row['count']?></div>
+
+                                    <?php
+                                    }
+                                }
+                            ?>
                             <div class="card-footer text-center">
-                                <p class="small text-white" >Pending Applications</p>
+                                <p class="small text-white" >Registered Users</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-warning text-white mb-4">
-                            <div class="card-body text-center">23</div>
+                            <?php
+
+                                $query = "SELECT count(*) as count FROM registration WHERE role = 'student'";
+                                $run_query = mysqli_query($conn, $query);
+
+                                if(mysqli_num_rows($run_query) > 0){
+                                    foreach($run_query as $row){
+                                    ?>
+
+                                        <div class="card-body text-center"><?= $row['count']?></div>
+
+                                    <?php
+                                    }
+                                }
+                            ?>
                             <div class="card-footer text-center">
-                                <p class="small text-white" >NSFAS Students</p>
+                                <p class="small text-white" >Students</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-success text-white mb-4">
-                            <div class="card-body text-center">7</div>
+                            <?php
+
+                                $query = "SELECT count(*) as count FROM registration WHERE role ='recruiter'";
+                                $run_query = mysqli_query($conn, $query);
+
+                                if(mysqli_num_rows($run_query) > 0){
+                                    foreach($run_query as $row){
+                                    ?>
+
+                                        <div class="card-body text-center"><?= $row['count']?></div>
+
+                                    <?php
+                                    }
+                                }
+                            ?>
                             <div class="card-footer text-center">
-                                <p class="small text-white" >Cash Paying / Bursary Students</p>
+                                <p class="small text-white" >Recruiters</p>
                             </div>
                         </div>
                     </div>
@@ -108,158 +163,42 @@
                                     <th>ID No.</th>
                                     <th>First Name</th>
                                     <th>Surname</th>
-                                    <th>Payment Method</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Date Registered</th>
+                                    <!-- <th>Payment Method</th>
                                     <th>Registered Date</th>
                                     <th>Institution</th>
                                     <th>Status</th>
-                                    <th>Update Status</th>
+                                    <th>Update Status</th> -->
 
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>ID No.</th>
-                                    <th>First Name</th>
-                                    <th>Surname</th>
-                                    <th>Payment Method</th>
-                                    <th>Registered Date</th>
-                                    <th>Institution</th>
-                                    <th>Status</th>
-                                    <th>Update Status</th>
-
-
-
-                                </tr>
-                            </tfoot>
+              
                             <tbody>
-                                <tr>
-                                    <td>9504116002084</td>
-                                    <td>Klaas</td>
-                                    <td>Senamela</td>
-                                    <td>Bursary</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Johannesburg</td>
-                                    <td style="color: rgb(18, 206, 18); font-weight: 500;">Accepted</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
+                                <?php
+                                 $query = "SELECT * FROM registration";
+                                 $run_query = mysqli_query($conn, $query);
+                                  
+                                    if(mysqli_num_rows($run_query) > 0){
+                                        foreach($run_query as $row){
+                                        ?>
+                                            <tr>
+                                            <td><?= $row['id']?></td>
+                                            <td><?= $row['first_name']?></td>
+                                            <td><?= $row['last_name']?></td>
+                                            <td><?= $row['email']?></td>
+                                            <td><?= $row['role']?></td>
+                                            <td><?= $row['registration_date']?></td>
                                     
-                                    </td>
-                                    
-                                </tr>
+                                        
+                                            </tr>
+                                        <?php
+                                        }
+                                    }
+                                ?>
+           
                                 
-                                <tr>
-                                    <td>9904116002084</td>
-                                    <td>John</td>
-                                    <td>Doe</td>
-                                    <td>Cash</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Johannesburg</td>
-                                    <td style="color: rgb(222, 225, 56); font-weight: 500;">Pending</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td>9104116002084</td>
-                                    <td>Bhuti</td>
-                                    <td>Phakade</td>
-                                    <td>NSFAS</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Johannesburg</td>
-                                    <td style="color: rgb(184, 60, 60); font-weight: 500;">Rejected</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td>0004116002084</td>
-                                    <td>Anesipho</td>
-                                    <td>Senamela</td>
-                                    <td>Bursary</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Witwatersrand</td>
-                                    <td style="color: rgb(18, 206, 18); font-weight: 500;">Accepted</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td>9804199002084</td>
-                                    <td>Terry</td>
-                                    <td>Muslie</td>
-                                    <td>NSFAS</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Johannesburg</td>
-                                    <td style="color: rgb(222, 225, 56); font-weight: 500;">Pending</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td>9304116002084</td>
-                                    <td>Tom</td>
-                                    <td>Cruise</td>
-                                    <td>Cash</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of 
-                                        University of Witwatersrand</td>
-                                    <td style="color: rgb(184, 60, 60); font-weight: 500;">Rejected</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td>9504116002084</td>
-                                    <td>Klaas</td>
-                                    <td>Senamela</td>
-                                    <td>Bursary</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Johannesburg</td>
-                                    <td style="color: rgb(18, 206, 18); font-weight: 500;">Accepted</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr>
-                                    <td>9504116002084</td>
-                                    <td>Klaas</td>
-                                    <td>Senamela</td>
-                                    <td>Bursary</td>
-                                    <td>2011/04/25</td>
-                                    <td>University of Johannesburg</td>
-                                    <td style="color: rgb(222, 225, 56); font-weight: 500;">Pending</td>
-                                    <td>
-                                        <button style="background-color: green; color: white; border-radius: 10px;">Accept</button>
-                                        <button style="background-color: rgb(184, 60, 60); color: white; border-radius: 10px;">Reject</button>
-                                    
-                                    </td>
-                                    
-                                </tr>
                             </tbody>
                         </table>
                     </div>
