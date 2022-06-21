@@ -8,7 +8,7 @@
         if($_SESSION['role'] == 'admin'){
             header('Location: ./admin.php');
         }else if($_SESSION['role'] == 'student'){
-            header('Location: ./student-profile.php');
+            header('Location: ./student-profile/profile/student-profile.php');
         }else if($_SESSION['role'] == 'recruiter'){
             header('Location: ./recruiter-profile.php');
         }

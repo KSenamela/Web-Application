@@ -21,6 +21,7 @@
     <!-- MDB -->
     <link rel="stylesheet" href="css/mdb.min.css" />
     <link rel="stylesheet" href="css/cust.css" />
+ 
   </head>
 
   <body>
@@ -101,6 +102,25 @@
                     style="max-width: 300px"
                   />
                 </div>
+
+                <div class="mb-3">
+                  <label for="gender-select" class="form-label"
+                    >Gender</label>
+                  <select
+                    id="gender-select"
+                    class="form-select mb-3"
+                    style="max-width: 300px"
+                    aria-label="Default select example"
+                  >
+                    <option selected value="1">
+                      Male
+                    </option>
+                    <option value="2">
+                      Female
+                    </option>
+                  </select>
+                </div>
+
                 <div class="mb-3">
                   <label for="institution" class="form-label"
                     >Institution</label
@@ -118,6 +138,7 @@
                     <option value="3">Other</option>
                   </select>
                 </div>
+
                 <div class="mb-3">
                   <label for="funding" class="form-label">Funding</label>
                   <select
@@ -368,6 +389,7 @@
                     type="file" 
                     class="form-control" 
                     id="por"
+                    
                     />
                   </div>
                 </div>
@@ -379,12 +401,14 @@
 
           <!-- Card footer -->
           <div class="card-footer text-end py-4 px-5 bg-light border-0">
-            <button
+            <a
               class="btn btn-link btn-rounded"
               data-ripple-color="primary"
+              id="cancel"
+              href="../login.php"
             >
               Cancel
-            </button>
+            </a>
             <button type="submit" class="btn btn-primary btn-rounded">
               Submit
             </button>
@@ -396,5 +420,11 @@
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="./js/validation-apply.js"></script>
     <script type="text/javascript" src="js/mdb.min.js"></script>
+
+    <!-- <script type="text/javascript">
+    document.getElementById("cancel").onclick = function () {
+        location.href = "./login.php";
+    };
+  </script> -->
   </body>
 </html>

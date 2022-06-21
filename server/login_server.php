@@ -35,14 +35,14 @@
         $_SESSION['role'] = $row['role'];
         $_SESSION['userId'] = $row['id'];
 
-        exit($row['role']);
+        echo $row['role'];
       }else {
-        exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
+        echo '<div class="alert alert-danger">Entered email, password or role is incorrect!</div>';
       }
       
       // header("Location: i");
     } else {
-      exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
+      echo'<div class="alert alert-danger">Entered email, password or role is incorrect!</div>';
     }
 
 }

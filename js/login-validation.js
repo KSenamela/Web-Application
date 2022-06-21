@@ -62,9 +62,9 @@ function validateAll(emailValue, passwordValue, role_checked, role_value){
           role_valuePHP: role_value.toLowerCase() 
         },
         success: function(response){
-          //after getting a success response from the server, check which role is selected
+          // after getting a success response from the server, check which role is selected
           if(response === 'student'){
-            window.location.href = "./student-profile.php";
+            window.location.href = "./student-profile/profile/student-profile.php";
           }else if(response === 'recruiter'){
             window.location.href = "./recruiter-profile.php";
           }
