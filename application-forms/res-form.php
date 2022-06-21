@@ -67,7 +67,7 @@
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="id_number" class="form-label">ID Number</label>
+                  <label for="id_number" class="form-label">ID number</label>
                   <!-- min="0" oninput="validity.valid||(value='');" --These attributes prevent negative numbers from being entered by user-->
                   <input
                     type="number"
@@ -112,10 +112,10 @@
                     style="max-width: 300px"
                     aria-label="Default select example"
                   >
-                    <option selected value="1">
+                    <option selected value="Male">
                       Male
                     </option>
-                    <option value="2">
+                    <option value="Female">
                       Female
                     </option>
                   </select>
@@ -131,14 +131,58 @@
                     style="max-width: 300px"
                     aria-label="Default select example"
                   >
-                    <option selected value="1">
+                    <option selected value="University of Johannesburg">
                       University of Johannesburg
                     </option>
-                    <option value="2">University of Witwatersrand</option>
-                    <option value="3">Other</option>
+                    <option value="University of Witwatersrand">
+                      University of Witwatersrand
+                    </option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
+                <div class="mb-3">
+                  <label for="course_name" class="form-label">Course</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="course_name"
+                    maxlength="100"
+                    style="max-width: 500px"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="yos" class="form-label">Year of Study</label>
+                  <select
+                    id="yos"
+                    class="form-select mb-3"
+                    style="max-width: 300px"
+                    aria-label="Default select example"
+                  >
+                    <option selected value="First Year">First Year</option>
+                    <option value="Second Year">Second Year</option>
+                    <option value="Third Year">Third Year</option>
+                    <option value="Fourth Year">Fourth Year</option>
+                    <option value="Honors">Honors</option>
+                    <option value="Masters">Masters</option>
+                    <option value="PhD">PhD</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="phone_number" class="form-label"
+                    >Completion Year</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="comp_year"
+                    min="2022"
+                    oninput="validity.valid||(value='');"
+                    style="max-width: 300px"
+                  />
+                </div>
                 <div class="mb-3">
                   <label for="funding" class="form-label">Funding</label>
                   <select
@@ -147,10 +191,37 @@
                     style="max-width: 300px"
                     aria-label="Default select example"
                   >
-                    <option selected value="1">NSFAS</option>
-                    <option value="2">Bursary</option>
-                    <option value="3">Cash</option>
+                    <option selected value="1NSFAS<">NSFAS</option>
+                    <option value="Bursary">Bursary</option>
+                    <option value="Cash">Cash</option>
                   </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="student_number" class="form-label"
+                    >Student number</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="student_number"
+                    min="0"
+                    oninput="validity.valid||(value='');"
+                    style="max-width: 300px"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="referral_code" class="form-label"
+                    >Referral code</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="referral_code"
+                    placeholder="Optional"
+                    style="max-width: 300px"
+                  />
                 </div>
               </div>
             </div>
@@ -180,15 +251,19 @@
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
-                      <option selected value="1">
+                      <option selected value="13 5th Street Vrededorp">
                         13 5th Street Vrededorp
                       </option>
-                      <option value="2">19 Rus Road, Vredepark</option>
-                      <option value="3">
+                      <option value="19 Rus Road, Vredepark">
+                        19 Rus Road, Vredepark
+                      </option>
+                      <option value="43/45 Aanbloom Street, Jan Hofmeyer">
                         43/45 Aanbloom Street, Jan Hofmeyer
                       </option>
-                      <option value="4">3 Pypie Draai, Jan Hofmeyer</option>
-                      <option value="5">
+                      <option value="3 Pypie Draai, Jan Hofmeyer">
+                        3 Pypie Draai, Jan Hofmeyer
+                      </option>
+                      <option value="50 Auckland Avenue, Auckland park">
                         50 Auckland Avenue, Auckland park
                       </option>
                     </select>
@@ -198,13 +273,19 @@
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
-                      <option value="1">13 5th Street Vrededorp</option>
-                      <option value="2">19 Rus Road, Vredepark</option>
-                      <option selected value="3">
+                      <option value="13 5th Street Vrededorp">
+                        13 5th Street Vrededorp
+                      </option>
+                      <option value="19 Rus Road, Vredepark">
+                        19 Rus Road, Vredepark
+                      </option>
+                      <option value="43/45 Aanbloom Street, Jan Hofmeyer">
                         43/45 Aanbloom Street, Jan Hofmeyer
                       </option>
-                      <option value="4">3 Pypie Draai, Jan Hofmeyer</option>
-                      <option value="5">
+                      <option value="3 Pypie Draai, Jan Hofmeyer">
+                        3 Pypie Draai, Jan Hofmeyer
+                      </option>
+                      <option selected value="50 Auckland Avenue, Auckland park">
                         50 Auckland Avenue, Auckland park
                       </option>
                     </select>
@@ -214,13 +295,19 @@
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
-                      <option value="1">13 5th Street Vrededorp</option>
-                      <option value="2">19 Rus Road, Vredepark</option>
-                      <option value="3">
+                      <option value="13 5th Street Vrededorp">
+                        13 5th Street Vrededorp
+                      </option>
+                      <option value="19 Rus Road, Vredepark">
+                        19 Rus Road, Vredepark
+                      </option>
+                      <option selected  value="43/45 Aanbloom Street, Jan Hofmeyer">
                         43/45 Aanbloom Street, Jan Hofmeyer
                       </option>
-                      <option value="4">3 Pypie Draai, Jan Hofmeyer</option>
-                      <option selected value="5">
+                      <option value="3 Pypie Draai, Jan Hofmeyer">
+                        3 Pypie Draai, Jan Hofmeyer
+                      </option>
+                      <option value="50 Auckland Avenue, Auckland park">
                         50 Auckland Avenue, Auckland park
                       </option>
                     </select>
@@ -270,16 +357,16 @@
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
-                      <option selected value="1">Eastern Cape</option>
-                      <option value="2">Free State</option>
-                      <option value="3">Gauteng</option>
-                      <option value="4">KwaZulu-Natal</option>
-                      <option value="5">Limpopo</option>
-                      <option value="6">Mpumalanga</option>
-                      <option value="7">Northern Cape</option>
-                      <option value="8">North West</option>
-                      <option value="9">Western Cape</option>
-                      <option value="9">International</option>
+                      <option selected value="Eastern Cape">Eastern Cape</option>
+                      <option value="Free State">Free State</option>
+                      <option value="Gauteng">Gauteng</option>
+                      <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                      <option value="Limpopo">Limpopo</option>
+                      <option value="Mpumalanga">Mpumalanga</option>
+                      <option value="Northern Cape">Northern Cape</option>
+                      <option value="North West">North West</option>
+                      <option value="Western Cape">Western Cape</option>
+                      <option value="International">International</option>
                     </select>
                   </div>
                 </div>
@@ -305,8 +392,8 @@
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
-                      <option selected value="1">South Africa</option>
-                      <option value="2">International</option>
+                      <option selected value="South Africa">South Africa</option>
+                      <option value="International">International</option>
                     </select>
                   </div>
                 </div>

@@ -17,4 +17,16 @@ $(document).ready(function(){
       return false;
     }
   });
+  
+  $("#student_number").keypress(function(){
+    if(this.value.length == 15){
+      return false;
+    }
+  });
+  $("#comp_year").keypress(function(){
+    if(this.value.length == 4){
+      return false;
+    }
+  });
 });
+
