@@ -3,6 +3,13 @@
 <?php 
     include('./includes/profile_navbar.php');
     include('./server/dbconnect_server.php');
+  
+
+    if (isset($_SESSION['email'])) {
+        if($_SESSION['role'] != 'admin'){
+            header('Location: ./login.php');
+        }
+    }
 
     $query = "SELECT count(*) as count FROM registration";
     $run_query = mysqli_query($conn, $query);

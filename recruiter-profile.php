@@ -2,6 +2,13 @@
 
 <?php 
     include('./includes/profile_navbar.php');
+    include "./server/dbconnect_server.php";
+
+    if (isset($_SESSION['email'])) {
+        if($_SESSION['role'] != 'student'){
+            header('Location: ./login.php');
+        }
+    }
 ?>
 <div id="layoutSidenav">
             <div id="layoutSidenav_nav">

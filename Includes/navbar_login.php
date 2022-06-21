@@ -73,7 +73,7 @@
                                     ?>
 
                                          <li class="nav-item">
-                                            <a class="nav-link" href="./login.php"><i class="fa-solid fa-user-large"></i>My Account</a>
+                                            <a class="nav-link" href="./login.php"><i class="fa-solid fa-user-large pe-2"></i>My Account</a>
                                         </li>
 
                                          <a href="./server/logout.php" class="btn btn-brand ms-lg-3">Logout</a>
