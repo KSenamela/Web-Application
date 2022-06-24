@@ -17,6 +17,7 @@ if (isset($_POST['register'])){
   $password = trim($_POST['passwordPHP']);
   $password_confirmation = trim($_POST['password_confirmationPHP']);
   $role = strtolower(trim($_POST['role_valuePHP']));
+  $applied = 'No';
   
 
   //Validation on the server side
@@ -93,19 +94,28 @@ if (isset($_POST['register'])){
     exit('<div class="alert alert-danger">Please select whether you are a student or a recruiter!</div>');
   }
 
-
+  //attempt to check if the user has 2 accounts with one email address already. if so, reject registration request
   try{
     $sql = "SELECT * FROM registration WHERE email='$email'";
     $result = mysqli_query($conn, $sql);
-    if ($result->num_rows > 0) {
+    if ($result->num_rows > 1) {
       exit('<div class="alert alert-danger">Email address already exists</div>');
-
+    }
+    else if ($result->num_rows > 0){
+      $row = mysqli_fetch_assoc($result);
+      if($row['role'] == $role){
+          exit('<div class="alert alert-danger">Email address already exists</div>');
+        }
+        else if($row['role'] == 'admin'){
+          exit('<div class="alert alert-danger">Email address already exists</div>');
+        }
     }
     }catch(e){
       exit('<div class="alert alert-danger">Oops! something went wrong, Please try again.</div>');
     }
+
   //Query the database
-  $sql = "INSERT INTO registration (first_name,last_name, email, password, role) VALUES (?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO registration (first_name,last_name, email, password, role, applied) VALUES (?, ?, ?, ?, ?, ?)";
   //initialize the prepared statement object
   $stmt = mysqli_stmt_init($conn);
 
@@ -118,7 +128,7 @@ if (isset($_POST['register'])){
   //if no syntax errors got caught, we bind the prepared statement object $stmt with the data we need to store in the database
   //Hashing password before storing
   $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-  mysqli_stmt_bind_param($stmt, "sssss", $first_name, $last_name, $email, $hashed_password, $role);
+  mysqli_stmt_bind_param($stmt, "ssssss", $first_name, $last_name, $email, $hashed_password, $role, $applied);
 
   //Execute the prepared statement and store the results
   if(mysqli_stmt_execute($stmt)){

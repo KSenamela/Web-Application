@@ -1,3 +1,16 @@
+<?php 
+    error_reporting(0);
+    session_start();
+    include "../server/dbconnect_server.php";
+
+    if (isset($_SESSION['email'])) {
+        if(!$_SESSION['role'] == 'student' && !$_SESSION['role'] == 'recruiter' && !$_SESSION['role'] == 'dual-recruiter' && !$_SESSION['role'] == 'dual-student'){
+            header('Location: ../login.php');
+        }
+    }else{
+        header('Location: ../login.php');
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,13 +24,25 @@
     
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- StudentInn icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/Studentinn.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/Studentinn-icon.png">
     <!-- Bootstrap Core CSS -->
-    <link href="../assets/node_modules/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/node_modules/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="./profile/css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
-    <link href="css/colors/default.css" id="theme" rel="stylesheet">
+    <link href="./profile/css/colors/default.css" id="theme" rel="stylesheet">
+    <style>
+
+        .msg-badge {
+        background: red;
+        color: #fff;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 3px;
+    
+        }
+    
+    </style>
 
 </head>
 
@@ -44,8 +69,8 @@
                 <!-- Logo -->
                 
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="student-profile.html">
-                        <img src="../assets/images/Studentinn.png"  width="60%" alt="homepage" class="dark-logo" />
+                    <a class="navbar-brand" href="../index.php">
+                        <img src="./assets/images/Studentinn.png"  width="60%" alt="homepage" class="dark-logo" />
                     </a>
                 </div>
                 
@@ -72,7 +97,7 @@
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href=""
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="../assets/images/users/Profile.jpeg" alt="user" class="" /> <span
+                                    src="./assets/images/users/Profile.jpeg" alt="user" class="" /> <span
                                     class="hidden-md-down">Klaas Senamela &nbsp;</span> </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown"></ul>
                         </li>
@@ -96,24 +121,72 @@
                             <i class="fa-solid fa-user-large"></i>
                             <span class="hide-menu">Profile</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="applications.html" aria-expanded="false">
+
+                        <li> <a class="waves-effect waves-dark" href="applications.php" aria-expanded="false">
                             <i class="fa-solid fa-folder-open"></i>
                             <span class="hide-menu">Applications</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="payments.html" aria-expanded="false">
+
+                        <li> <a class="waves-effect waves-dark" href="payments.php" aria-expanded="false">
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="messages.html" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span></a>
-                        </li>
-                        <li> <a class="waves-effect waves-dark nav-link" href="/officialwebsite/application-forms/res-form.php" aria-expanded="false">
-                            <i class="fa-solid fa-file-lines"></i>
 
-                            <span class="hide-menu">Apply</span></a>
+                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
+                        <i class="fa-solid fa-message"></i>
+                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="/officialwebsite/server/logout.php">
+                        <?php 
+
+                            if ( $_SESSION['applied'] == 'No') {
+                                ?> 
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                                        <i class="fa-solid fa-file-lines"></i>
+
+                                        <span class="hide-menu">Apply</span></a>
+                                    </li>                                
+                                <?php
+                            }
+                        ?>
+                        <li> 
+                            <div class="nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                                <?php 
+                                    if($_SESSION['role'] == 'dual-student'){
+                                        ?> 
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <span class="hide-menu">Switch Accounts</span>                                        
+                                            <form action="" method="post">
+                                                <div class="waves-effect waves-dark nav-link sb-nav-link-icon">
+                                                    <i class="fa-solid fa-graduation-cap"></i>
+                                                    <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color:  #20aee3; border: none;">
+                                                </div>
+                                                <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
+                                                    <i class="fa-solid fa-briefcase"></i>
+                                                    <input type="button" name= "Recruiter Account" id="re-acc" value="Recruiter Account" style="background: #fff; color: #787f91; border: none;">
+                                                </div>
+                                            </form>
+                                        <?php
+                                    }
+                                    else if($_SESSION['role'] == 'dual-recruiter'){
+                                        ?> 
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <span class="hide-menu">Switch Accounts</span>                                        
+                                            <form action="" method="post">
+                                                <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
+                                                    <i class="fa-solid fa-graduation-cap"></i>
+                                                    <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color: #787f91; border: none;">
+                                                </div>
+                                                <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
+                                                    <i class="fa-solid fa-briefcase"></i>
+                                                    <input type="button" name= "Recruiter Account" id="re-acc" value="Recruiter Account" style="background: #fff; color: #20aee3; border: none;">
+                                                </div>
+                                            </form>
+                                        <?php
+                                    }
+                                ?>
+                            </div>
+                        </li>
+                        <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="../server/logout.php">
                                 <i class="fa-solid fa-right-from-bracket"></i>
                                 Logout
                             </a>
@@ -239,20 +312,49 @@
     
     <!-- All Jquery -->
     
-    <script src="../assets/node_modules/jquery/jquery.min.js"></script>
+    <script src="./assets/node_modules/jquery/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../assets/node_modules/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/node_modules/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="./profile/js/perfect-scrollbar.jquery.min.js"></script>
     <!--Wave Effects -->
-    <script src="js/waves.js"></script>
+    <script src="./profile/js/waves.js"></script>
     <!--Menu sidebar -->
-    <script src="js/sidebarmenu.js"></script>
+    <script src="./profile/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-    <script src="js/custom.min.js"></script>
+    <script src="./profile/js/custom.min.js"></script>
     <!-- jQuery peity -->
-    <script src="../assets/node_modules/peity/jquery.peity.min.js"></script>
-    <script src="../assets/node_modules/peity/jquery.peity.init.js"></script>
+    <script src="./assets/node_modules/peity/jquery.peity.min.js"></script>
+    <script src="./assets/node_modules/peity/jquery.peity.init.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#st-acc").on("click", function(){
+                $.ajax(
+                    {
+                        url: "./switch-accounts.php",
+                        method: "POST",
+                        data:{
+                        switch: 1
+                        },success: function(response){ window.location.href = "./dual-student.php";},
+                        dataType: "text"
+                    }
+                );
+            })
+            $("#re-acc").on("click", function(){
+                $.ajax(
+                    {
+                        url: "./switch-accounts.php",
+                        method: "POST",
+                        data:{
+                        switch: 2
+                        },success: function(response){ window.location.href = "./dual-recruiter.php";},
+                        dataType: "text"
+                    }
+                );
+            })
+        });
+    </script>
 </body>
 
 </html>

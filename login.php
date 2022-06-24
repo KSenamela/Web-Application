@@ -1,5 +1,5 @@
 <?php 
-    error_reporting(0);
+    // error_reporting(0);
     // We need to use sessions, so you should always start sessions using the below code.
     include "./server/dbconnect_server.php";
     include('./includes/navbar_login.php');
@@ -7,10 +7,17 @@
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] == 'admin'){
             header('Location: ./admin.php');
-        }else if($_SESSION['role'] == 'student'){
-            header('Location: ./student-profile/profile/student-profile.php');
+        }
+        else if($_SESSION['role'] == 'dual-student'){
+            header('Location: ./student-profile/dual-student.php');
+        }
+        else if($_SESSION['role'] == 'dual-recruiter'){
+            header('Location: ./student-profile/dual-recruiter.php');
+        }
+        else if($_SESSION['role'] == 'student'){
+            header('Location: ./student-profile/student-profile.php');
         }else if($_SESSION['role'] == 'recruiter'){
-            header('Location: ./recruiter-profile.php');
+            header('Location: ./student-profile/recruiter-profile.php');
         }
     }
 

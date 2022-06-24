@@ -64,12 +64,18 @@ function validateAll(emailValue, passwordValue, role_checked, role_value){
         success: function(response){
           // after getting a success response from the server, check which role is selected
           if(response === 'student'){
-            window.location.href = "./student-profile/profile/student-profile.php";
+            window.location.href = "./student-profile/student-profile.php";
           }else if(response === 'recruiter'){
-            window.location.href = "./recruiter-profile.php";
+            window.location.href = "./student-profile/recruiter-profile.php";
           }
           else if(response === 'admin'){
             window.location.href = "./admin.php";
+          }
+          else if(response === 'dual-student'){
+            window.location.href = "./student-profile/dual-student.php";
+          }
+          else if(response === 'dual-recruiter'){
+            window.location.href = "./student-profile/dual-recruiter.php";
           }
           else if(response === 'not logged in'){
             window.location.href = "./login.php";

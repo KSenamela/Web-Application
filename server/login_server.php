@@ -23,28 +23,69 @@
      // Prepared statement
      $sql = "SELECT * FROM registration WHERE email='$email'";
      $result = mysqli_query($conn, $sql);
+    if ($result->num_rows > 1){
 
-    if ($result->num_rows > 0) {
+      $sql = "SELECT * FROM registration WHERE email='$email' AND role='$role'";
+      $result = mysqli_query($conn, $sql);
+      
+      if ($result->num_rows > 0) {
 
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password, $row['password']) && $row['role'] == $role) {
+
+          if($row['role'] == 'student'){
+            session_start();
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['firstname'] = $row['first_name'];
+            $_SESSION['lastname'] = $row['last_name'];
+            $_SESSION['fullname'] = $row['first_name'] . ' ' . $row['last_name'];
+            $_SESSION['role'] = 'dual-student';
+            $_SESSION['userId'] = $row['id'];
+            $_SESSION['applied'] = $row['applied'];
+
+            echo $_SESSION['role'];
+          }else if($row['role'] == 'recruiter'){
+            session_start();
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['firstname'] = $row['first_name'];
+            $_SESSION['lastname'] = $row['last_name'];
+            $_SESSION['fullname'] = $row['first_name'] . ' ' . $row['last_name'];
+            $_SESSION['role'] = 'dual-recruiter';
+            $_SESSION['userId'] = $row['id'];
+            $_SESSION['applied'] = $row['applied'];
+            
+    
+            exit($_SESSION['role']);
+          }else{
+            exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
+          }
+         
+        }else{
+          exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
+        }
+      }
+    }
+    else if ($result->num_rows > 0) {
       $row = mysqli_fetch_assoc($result);
       if (password_verify($password, $row['password']) && $row['role'] == $role) {
 
         session_start();
         $_SESSION['email'] = $row['email'];
+        $_SESSION['firstname'] = $row['first_name'];
+        $_SESSION['lastname'] = $row['last_name'];
         $_SESSION['fullname'] = $row['first_name'] . ' ' . $row['last_name'];
         $_SESSION['role'] = $row['role'];
         $_SESSION['userId'] = $row['id'];
+        $_SESSION['applied'] = $row['applied'];
 
-        echo $row['role'];
-      }else {
-        echo '<div class="alert alert-danger">Entered email, password or role is incorrect!</div>';
+        exit($row['role']);
       }
-      
-      // header("Location: i");
-    } else {
-      echo'<div class="alert alert-danger">Entered email, password or role is incorrect!</div>';
+      else {
+        exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
+      }
+    }
+    else {
+      exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
     }
 
 }
-
-

@@ -55,6 +55,9 @@
                             <span id="Cpwd_error" class="error-message"></span>
 
                         </div>
+                        <small><?php echo $_SESSION['role']?></small>
+                        <small><?php echo $_SESSION['email']?></small>
+
                          <!-- Radio selection -->
                          <div class="myradio-btn">
                             <span>I am registering as a:</span>

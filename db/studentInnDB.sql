@@ -10,6 +10,16 @@ CREATE TABLE registration(
 
 );
 
+CREATE TABLE users(
+	id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    role VARCHAR(20) NOT NULL, --we gonna store unique values in this table and if the user is both student and recruiter, gonna write dual--
+    applied VARCHAR(5) NOT NULL,
+    registration_date DATETIME NOT NULL DEFAULT NOW()
+
+);
 CREATE TABLE recruiter_application(
 	id_number VARCHAR(13) PRIMARY KEY NOT NULL,
     first_name VARCHAR(50) NOT NULL,
