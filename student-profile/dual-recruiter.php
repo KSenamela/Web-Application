@@ -149,7 +149,7 @@
                             }
                         ?>
                         <li> 
-                            <div class="nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                            <div class="nav-link hide-menu" href="../application-forms/res-form.php" aria-expanded="false">
                                 <i class="fa-solid fa-repeat"></i>
 
                                 <span class="hide-menu">Switch Accounts</span>
@@ -170,7 +170,7 @@
                         </li>
                         <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="../server/logout.php">
                                 <i class="fa-solid fa-right-from-bracket"></i>
-                                Logout
+                                <span class="hide-menu">Logout</span>
                             </a>
                         </li>
                     

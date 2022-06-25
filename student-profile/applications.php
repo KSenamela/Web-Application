@@ -135,7 +135,7 @@
                         <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
                         <i class="fa-solid fa-message"></i>
                         <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        </li>
+                        </li >
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -149,7 +149,7 @@
                             }
                         ?>
                         <li> 
-                            <div class="nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                            <div class="nav-link hide-menu" href="../application-forms/res-form.php" aria-expanded="false">
                                 <?php 
                                     if($_SESSION['role'] == 'dual-student'){
                                         ?> 
@@ -188,7 +188,7 @@
                         </li>
                         <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="../server/logout.php">
                                 <i class="fa-solid fa-right-from-bracket"></i>
-                                Logout
+                                <span class="hide-menu">Logout</span>
                             </a>
                         </li>
                 </nav>

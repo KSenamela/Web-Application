@@ -148,12 +148,12 @@
                             }
                         ?>
                         <li> 
-                            <div class="nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                            <div class="nav-link hide-menu"  href="../application-forms/res-form.php" aria-expanded="false">
                                 <i class="fa-solid fa-repeat"></i>
 
                                 <span class="hide-menu">Switch Accounts</span>
 
-                                <form action="" method="post">
+                                <form action="" method="post" >
                                         <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
                                             <i class="fa-solid fa-graduation-cap"></i>
                                             <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color:#20aee3 ; border: none;">
@@ -169,7 +169,7 @@
                         </li>
                         <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="../server/logout.php">
                                 <i class="fa-solid fa-right-from-bracket"></i>
-                                Logout
+                                <span class="hide-menu">Logout</span>
                             </a>
                         </li>
                     

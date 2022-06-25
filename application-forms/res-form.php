@@ -32,7 +32,7 @@
           <p>Enter your Personal Data</p>
         </div>
 
-        <form>
+        <form id="res-form">
           <!-- Card body -->
           <div class="card-body px-5 mt-4">
             <!-- Personal details -->
@@ -52,6 +52,7 @@
                     type="text"
                     class="form-control"
                     id="first_name"
+                    name="firstname"
                     maxlength="50"
                     style="max-width: 500px"
                   />
@@ -62,19 +63,21 @@
                     type="text"
                     class="form-control"
                     id="last_name"
+                    name="lastname"
                     maxlength="50"
                     style="max-width: 500px"
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="id_number" class="form-label">ID number</label>
+                  <label for="id_number" class="form-label">ID number/Passport number</label>
                   <!-- min="0" oninput="validity.valid||(value='');" --These attributes prevent negative numbers from being entered by user-->
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
                     id="id_number"
-                    min="0"
-                    oninput="validity.valid||(value='');"
+                    name="idnumber"
+                    minlength="9"
+                    maxlength="13"
                     style="max-width: 500px"
                   />
                 </div>
@@ -84,6 +87,7 @@
                     type="email"
                     class="form-control"
                     id="email"
+                    name="email"
                     maxlength="100"
 
                     style="max-width: 500px"
@@ -97,6 +101,7 @@
                     type="number"
                     class="form-control"
                     id="phone_number"
+                    name="phonenumber"
                     min="0"
                     oninput="validity.valid||(value='');"
                     style="max-width: 300px"
@@ -108,6 +113,7 @@
                     >Gender</label>
                   <select
                     id="gender-select"
+                    name="gender"
                     class="form-select mb-3"
                     style="max-width: 300px"
                     aria-label="Default select example"
@@ -127,6 +133,7 @@
                   >
                   <select
                     id="institution"
+                    name="institution"
                     class="form-select mb-3"
                     style="max-width: 300px"
                     aria-label="Default select example"
@@ -147,15 +154,17 @@
                     type="text"
                     class="form-control"
                     id="course_name"
+                    name="course"
                     maxlength="100"
                     style="max-width: 500px"
                   />
                 </div>
 
                 <div class="mb-3">
-                  <label for="yos" class="form-label">Year of Study</label>
+                  <label for="yos" class="form-label">Year of study</label>
                   <select
                     id="yos"
+                    name="yearstudy"
                     class="form-select mb-3"
                     style="max-width: 300px"
                     aria-label="Default select example"
@@ -172,14 +181,13 @@
 
                 <div class="mb-3">
                   <label for="phone_number" class="form-label"
-                    >Completion Year</label
+                    >Completion year</label
                   >
                   <input
-                    type="number"
+                    type="date"
                     class="form-control"
                     id="comp_year"
-                    min="2022"
-                    oninput="validity.valid||(value='');"
+                    name="compyear"
                     style="max-width: 300px"
                   />
                 </div>
@@ -187,6 +195,7 @@
                   <label for="funding" class="form-label">Funding</label>
                   <select
                     id="funding"
+                    name="funding"
                     class="form-select mb-3"
                     style="max-width: 300px"
                     aria-label="Default select example"
@@ -205,6 +214,7 @@
                     type="number"
                     class="form-control"
                     id="student_number"
+                    name="studentnumber"
                     min="0"
                     oninput="validity.valid||(value='');"
                     style="max-width: 300px"
@@ -244,10 +254,11 @@
                 <div class="row">
                   <div class="col-md-8">
                     <label for="Residence" class="form-label"
-                      >Residence Address</label
+                      >Residence address</label
                     >
                     <select
                       id="first_choice"
+                      name="firstchoice"
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
@@ -270,6 +281,7 @@
 
                     <select
                       id="second_choice"
+                      name="secondchoice"
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
@@ -292,6 +304,7 @@
 
                     <select
                       id="third_choice"
+                      name="thirdchoice"
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
@@ -333,7 +346,7 @@
                   <label for="exampleInput6" class="form-label"
                     >Street address</label
                   >
-                  <input type="text" class="form-control" id="exampleInput6" />
+                  <input type="text" class="form-control" id="street" name="street"/>
                 </div>
 
                 <div class="row">
@@ -343,7 +356,8 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="exampleInput7"
+                        id="city"
+                        name="city"
                       />
                     </div>
                   </div>
@@ -353,7 +367,8 @@
                       >Province</label
                     >
                     <select
-                      id="exampleInput8"
+                      id="province" 
+                      name="province"
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
@@ -380,7 +395,8 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="exampleInput9"
+                        id="postal"
+                        name="postal"
                       />
                     </div>
                   </div>
@@ -388,7 +404,8 @@
                   <div class="col-md-6">
                     <label for="first_name0" class="form-label">Country</label>
                     <select
-                      id="first_name0"
+                      id="country" 
+                      name="country" 
                       class="form-select mb-3"
                       aria-label="Default select example"
                     >
@@ -416,12 +433,13 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="first_name1" class="form-label"
-                        >Full Name</label
+                        >Full name</label
                       >
                       <input
                         type="text"
                         class="form-control"
-                        id="first_name1"
+                        id="kin_name"
+                        name="kinname"
                       />
                     </div>
                   </div>
@@ -434,7 +452,8 @@
                       <input
                         type="number"
                         class="form-control"
-                        id="phone_number2"
+                        id="kin_phone"
+                        name="kinphone"
                       />
                     </div>
                   </div>
@@ -456,14 +475,16 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label for="first_name1" class="form-label"
+                    <label for="first_name1" class="form-label" 
                       >ID copy</label
                     >
                     <input
                     type="file" 
                     class="form-control" 
                     id="idcopy"
+                    name="idcopy"
                     />
+                    <span id="error-message"></span>
                   </div>
                 </div>
 
@@ -476,16 +497,22 @@
                     type="file" 
                     class="form-control" 
                     id="por"
+                    name="proof"
+                   
                     
                     />
+                    <span id="err-message"></span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+          <center>
 
+          <div id="fillAll" class="mb-3"></div>
 
+          </center>
           <!-- Card footer -->
           <div class="card-footer text-end py-4 px-5 bg-light border-0">
             <a
@@ -496,22 +523,200 @@
             >
               Cancel
             </a>
-            <button type="submit" class="btn btn-primary btn-rounded">
+            <input type="button" id="submit-btn" value="submit"class="btn btn-primary btn-rounded">
+            <!-- <button type="submit" class="btn btn-primary btn-rounded" id="submit-btn">
               Submit
-            </button>
+            </button> -->
           </div>
         </form>
       </div>
     </div>
     <!-- MDB -->
     <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="./js/jquery.validate.min.js"></script>
+    <script src="./js/additional-methods.js"></script>
+    <script src="../js/sweetalert2@11.js"></script>
     <script src="./js/validation-apply.js"></script>
     <script type="text/javascript" src="js/mdb.min.js"></script>
 
-    <!-- <script type="text/javascript">
-    document.getElementById("cancel").onclick = function () {
-        location.href = "./login.php";
-    };
-  </script> -->
+  <script>
+
+    $(document).ready(function() {
+      
+        $("#res-form").validate({
+        rules:{
+          firstname:{
+            required: true,
+            minlength: 2,
+            maxlength: 50,
+            lettersonly: true
+          },
+          lastname:{
+            required: true,
+            minlength: 2,
+            maxlength: 50,
+            lettersonly: true
+          },
+          idnumber:{
+            required: true,
+          },
+          email:{
+            required: true,
+            emailAddress: true
+          },
+          phonenumber:{
+            required: true,
+            saPhoneNumber: true,
+            integer: true
+          },
+          gender:{
+            required: true
+          },
+          institution:{
+            required: true
+          },
+          course:{
+            required: true,
+            minlength: 2,
+            letterswithbasicpunc: true
+          },
+          yearstudy:{
+            required: true
+          },
+          compyear:{
+            required: true
+          },
+          studentnumber:{
+            required: true,
+            studentNumber: true
+          },
+          street:{
+            required: true,
+            minlength: 5,
+            maxlength: 50
+          },
+          city:{
+            required: true,
+            minlength: 2,
+            maxlength: 50,
+            cityVal: true
+
+          },
+          postal:{
+            required: true,
+            minlength: 4,
+            integer: true
+          },
+          kinname:{
+            required: true,
+            cityVal: true,
+            minlength: 2
+          },
+          kinphone:{
+            required: true,
+            saPhoneNumber: true,
+            integer: true
+          },
+          idcopy:{
+            required: true
+          },
+          proof:{
+            required: true
+          }
+
+        }
+      });
+      //saves file name if valid
+      $("#por").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings("#por").addClass("selected").html(fileName);
+
+        });
+        
+      $("#idcopy").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings("#idcopy").addClass("selected").html(fileName);
+
+        });
+
+        $("#submit-btn").on("click", function() {
+        
+          if($('#res-form').valid()){
+            $.ajax(
+            {
+              url: "./apply.php",
+              method: "POST",
+              data: $("#res-form").serialize(),
+              success: function(response){
+                //after getting a success response from the server, show user a sweetAlert and redirect to login
+                if(response === 'success'){
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Application Successful!',
+                    text: 'Check your status under APPLICATIONS on your profile!',
+                  }).then(function(){
+                    window.location.href = "../login.php";
+                  })
+                }else{
+                  $("#response").html(response);
+                }
+                
+              },
+              dataType: "text"
+            }
+          )
+          $("#fillAll").html("");
+        }else{
+            $("#fillAll").html("<span class='alert alert-danger form-control' style='max-width: 500px'>Please fill all fields</span>");
+        }
+      })
+      });
+
+
+document.getElementById('por').onchange = function (){
+    var image=document.getElementById('por').value;
+    if(image!=''){
+      var checkimg = image.toLowerCase();
+      if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
+          document.getElementById('err-message').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
+          document.getElementById('por').value="";
+      }else{
+        document.getElementById('err-message').nnerHTML="";
+      }
+      var image=document.getElementById('por');
+      var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
+      if (size > 2){
+          document.getElementById('err-message').innerHTML="Please Select Size Less Than 2 MB";
+          document.getElementById('por').value="";
+      } else {
+            document.getElementById('err-message').innerHTML="";
+
+      }
+    }
+
+}
+document.getElementById('idcopy').onchange = function (){
+    var image=document.getElementById('idcopy').value;
+    if(image!=''){
+      var checkimg = image.toLowerCase();
+      if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
+          document.getElementById('error-message').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
+          document.getElementById('idcopy').value="";
+      }else{
+        document.getElementById('error-message').nnerHTML="";
+      }
+      var image=document.getElementById('idcopy');
+      var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
+      if (size > 2){
+          document.getElementById('error-message').innerHTML="Please select size less than 2 MB";
+          document.getElementById('idcopy').value="";
+      } else {
+            document.getElementById('error-message').innerHTML="";
+
+      }
+    }
+
+}
+  </script>
   </body>
 </html>

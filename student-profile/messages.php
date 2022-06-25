@@ -141,7 +141,7 @@
                             }
                         ?>
                         <li> 
-                            <div class="nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                            <div class="nav-link hide-menu" href="../application-forms/res-form.php" aria-expanded="false">
 
                                 <?php 
                                 
@@ -186,7 +186,7 @@
                         </li>
                         <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="../server/logout.php">
                                 <i class="fa-solid fa-right-from-bracket"></i>
-                                Logout
+                                <span class="hide-menu">Logout</span>
                             </a>
                         </li>
                     </ul>
