@@ -4,7 +4,9 @@
     include "./server/dbconnect_server.php";
     include('./includes/navbar_login.php');
     //If the user is not logged in redirect to the login page...
+
     if (isset($_SESSION['email'])) {
+        
         if($_SESSION['role'] == 'admin'){
             header('Location: ./admin.php');
         }

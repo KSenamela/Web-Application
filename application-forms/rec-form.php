@@ -2,7 +2,7 @@
   session_start();
   include '../server/dbconnect_server.php';
   $email = $_SESSION['email'];
-  $sql = "SELECT * FROM registration WHERE email='$email' AND role='student'";
+  $sql = "SELECT * FROM registration WHERE email='$email'";
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
   $_SESSION['applied'] = $row['applied'];
@@ -10,7 +10,7 @@
       header('Location: ../login.php');
   }
 ?>
-<!-- APPLICATION FOR RESIDENCE -->
+<!-- APPLICATION FOR RECRUITER -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,7 +20,7 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Accommodation Application</title>
+    <title>Recruiter Application</title>
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
@@ -52,13 +52,14 @@
     <div class="container my-5">
       <div class="card mx-auto">
         <div class="form-heading">
-          <h1>Accommodation Application</h1>
+          <h1>Recruiter Application</h1>
           <p>Enter your Personal Data</p>
         </div>
 
         <form id="res-form">
           <!-- Card body -->
-          <div class="card-body px-5 mt-4">
+          <div class="card-body px-5 mt-4 mb-3">
+             
             <!-- Personal details -->
             <div class="row gx-xl-5">
               <div class="col-md-4">
@@ -182,123 +183,8 @@
                   </select>
                 </div>
 
-                <div class="mb-3">
-                  <label for="institution" class="form-label"
-                    >Institution</label
-                  >
-                  <select
-                    id="institution"
-                    name="institution"
-                    class="form-select mb-3 institution"
-                    style="max-width: 300px"
-                  >
-                    <option selected value="University of Johannesburg">
-                      University of Johannesburg
-                    </option>
-                    <option value="University of Witwatersrand">
-                      University of Witwatersrand
-                    </option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
 
-                <div class="mb-3 ">
-                  <input 
-                    type="text"
-                    id="other-institution"
-                    name="otherinstitution"
-                    class="form-control hide-other"
-                    style="max-width: 300px"
-                    placeholder="Enter your institution name"
-                    >
-                </div>
-
-                <div class="mb-3">
-                  <label for="course_name" class="form-label">Course</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="course_name"
-                    name="course"
-                    maxlength="100"
-                    style="max-width: 500px"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="yos" class="form-label">Year of study</label>
-                  <select
-                    id="yos"
-                    name="yearstudy"
-                    class="form-select mb-3"
-                    style="max-width: 300px"
-                  >
-                    <option selected value="First Year">First Year</option>
-                    <option value="Second Year">Second Year</option>
-                    <option value="Third Year">Third Year</option>
-                    <option value="Fourth Year">Fourth Year</option>
-                    <option value="Honors">Honors</option>
-                    <option value="Masters">Masters</option>
-                    <option value="PhD">PhD</option>
-                  </select>
-                </div>
-
-                <div class="mb-3">
-                  <label for="phone_number" class="form-label"
-                    >Completion year</label
-                  >
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="comp_year"
-                    name="compyear"
-                    style="max-width: 300px"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="funding" class="form-label">Funding</label>
-                  <select
-                    id="funding"
-                    name="funding"
-                    class="form-select mb-3"
-                    style="max-width: 300px"
-                  >
-                    <option selected value="NSFAS">NSFAS</option>
-                    <option value="Bursary">Bursary</option>
-                    <option value="Cash">Cash</option>
-                  </select>
-                </div>
-
-                <div class="mb-3">
-                  <label for="student_number" class="form-label"
-                    >Student number</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="student_number"
-                    name="studentnumber"
-                    min="0"
-                    oninput="validity.valid||(value='');"
-                    style="max-width: 300px"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="referral_code" class="form-label"
-                    >Referral code</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="referral_code"
-                    name="referralcode"
-                    placeholder="Optional"
-                    style="max-width: 300px"
-                    minlength='8'
-                    maxlength='8'
-                  />
-                </div>
+      
               </div>
             </div>
 
@@ -306,131 +192,16 @@
 
             <!-- Residence -->
             <div class="row gx-xl-5">
-              <div class="col-md-4">
-                <h5>Residence</h5>
-                <p class="text-muted">
-                  Please select three residences for which you would want to
-                  apply. And while you are not required to pick a maximum of
-                  three, it is in your best interest to do so in order to
-                  increase your chances of admission.
-                </p>
-              </div>
+             
 
               <div class="col-md-8">
                 <div class="row">
                   <div class="col-md-8">
-                    <label for="Residence" class="form-label"
-                      >Residence address</label
-                    >
-                    <!-- Residence address -->
-                    <select
-                      id="first_choice"
-                      name="firstchoice"
-                      class="form-select mb-3 residence "
-                     >
-                      <option value="">
-                        Choose Your First Choice
-                      </option>
-                      <option value="13 5th Street Vrededorp">
-                        13 5th Street Vrededorp
-                      </option>
-                      <option value="19 Rus Road, Vredepark">
-                        19 Rus Road, Vredepark
-                      </option>
-                      <option value="43/45 Aanbloom Street, Jan Hofmeyer">
-                        43/45 Aanbloom Street, Jan Hofmeyer
-                      </option>
-                      <option value="3 Pypie Draai, Jan Hofmeyer">
-                        3 Pypie Draai, Jan Hofmeyer
-                      </option>
-                      <option value="50 Auckland Avenue, Auckland park">
-                        50 Auckland Avenue, Auckland park
-                      </option>
-                    </select>
-                    <!-- Residence rooms -->
-                    <select 
-                    id="choices"
-                    class="form-select mb-3 hide-other"
-                    name="roomchoice1"
-
-                    >
-
-                    </select>
-
-                    <select
-                      id="second_choice"
-                      name="secondchoice"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option value="">
-                        Choose Your Second Choice
-                      </option>
-                      <option value="13 5th Street Vrededorp">
-                        13 5th Street Vrededorp
-                      </option>
-                      <option value="19 Rus Road, Vredepark">
-                        19 Rus Road, Vredepark
-                      </option>
-                      <option value="43/45 Aanbloom Street, Jan Hofmeyer">
-                        43/45 Aanbloom Street, Jan Hofmeyer
-                      </option>
-                      <option value="3 Pypie Draai, Jan Hofmeyer">
-                        3 Pypie Draai, Jan Hofmeyer
-                      </option>
-                      <option value="50 Auckland Avenue, Auckland park">
-                        50 Auckland Avenue, Auckland park
-                      </option>
-                    </select>
-                    <!-- Second choice room selection -->
-                    <select 
-                    id="choices2"
-                    class="form-select mb-3 hide-other"
-                    name="roomchoice2"
-                    >
-
-                    </select>
-
-                    <select
-                      id="third_choice"
-                      name="thirdchoice"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option value="">
-                        Choose Your Third Choice
-                      </option>
-                      <option value="13 5th Street Vrededorp">
-                        13 5th Street Vrededorp
-                      </option>
-                      <option value="19 Rus Road, Vredepark">
-                        19 Rus Road, Vredepark
-                      </option>
-                      <option value="43/45 Aanbloom Street, Jan Hofmeyer">
-                        43/45 Aanbloom Street, Jan Hofmeyer
-                      </option>
-                      <option value="3 Pypie Draai, Jan Hofmeyer">
-                        3 Pypie Draai, Jan Hofmeyer
-                      </option>
-                      <option value="50 Auckland Avenue, Auckland park">
-                        50 Auckland Avenue, Auckland park
-                      </option>
-                    </select>
-
-                    <!-- Second choice room selection -->
-                    <select 
-                      id="choices3"
-                      class="form-select mb-3 hide-other"
-                      name="roomchoice3"
-
-                    >
-                    </select>
+                    
                   </div>
                 </div>
               </div>
             </div>
-
-            <hr class="my-5" />
 
             <!-- Home Address -->
             <div class="row gx-xl-5">
@@ -561,54 +332,9 @@
                 </div>
               </div>
             </div>
+            </div>
             <hr class="my-5" />
-
           <!-- Next of Kin -->
-          <div class="row gx-xl-5">
-            <div class="col-md-4">
-              <h5>Upload Documents</h5>
-              <p class="text-muted">
-                Please upload any supporting documents; the maximum file size is <strong>2MB</strong>, and the file types accepted are PDF, JPG, JPEG, and PNG.
-              </p>
-            </div>
-
-            <div class="col-md-8">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="first_name1" class="form-label" 
-                      >ID copy</label
-                    >
-                    <input
-                    type="file" 
-                    class="form-control" 
-                    id="idcopy"
-                    name="idcopy"
-                    />
-                    <span id="error-message"></span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="phone_number2" class="form-label"
-                      >Proof of registration</label
-                    >
-                    <input
-                    type="file" 
-                    class="form-control" 
-                    id="por"
-                    name="proof"
-                   
-                    
-                    />
-                    <span id="err-message"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
           <center>
 
           <div id="fillAll" class="mb-3"></div>
@@ -677,37 +403,6 @@
           race:{
             required: true
           },
-          institution:{
-            required: true
-          },
-          otherinstitution:{
-            required: true
-          },
-          course:{
-            required: true,
-            minlength: 2,
-            letterswithbasicpunc: true
-          },
-          yearstudy:{
-            required: true
-          },
-          compyear:{
-            required: true
-          },
-          studentnumber:{
-            required: true,
-            studentNumber: true
-          },
-          referralcode:{
-            minlength: 8,
-            maxlength: 8
-          },
-          firstchoice:{
-            required: true
-          },
-          roomchoice1:{
-            required: true
-          },
           street:{
             required: true,
             minlength: 5,
@@ -734,28 +429,9 @@
             required: true,
             saPhoneNumber: true,
             integer: true
-          },
-          idcopy:{
-            required: true
-          },
-          proof:{
-            required: true
           }
-
         }
       });
-      //saves file name if valid
-      $("#por").on("change", function() {
-          var fileName = $(this).val().split("\\").pop();
-          $(this).siblings("#por").addClass("selected").html(fileName);
-
-        });
-        
-      $("#idcopy").on("change", function() {
-          var fileName = $(this).val().split("\\").pop();
-          $(this).siblings("#idcopy").addClass("selected").html(fileName);
-
-        });
 
         $("#submit-btn").on("click", function() {
 
@@ -763,7 +439,7 @@
           if($('#res-form').valid()){
             $.ajax(
             {
-              url: "./apply.php",
+              url: "./rec-apply.php",
               method: "POST",
               data: $("#res-form").serialize(),
               success: function(response){
@@ -796,50 +472,7 @@
       });
 
 
-document.getElementById('por').onchange = function (){
-    var image=document.getElementById('por').value;
-    if(image!=''){
-      var checkimg = image.toLowerCase();
-      if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
-          document.getElementById('err-message').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
-          document.getElementById('por').value="";
-      }else{
-        document.getElementById('err-message').nnerHTML="";
-      }
-      var image=document.getElementById('por');
-      var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
-      if (size > 2){
-          document.getElementById('err-message').innerHTML="Please Select Size Less Than 2 MB";
-          document.getElementById('por').value="";
-      } else {
-            document.getElementById('err-message').innerHTML="";
 
-      }
-    }
-
-}
-document.getElementById('idcopy').onchange = function (){
-    var image=document.getElementById('idcopy').value;
-    if(image!=''){
-      var checkimg = image.toLowerCase();
-      if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
-          document.getElementById('error-message').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
-          document.getElementById('idcopy').value="";
-      }else{
-        document.getElementById('error-message').nnerHTML="";
-      }
-      var image=document.getElementById('idcopy');
-      var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
-      if (size > 2){
-          document.getElementById('error-message').innerHTML="Please select size less than 2 MB";
-          document.getElementById('idcopy').value="";
-      } else {
-            document.getElementById('error-message').innerHTML="";
-
-      }
-    }
-
-}
   </script>
   </body>
 </html>

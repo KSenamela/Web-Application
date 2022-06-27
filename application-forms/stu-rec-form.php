@@ -2,15 +2,24 @@
   session_start();
   include '../server/dbconnect_server.php';
   $email = $_SESSION['email'];
-  $sql = "SELECT * FROM registration WHERE email='$email' AND role='student'";
+  $sql = "SELECT * FROM registration WHERE email='$email' AND role ='student'";
   $result = mysqli_query($conn, $sql);
-  $row = mysqli_fetch_assoc($result);
-  $_SESSION['applied'] = $row['applied'];
-  if($_SESSION['applied'] == 'Yes'){
+  if($result->num_rows > 0){
+    $row = mysqli_fetch_assoc($result);
+    $_SESSION['applied'] = $row['applied'];
+    if($_SESSION['applied'] == 'Yes'){
       header('Location: ../login.php');
+    }
+  }
+
+  $query = "SELECT * FROM recruiter_application WHERE email='$email'";
+  $run_query = mysqli_query($conn, $query);
+  if($run_query ->num_rows > 0){
+    $data = mysqli_fetch_assoc($run_query );
+
   }
 ?>
-<!-- APPLICATION FOR RESIDENCE -->
+<!-- RECRUITER TRANSITION TO RESIDENT -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -107,6 +116,8 @@
                     minlength="9"
                     maxlength="13"
                     style="max-width: 500px"
+                    value="<?php echo $data['id_number'] ?>" 
+                    readonly
                   />
                 </div>
                 <div class="mb-3">
@@ -134,52 +145,37 @@
                     min="0"
                     oninput="validity.valid||(value='');"
                     style="max-width: 300px"
+                    value="<?php echo $data['phone'] ?>" 
+                    readonly
                   />
                 </div>
 
                 <div class="mb-3">
                   <label for="gender-select" class="form-label"
                     >Gender</label>
-                  <select
+                  <input
+                    type="text"
                     id="gender-select"
                     name="gender"
-                    class="form-select mb-3"
+                    class="form-control mb-3"
                     style="max-width: 300px"
-                  >
-                    <option selected value="Male">
-                      Male
-                    </option>
-                    <option value="Female">
-                      Female
-                    </option>
-                  </select>
+                    value="<?php echo $data['gender'] ?>" 
+                    readonly
+                  />
                 </div>
 
                 <div class="mb-3">
                   <label for="race-select" class="form-label"
                     >Race</label>
-                  <select
+                  <input
+                    type="text"
                     id="race-select"
                     name="race"
-                    class="form-select mb-3"
+                    class="form-control mb-3"
                     style="max-width: 300px"
-                  >
-                    <option selected value="Black">
-                      Black
-                    </option>
-                    <option value="White">
-                      White
-                    </option>
-                    <option value="Coloured">
-                      Coloured
-                    </option>
-                    <option value="Indian">
-                      Indian
-                    </option>
-                    <option value="Asian">
-                      Asian
-                    </option>
-                  </select>
+                    value="<?php echo $data['race'] ?>" 
+                    readonly
+                  />
                 </div>
 
                 <div class="mb-3">
@@ -244,7 +240,7 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="phone_number" class="form-label"
+                  <label for="comp_year" class="form-label"
                     >Completion year</label
                   >
                   <input
@@ -447,7 +443,14 @@
                   <label for="exampleInput6" class="form-label"
                     >Street address</label
                   >
-                  <input type="text" class="form-control" id="street" name="street"/>
+                  <input 
+                  type="text" 
+                  class="form-control" 
+                  id="street" 
+                  name="street" 
+                  value="<?php echo $data['street'] ?>" 
+                  readonly
+                  />
                 </div>
 
                 <div class="row">
@@ -459,6 +462,8 @@
                         class="form-control"
                         id="city"
                         name="city"
+                        value="<?php echo $data['city'] ?>" 
+                        readonly
                       />
                     </div>
                   </div>
@@ -467,23 +472,15 @@
                     <label for="exampleInput8" class="form-label"
                       >Province</label
                     >
-                    <select
+                    <input
+                    type="text"
                       id="province" 
                       name="province"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option selected value="Eastern Cape">Eastern Cape</option>
-                      <option value="Free State">Free State</option>
-                      <option value="Gauteng">Gauteng</option>
-                      <option value="KwaZulu-Natal">KwaZulu-Natal</option>
-                      <option value="Limpopo">Limpopo</option>
-                      <option value="Mpumalanga">Mpumalanga</option>
-                      <option value="Northern Cape">Northern Cape</option>
-                      <option value="North West">North West</option>
-                      <option value="Western Cape">Western Cape</option>
-                      <option value="International">International</option>
-                    </select>
+                      class="form-control mb-3"
+                      value="<?php echo $data['province'] ?>" 
+                      readonly
+                    />
+       
                   </div>
                 </div>
 
@@ -498,21 +495,22 @@
                         class="form-control"
                         id="postal"
                         name="postal"
+                        value="<?php echo $data['postal_code'] ?>" 
+                        readonly
                       />
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <label for="first_name0" class="form-label">Country</label>
-                    <select
+                    <input
+                      type="text"
                       id="country" 
                       name="country" 
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option selected value="South Africa">South Africa</option>
-                      <option value="International">International</option>
-                    </select>
+                      class="form-control mb-3"
+                      value="<?php echo $data['country'] ?>" 
+                      readonly
+                    />
                   </div>
                 </div>
               </div>
@@ -541,6 +539,9 @@
                         class="form-control"
                         id="kin_name"
                         name="kinname"
+                        value="<?php echo $data['kin_name'] ?>" 
+                        readonly
+
                       />
                     </div>
                   </div>
@@ -555,6 +556,8 @@
                         class="form-control"
                         id="kin_phone"
                         name="kinphone"
+                        value="<?php echo $data['kin_number']?>" 
+                        readonly
                       />
                     </div>
                   </div>
@@ -763,7 +766,7 @@
           if($('#res-form').valid()){
             $.ajax(
             {
-              url: "./apply.php",
+              url: "./rec-transition.php",
               method: "POST",
               data: $("#res-form").serialize(),
               success: function(response){

@@ -25,12 +25,18 @@ CREATE TABLE recruiter_application(
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     gender VARCHAR(50) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    age INT NOT NULL,
+    race VARCHAR(10) NOT NULL,
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(15) NOT NULL,
     withdrawable_amount DECIMAL(10,2) NOT NULL,
     referral_code VARCHAR(8),
+    street VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    province VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(100) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    kin_name VARCHAR(100) NOT NULL,
+    kin_number VARCHAR(100) NOT NULL,
     application_status VARCHAR(20) NOT NULL,
     application_date DATETIME NOT NULL DEFAULT NOW()
     
@@ -40,31 +46,41 @@ CREATE TABLE student_application(
 	id_number VARCHAR(13) PRIMARY KEY NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    gender VARCHAR(10) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    age INT NOT NULL,
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(15) NOT NULL,
-    funding_type VARCHAR(20) NOT NULL,
-    student_number VARCHAR(20) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    race VARCHAR(10) NOT NULL,
     instituition VARCHAR(100) NOT NULL,
     course VARCHAR(100) NOT NULL,
     year_of_study VARCHAR(20) NOT NULL,
     study_completion_date DATE NOT NULL,
+    funding_type VARCHAR(20) NOT NULL,
+    student_number VARCHAR(20) NOT NULL,
     referral_code VARCHAR(8) REFERENCES recruiter_application(referral_code), 
+    street VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    province VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(100) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    kin_name VARCHAR(100) NOT NULL,
+    kin_number VARCHAR(100) NOT NULL,
     application_status VARCHAR(20) NOT NULL,
     application_date DATETIME NOT NULL DEFAULT NOW()
   
 );
 
+CREATE TABLE residences(
+    Residence_address VARCHAR(50) NOT NULL,
+    Room_number VARCHAR(50) NOT NULL
+
+);
 CREATE TABLE residence_application(
     id_number VARCHAR(13) REFERENCES student_application(id_number),
-    first_choice VARCHAR(50) NOT NULL,
-    second_choice VARCHAR(50) NOT NULL,
-    third_choice VARCHAR(50) NOT NULL,
+    Residence_address VARCHAR(50) NOT NULL,
+    Room_number VARCHAR(50) NOT NULL,
     status VARCHAR(20) NOT NULL,
     message VARCHAR(255) NOT NULL
-)
+);
 
 CREATE TABLE reports(
 	id INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,

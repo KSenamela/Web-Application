@@ -1,0 +1,91 @@
+<?php
+  session_start();
+  include '../server/dbconnect_server.php';
+
+  //Student transition to recruiter application
+  if(isset($_POST['transition_active'])){
+    $email = $_SESSION['email'];
+    $sql = "SELECT * FROM registration WHERE email='$email' AND role='recruiter'";
+    $result = mysqli_query($conn, $sql);
+    if (!($result->num_rows > 0)) {
+     
+        $first_name = $_SESSION['firstname'];
+        $last_name = $_SESSION['lastname'];
+        $email = $_SESSION['email'];
+        $password = $_SESSION['password'];
+        $role = 'recruiter';
+        $applied = 'Yes';
+    
+        $sql = "INSERT INTO registration (first_name, last_name, email, password, role, applied) VALUES (?, ?, ?, ?, ?, ?)";
+        //initialize the prepared statement object
+        $stmt = mysqli_stmt_init($conn);
+    
+        //checking if the prepared statement succeeded. it will return true if it succeeded and false otherwise and we check for false
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+          //kill the connection because syntax errors got caught
+          exit('<div class="alert alert-danger">Oops! Something went wrong! Please try again or contact the administrator</div>');
+        }
+    
+        //if no syntax errors got caught, we bind the prepared statement object $stmt with the data we need to store in the database
+        //Hashing password before storing
+      
+        mysqli_stmt_bind_param($stmt, "ssssss", $first_name, $last_name, $email, $password, $role, $applied);
+    
+        if(mysqli_stmt_execute($stmt)){
+          $sql2 = "SELECT * FROM student_application WHERE email = '$email'";
+          $result = mysqli_query($conn, $sql2);
+
+          if($result->num_rows > 0){
+            $row = mysqli_fetch_assoc($result);
+            $id_number = $row['id_number'];
+            $first_names = $row['first_name'];
+            $last_names = $row['last_name'];
+            $gender = $row['gender'];
+            $race = $row['race'];
+            $email_address = $row['email'];
+            $phone = $row['phone'];
+            $street = $row['street'];
+            $city = $row['city'];
+            $province = $row['province'];
+            $postal_code = $row['postal_code'];
+            $country = $row['country'];
+            $kin_name = $row['kin_name'];
+            $kin_number = $row['kin_number'];
+            $application_status = "Processing";
+
+            $sql3 = "INSERT INTO recruiter_application (id_number, first_name, last_name, gender, race, email, phone, street, city, province, postal_code, country, kin_name, kin_number, application_status)
+            VALUES
+            ('$id_number','$first_names', '$last_names', '$gender', '$race','$email_address', '$phone', '$street', '$city', '$province','$postal_code', '$country', '$kin_name', '$kin_number', '$application_status')";
+
+            $result2 = mysqli_query($conn, $sql3);
+
+            if($result2){
+              $_SESSION['role'] = 'dual-student';
+              exit('success');
+            }else{
+
+              exit('Oops! something went wrong, please try again later');
+
+            }
+
+          }else{
+
+            exit('Oops! something went wrong, please try again later');
+          }
+
+        }else{
+          
+            exit('Oops! something went wrong, please try again later');
+
+        }
+    
+      
+    }else{
+      exit('Oops! You are a registered recruiter already!');
+    }
+   
+  }else{
+    exit('Oops! You are a registered recruiter already!');
+  }
+
+  

@@ -96,21 +96,13 @@ if (isset($_POST['register'])){
 
   //attempt to check if the user has 2 accounts with one email address already. if so, reject registration request
   try{
-    $sql = "SELECT * FROM registration WHERE email='$email'";
-    $result = mysqli_query($conn, $sql);
-    if ($result->num_rows > 1) {
-      exit('<div class="alert alert-danger">Email address already exists</div>');
+      $sql = "SELECT * FROM registration WHERE email='$email'";
+      $result = mysqli_query($conn, $sql);
+      if ($result->num_rows > 0) {
+        exit('<div class="alert alert-danger">Email address already exists</div>');
+      }
     }
-    else if ($result->num_rows > 0){
-      $row = mysqli_fetch_assoc($result);
-      if($row['role'] == $role){
-          exit('<div class="alert alert-danger">Email address already exists</div>');
-        }
-        else if($row['role'] == 'admin'){
-          exit('<div class="alert alert-danger">Email address already exists</div>');
-        }
-    }
-    }catch(e){
+    catch(e){
       exit('<div class="alert alert-danger">Oops! something went wrong, Please try again.</div>');
     }
 

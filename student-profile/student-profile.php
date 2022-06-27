@@ -7,6 +7,12 @@
         if($_SESSION['role'] != 'student'){
             header('Location: ../login.php');
         }
+        //Check if the logged in user has already applied and hide the apply link if they already did
+        $email = $_SESSION['email'];
+        $sql = "SELECT * FROM registration WHERE email='$email'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['applied'] = $row['applied'];
     }
     else{
         header('Location: ../login.php');
@@ -49,6 +55,7 @@
 <body class="fix-header card-no-border fix-sidebar">
     
     <!-- Preloader - style you can find in spinners.css -->
+    <small><?php $_SESSION['role']?></small>
     
     <div class="preloader">
         <div class="loader">
@@ -143,10 +150,22 @@
                                 <?php
                             }
                         ?>
+                        <?php 
 
-                        <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon pt-4" href="../server/logout.php">
+                            if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'student') {
+                                ?> 
+
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/rec-stu-form.php" aria-expanded="false">
+                                        <i class="fa-solid fa-briefcase"></i>
+                                        <span class="hide-menu">Become a recruiter</span></a>
+                                    </li>                             
+                                <?php
+                            }
+                        ?>
+
+                        <li> <a class="waves-effect waves-dark nav-link sb-nav-link-icon" href="../server/logout.php">
                                 <i class="fa-solid fa-right-from-bracket"></i>
-                                Logout
+                                <span class="hide-menu">Logout</span>
                             </a>
                         </li>
                     
@@ -196,7 +215,7 @@
                                         width="150" />
                                     <h2 class="card-title mt-2"><?php echo $_SESSION['fullname'] ?></h2>
                                     <h4 class="card-subtitle">Role: <small style="color: skyblue; font-weight: bold; font-size: 16px">Student</small></h4>
-                                    <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px">Pending</small> </h4>
+                                    <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px">Pending</small> </h6>
 
                                 </center>
                             </div>
@@ -212,14 +231,14 @@
                                     <div class="form-group">
                                         <label class="col-md-12">First Name</label>
                                         <div class="col-md-12">
-                                            <input type="text" value="<?php echo $_SESSION['firstname'] ?>"
+                                            <input type="text" placeholder="Klaas" value="<?php echo $_SESSION['firstname'] ?>"
                                                 class="form-control form-control-line">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="example-email" class="col-md-12">Last Name</label>
                                         <div class="col-md-12">
-                                            <input type="text" value="<?php echo $_SESSION['lastname'] ?>"
+                                            <input type="text" placeholder="Senamela" value="<?php echo $_SESSION['lastname'] ?>"
                                                 class="form-control form-control-line" name="example-email"
                                                 >
                                         </div>
@@ -253,14 +272,16 @@
                                                 <div class="form-group">
                                                     <label class="col-md-12">Recruiter's Name</label>
                                                     <div class="col-md-12">
-                                                        <input type="text" placeholder="Donald Mohlala"
-                                                            class="form-control form-control-line" readonly>
+                                                        <input type="text" placeholder="-----------"
+                                                            class="form-control form-control-line" disabled>
                                                     </div>
                                                 </div>                                            
                                             <?php
 
                                         }
                                     ?>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
                                             <button class="btn btn-success">Update Profile</button>
                                         </div>
                                     </div>
@@ -307,6 +328,7 @@
     <script src="./profile/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
+
 </body>
 
 </html>

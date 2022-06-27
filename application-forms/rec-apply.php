@@ -1,5 +1,6 @@
 <?php
   session_start();
+//Recruiter transition to student application
   if (isset($_POST['firstname'])) {
     insertAll();
   }
@@ -7,22 +8,6 @@
 function insertAll(){
   include '../server/dbconnect_server.php';
 
-  if(isset($_POST['other-institution'])){
-    $institution = mysqli_real_escape_string($conn, trim($_POST['other-institution']));
-  }else{
-    $institution = mysqli_real_escape_string($conn, trim($_POST['institution']));
-  }
-
-  if(isset($_POST['referralcode']) && $_POST['referralcode'] != ''){
-    $referral_code = mysqli_real_escape_string($conn, trim( $_POST['referralcode']));
-    $testQuery = "SELECT * FROM recruiter_application WHERE referral_code = '$referral_code'";
-    $result = mysqli_query($conn, $testQuery);
-    if (!($result->num_rows > 0)){
-      exit("Incorrect referral code, please ensure that your recruiter gave you a correct referral code");
-    }
-  }else{
-    $referral_code = '0000'; //no recruiter
-  }
 
   $id_number =  mysqli_real_escape_string($conn, trim($_POST['idnumber']));
   $first_name = mysqli_real_escape_string($conn, trim($_POST['firstname']));
@@ -31,11 +16,6 @@ function insertAll(){
   $phone=  mysqli_real_escape_string($conn, trim($_POST['phonenumber']));
   $gender =  mysqli_real_escape_string($conn, trim($_POST['gender'])); 
   $race =  mysqli_real_escape_string($conn, trim($_POST['race']));
-  $course =  mysqli_real_escape_string($conn, trim($_POST['course']));
-  $studyYear =  mysqli_real_escape_string($conn, trim($_POST['yearstudy']));
-  $completion_year =  mysqli_real_escape_string($conn, trim($_POST['compyear']));
-  $funding =  mysqli_real_escape_string($conn, trim($_POST['funding']));
-  $student_number =  mysqli_real_escape_string($conn, trim($_POST['studentnumber']));
 
   $street =  mysqli_real_escape_string($conn, trim($_POST['street']));
   $city =  mysqli_real_escape_string($conn, trim($_POST['city']));
@@ -46,7 +26,7 @@ function insertAll(){
   $kin_phone = mysqli_real_escape_string($conn, trim($_POST['kinphone']));
 
   //Query the database
-  $sql = "INSERT INTO student_application (id_number,first_name,last_name, email, phone, gender, race, instituition, course, year_of_study, study_completion_date, funding_type, student_number, referral_code, street, city, province, postal_code, country, kin_name, kin_number, application_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO recruiter_application (id_number,first_name,last_name, email, phone, gender, race, street, city, province, postal_code, country, kin_name, kin_number, application_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   //initialize the prepared statement object
   $stmt = mysqli_stmt_init($conn);
 
@@ -59,7 +39,7 @@ function insertAll(){
   //if no syntax errors got caught, we bind the prepared statement object $stmt with the data we need to store in the database
   //Hashing password before storing
   $status = "Processing";
-  mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssss", $id_number, $first_name, $last_name, $email, $phone, $gender, $race, $institution, $course, $studyYear, $completion_year,  $funding, $student_number, $referral_code, $street, $city, $province, $postal_code, $country, $kin_name, $kin_phone, $status);
+  mysqli_stmt_bind_param($stmt, "sssssssssssssss", $id_number, $first_name, $last_name, $email, $phone, $gender, $race, $street, $city, $province, $postal_code, $country, $kin_name, $kin_phone, $status);
 
   //Execute the prepared statement and store the results
   if(mysqli_stmt_execute($stmt)){
@@ -86,11 +66,3 @@ function insertAll(){
   exit('failed');
 }
 
-function residenceSelection(){
-  $firstchoice_res =  mysqli_real_escape_string($conn, trim($_POST['firstchoice']));
-  $firstchoice_room =  mysqli_real_escape_string($conn, trim($_POST['roomchoice1']));
-  $secondchoice_res =  mysqli_real_escape_string($conn, trim($_POST['secondchoice']));
-  $secondchoice_room =  mysqli_real_escape_string($conn, trim($_POST['roomchoice2']));
-  $thirdchoice_res =  mysqli_real_escape_string($conn, trim($_POST['thirdchoice']));
-  $thirdchoice_room =  mysqli_real_escape_string($conn, trim($_POST['roomchoice3']));
-}

@@ -61,3 +61,7 @@ body {
 	margin: 0;
 }
 
+.hide-other{
+	display: none;
+}
+

@@ -7,6 +7,12 @@
         if($_SESSION['role'] != 'recruiter'){
             header('Location: ../login.php');
         }
+        //Check if the logged in user has already applied and hide the apply link if they already did
+        $email = $_SESSION['email'];
+        $sql = "SELECT * FROM registration WHERE email='$email'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['applied'] = $row['applied'];
     }else{
         header('Location: ../login.php');
     }
@@ -136,11 +142,22 @@
 
                             if ( $_SESSION['applied'] == 'No') {
                                 ?> 
-                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/res-form.php" aria-expanded="false">
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/rec-form.php" aria-expanded="false">
                                         <i class="fa-solid fa-file-lines"></i>
 
                                         <span class="hide-menu">Apply</span></a>
                                     </li>                                
+                                <?php
+                            }
+                        ?>
+                        <?php 
+
+                            if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'recruiter') {
+                                ?> 
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/stu-rec-form.php" aria-expanded="false">
+                                        <i class="fa-solid fa-graduation-cap"></i>
+                                        <span class="hide-menu">Become a resident</span></a>
+                                    </li>                              
                                 <?php
                             }
                         ?>

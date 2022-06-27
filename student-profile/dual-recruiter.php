@@ -3,18 +3,29 @@
     session_start();
     include "../server/dbconnect_server.php";
     
-    
+
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] != 'dual-recruiter'){
             header('Location: ../login.php');
             exit;
         }
+        //Check if the logged in user has already applied and hide the apply link if they already did
+        $email = $_SESSION['email'];
+        $sql = "SELECT * FROM registration WHERE email='$email' AND role='recruiter'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['applied'] = $row['applied'];
     }else{
         header('Location: ../login.php');
         exit;
     }
 
- 
+    $query = "SELECT * FROM recruiter_application WHERE email='$email'";
+    $run_query = mysqli_query($conn, $query);
+    if($run_query ->num_rows > 0){
+      $data = mysqli_fetch_assoc($run_query );
+  
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -220,8 +231,22 @@
                                         width="150" />
                                     <h2 class="card-title mt-2"><?php echo $_SESSION['fullname'] ?></h2>
                                     <h4 class="card-subtitle">Role: <small style="color: skyblue; font-weight: bold; font-size: 16px">Recruiter</small></h4>
-                                    <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px">Pending</small> </h4>
-                                    <h6 style="color: #455a64; font-weight: 400; font-size: 15px">Referral code <small style="color: skyblue; font-weight: bold; font-size: 16px">KT127878</small></h6>
+                                    <?php
+                                    if($data['application_status'] == 'Accepted'){
+                                        ?>
+                                         <h4 class="card-subtitle">Application Status: <small style="color: #4DED30; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                        <?php
+                                    }else if($data['application_status'] == 'Unsuccessful'){
+                                        ?>
+                                        <h4 class="card-subtitle">Application Status: <small style="color: #FF7F7F; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                       <?php
+                                    }else{
+                                        ?>
+                                         <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                        <?php
+                                    }
+                                    ?>
+                                    <h6 style="color: #455a64; font-weight: 500; font-size: 15px">Referral code: <small style="color: skyblue; font-weight: bold; font-size: 16px"><?php echo $data['referral_code']?></small></h6>
 
                                 </center>
                             </div>
@@ -238,14 +263,14 @@
                                         <label class="col-md-12">First Name</label>
                                         <div class="col-md-12">
                                             <input type="text" placeholder="Klaas" value="<?php echo $_SESSION['firstname'] ?>"
-                                                class="form-control form-control-line" disabled>
+                                                class="form-control form-control-line" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="example-email" class="col-md-12">Last Name</label>
                                         <div class="col-md-12">
                                             <input type="text" placeholder="Senamela" value="<?php echo $_SESSION['lastname'] ?>"
-                                                class="form-control form-control-line" name="example-email" disabled
+                                                class="form-control form-control-line" name="example-email" readonly
                                                 >
                                         </div>
                                     </div>
@@ -263,25 +288,14 @@
                                                 <div class="form-group">
                                                     <label class="col-md-12">Phone No</label>
                                                     <div class="col-md-12">
-                                                        <input type="text" placeholder="063 434 8671"
-                                                            class="form-control form-control-line">
+                                                        <input 
+                                                        type="text" placeholder="063 434 8671"
+                                                        class="form-control form-control-line"
+                                                        value="<?php echo $data['phone']?>"
+                                                        >
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-12">Institution</label>
-                                                    <div class="col-md-12">
-                                                        <input type="text" placeholder="University of Johannesburg"
-                                                            class="form-control form-control-line">
-                                                    </div>
-                                                </div>
-                                    
-                                                <div class="form-group">
-                                                    <label class="col-md-12">Recruiter's Name</label>
-                                                    <div class="col-md-12">
-                                                        <input type="text" placeholder="Donald Mohlala"
-                                                            class="form-control form-control-line" readonly>
-                                                    </div>
-                                                </div>                                            
+                                                                               
                                             <?php
 
                                         }

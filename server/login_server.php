@@ -42,8 +42,9 @@
             $_SESSION['role'] = 'dual-student';
             $_SESSION['userId'] = $row['id'];
             $_SESSION['applied'] = $row['applied'];
+            $_SESSION['password'] = $row['password'];
 
-            echo $_SESSION['role'];
+            exit($_SESSION['role']);
           }else if($row['role'] == 'recruiter'){
             session_start();
             $_SESSION['email'] = $row['email'];
@@ -53,16 +54,21 @@
             $_SESSION['role'] = 'dual-recruiter';
             $_SESSION['userId'] = $row['id'];
             $_SESSION['applied'] = $row['applied'];
+            $_SESSION['password'] = $row['password'];
             
-    
             exit($_SESSION['role']);
-          }else{
+          }
+          else{
             exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
           }
          
-        }else{
+        }
+        else{
           exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
         }
+      }
+      else{
+        exit('<div class="alert alert-danger">Entered email, password or role is incorrect!</div>');
       }
     }
     else if ($result->num_rows > 0) {
@@ -77,6 +83,7 @@
         $_SESSION['role'] = $row['role'];
         $_SESSION['userId'] = $row['id'];
         $_SESSION['applied'] = $row['applied'];
+        $_SESSION['password'] = $row['password'];
 
         exit($row['role']);
       }
