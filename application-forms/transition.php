@@ -52,10 +52,11 @@
             $kin_name = $row['kin_name'];
             $kin_number = $row['kin_number'];
             $application_status = "Processing";
+            $referral_code = $first_name[0] . $last_name[0] . $id_number[0] . $id_number[1] . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
 
-            $sql3 = "INSERT INTO recruiter_application (id_number, first_name, last_name, gender, race, email, phone, street, city, province, postal_code, country, kin_name, kin_number, application_status)
+            $sql3 = "INSERT INTO recruiter_application (id_number, first_name, last_name, gender, race, email, phone, referral_code, street, city, province, postal_code, country, kin_name, kin_number, application_status)
             VALUES
-            ('$id_number','$first_names', '$last_names', '$gender', '$race','$email_address', '$phone', '$street', '$city', '$province','$postal_code', '$country', '$kin_name', '$kin_number', '$application_status')";
+            ('$id_number','$first_names', '$last_names', '$gender', '$race','$email_address', '$phone', '$referral_code','$street', '$city', '$province','$postal_code', '$country', '$kin_name', '$kin_number', '$application_status')";
 
             $result2 = mysqli_query($conn, $sql3);
 

@@ -1,13 +1,18 @@
 <?php
   session_start();
   include '../server/dbconnect_server.php';
-  $email = $_SESSION['email'];
-  $sql = "SELECT * FROM registration WHERE email='$email' AND role='student'";
-  $result = mysqli_query($conn, $sql);
-  $row = mysqli_fetch_assoc($result);
-  $_SESSION['applied'] = $row['applied'];
-  if($_SESSION['applied'] == 'Yes'){
-      header('Location: ../login.php');
+
+  if(isset($_SESSION['email'])){
+    $email = $_SESSION['email'];
+    $sql = "SELECT * FROM registration WHERE email='$email' AND role='student'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $_SESSION['applied'] = $row['applied'];
+    if($_SESSION['applied'] == 'Yes'){
+        header('Location: ../login.php');
+    }
+  }else{
+    header('Location: ../login.php');
   }
 ?>
 <!-- APPLICATION FOR RESIDENCE -->
@@ -661,6 +666,7 @@
           },
           idnumber:{
             required: true,
+            alphanumeric: true
           },
           email:{
             required: true,

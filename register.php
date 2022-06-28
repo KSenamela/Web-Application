@@ -1,6 +1,6 @@
 <?php 
     error_reporting(0);
-    include('./includes/navbar_login.php');
+    include('./includes/navbar_register.php');
     
     // We need to use sessions, so you should always start sessions using the below code.
     //If the user is not logged in redirect to the login page...

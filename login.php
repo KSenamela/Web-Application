@@ -1,33 +1,9 @@
 <?php 
     // error_reporting(0);
-    // We need to use sessions, so you should always start sessions using the below code.
-    include "./server/dbconnect_server.php";
+    
     include('./includes/navbar_login.php');
-    //If the user is not logged in redirect to the login page...
-
-    if (isset($_SESSION['email'])) {
-        
-        if($_SESSION['role'] == 'admin'){
-            header('Location: ./admin.php');
-        }
-        else if($_SESSION['role'] == 'dual-student'){
-            header('Location: ./student-profile/dual-student.php');
-        }
-        else if($_SESSION['role'] == 'dual-recruiter'){
-            header('Location: ./student-profile/dual-recruiter.php');
-        }
-        else if($_SESSION['role'] == 'student'){
-            header('Location: ./student-profile/student-profile.php');
-        }else if($_SESSION['role'] == 'recruiter'){
-            header('Location: ./student-profile/recruiter-profile.php');
-        }
-    }
-
 ?>
 
-<?php
-
-?>
 
         <div class="main-content d-flex flex-grow-1">
 
@@ -68,10 +44,7 @@
                             </div>
                             <span id="radio_error" class="error-message" style="color:red;display: inline-block; font-size:14px"></span>
                         </div>
-                        <!-- Login Remember me checkbox -->
-                        <div class="remember">
-                            <label><input type="checkbox">Remember me</label>
-                        </div>
+                   
                         <!-- submit button/Login button -->
                         <div class="inputBx">
                             <input type="button" value="Sign in" id="btn-login">

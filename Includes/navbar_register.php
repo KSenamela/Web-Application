@@ -1,27 +1,7 @@
 <?php
  session_start();
-     // We need to use sessions, so you should always start sessions using the below code.
-     include "./server/dbconnect_server.php";
-     //If the user is not logged in redirect to the login page...
 
- if (isset($_SESSION['email'])) {
-     if($_SESSION['role'] == 'admin'){
-         header('Location: ./admin.php');
-     }
-     else if($_SESSION['role'] == 'dual-student'){
-         header('Location: ./student-profile/dual-student.php');
-     }
-     else if($_SESSION['role'] == 'dual-recruiter'){
-         header('Location: ./student-profile/dual-recruiter.php');
-     }
-     else if($_SESSION['role'] == 'student'){
-         header('Location: ./student-profile/student-profile.php');
-     }else if($_SESSION['role'] == 'recruiter'){
-         header('Location: ./student-profile/recruiter-profile.php');
-     }
- }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./img/Studentinn-icon.png">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/login.css">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 
 <body class="min-vh-100 d-flex">

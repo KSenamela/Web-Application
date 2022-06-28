@@ -27,7 +27,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Student Profile</title>
+    <title>Recruiter Profile</title>
     <!-- Font Awesome-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- StudentInn icon -->
@@ -215,7 +215,21 @@
                                     <h2 class="card-title mt-2"><?php echo $_SESSION['fullname'] ?></h2>
                                     <h4 class="card-subtitle">Role: <small style="color: skyblue; font-weight: bold; font-size: 16px">Recruiter</small></h4>
                                     <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px">Pending</small> </h4>
-                                    <h6 style="color: #455a64; font-weight: 400; font-size: 15px">Referral code <small style="color: skyblue; font-weight: bold; font-size: 16px">KT127878</small></h6>
+                                    <?php
+                                        if ( $_SESSION['applied'] == 'Yes') {
+
+                                            $fetch = "SELECT referral_code FROM recruiter_application WHERE email = '$email'";
+                                            $run = mysqli_query($conn, $fetch);
+                                            if($run->num_rows > 0){
+                                                $get_code = mysqli_fetch_assoc($run);
+                                                ?>
+                                                    <h6 style="color: #455a64; font-weight: 400; font-size: 15px">Referral code <small style="color: skyblue; font-weight: bold; font-size: 16px"><?php echo $get_code['referral_code'] ?></small></h6>                                              
+                                                <?php
+                                                
+                                            }
+                                        }
+                                    ?>
+
 
                                 </center>
                             </div>

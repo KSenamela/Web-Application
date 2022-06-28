@@ -1,6 +1,6 @@
 <?php
   session_start();
-//Recruiter transition to student application
+//Recruiter application
   if (isset($_POST['firstname'])) {
     insertAll();
   }
@@ -26,7 +26,7 @@ function insertAll(){
   $kin_phone = mysqli_real_escape_string($conn, trim($_POST['kinphone']));
 
   //Query the database
-  $sql = "INSERT INTO recruiter_application (id_number,first_name,last_name, email, phone, gender, race, street, city, province, postal_code, country, kin_name, kin_number, application_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $sql = "INSERT INTO recruiter_application (id_number,first_name,last_name, email, phone, gender, race, referral_code, street, city, province, postal_code, country, kin_name, kin_number, application_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   //initialize the prepared statement object
   $stmt = mysqli_stmt_init($conn);
 
@@ -37,9 +37,10 @@ function insertAll(){
   }
 
   //if no syntax errors got caught, we bind the prepared statement object $stmt with the data we need to store in the database
-  //Hashing password before storing
+  
   $status = "Processing";
-  mysqli_stmt_bind_param($stmt, "sssssssssssssss", $id_number, $first_name, $last_name, $email, $phone, $gender, $race, $street, $city, $province, $postal_code, $country, $kin_name, $kin_phone, $status);
+  $referral_code = $first_name[0] . $last_name[0] . $id_number[0] . $id_number[1] . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
+  mysqli_stmt_bind_param($stmt, "ssssssssssssssss", $id_number, $first_name, $last_name, $email, $phone, $gender, $race, $referral_code, $street, $city, $province, $postal_code, $country, $kin_name, $kin_phone, $status);
 
   //Execute the prepared statement and store the results
   if(mysqli_stmt_execute($stmt)){

@@ -63,8 +63,8 @@ jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
 }, "Letters or punctuation only please");
 
 jQuery.validator.addMethod("alphanumeric", function(value, element) {
-	return this.optional(element) || /^\w+$/i.test(value);
-}, "Letters, numbers, and underscores only please");
+	return this.optional(element) || /^[A-Za-z0-9]*$/i.test(value);
+}, "Letters and numbers for Passport / numbers only for ID please");
 
 jQuery.validator.addMethod("lettersonly", function(value, element) {
 	return this.optional(element) || /^[a-z]+$/i.test(value);
