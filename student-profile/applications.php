@@ -10,6 +10,19 @@
     }else{
         header('Location: ../login.php');
     }
+
+    $query = "SELECT * FROM student_application WHERE email='$email'";
+    $run_query = mysqli_query($conn, $query);
+    $data = mysqli_fetch_assoc($run_query);
+  
+    $email = $_SESSION['email'];
+    if($_SESSION['role'] =="dual-student"){
+        $role = "student";
+    }else if($_SESSION['role'] =="dual-recruiter"){
+        $role = "recruiter";
+    }
+    $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='$role'"));
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -96,9 +109,20 @@
                         <!-- Profile -->
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href=""
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="./assets/images/users/Profile.jpeg" alt="user" class="" /> <span
-                                    class="hidden-md-down">Klaas Senamela &nbsp;</span> </a>
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php
+                                    if(!empty($avatar['image'])){
+                                        ?>
+                                        <img src="./avatar/<?php echo $avatar['image']?>" alt="user" class="" /> 
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <img src="./assets/images/users/account.jpg" alt="user" class="" /> 
+                                        <?php
+                                    }
+                                ?>
+                                <span
+                                    class="hidden-md-down"><?php echo $_SESSION['fullname'] ?> &nbsp;</span> </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown"></ul>
                         </li>
                     </ul>

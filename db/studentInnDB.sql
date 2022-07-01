@@ -91,3 +91,9 @@ CREATE TABLE reports(
     reported_date DATETIME NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE avatar(
+    email VARCHAR(100) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    image VARCHAR(100) 
+);

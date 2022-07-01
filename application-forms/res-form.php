@@ -61,7 +61,7 @@
           <p>Enter your Personal Data</p>
         </div>
 
-        <form id="res-form">
+        <form id="res-form" method="POST" >
           <!-- Card body -->
           <div class="card-body px-5 mt-4">
             <!-- Personal details -->
@@ -265,7 +265,7 @@
                   <select
                     id="funding"
                     name="funding"
-                    class="form-select mb-3"
+                    class="form-select mb-3 funding"
                     style="max-width: 300px"
                   >
                     <option selected value="NSFAS">NSFAS</option>
@@ -573,7 +573,7 @@
             <div class="col-md-4">
               <h5>Upload Documents</h5>
               <p class="text-muted">
-                Please upload any supporting documents; the maximum file size is <strong>2MB</strong>, and the file types accepted are PDF, JPG, JPEG, and PNG.
+                Please upload the required supporting documents; the maximum file size is <strong>2MB</strong>, and the file types accepted are PDF, JPG, JPEG, and PNG.
               </p>
             </div>
 
@@ -604,10 +604,34 @@
                     class="form-control" 
                     id="por"
                     name="proof"
-                   
                     
                     />
+        
                     <span id="err-message"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                  <label id="bursar-label" for="bursaryLetter" class="form-label hide-other"
+                      >Bursary Letter</label
+                    >
+                    <input
+                    type="file" 
+                    class="form-control hide-other" 
+                    id="bursaryLetter"
+                    name="bursaryLetter"
+                    />
+                    <span id="error-message"></span>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+    
+        
+                 
                   </div>
                 </div>
               </div>
@@ -746,6 +770,9 @@
           },
           proof:{
             required: true
+          },
+          bursaryLetter:{
+            required: true
           }
 
         }
@@ -762,16 +789,35 @@
           $(this).siblings("#idcopy").addClass("selected").html(fileName);
 
         });
+      $("#bursaryLetter").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings("#bursaryLetter").addClass("selected").html(fileName);
+
+        });
 
         $("#submit-btn").on("click", function() {
 
           $("#fillAll").removeClass('alert alert-danger form-control');
+          var data = $("#res-form").serialize().split("&");
+          var fd = new FormData();
+          var file1 = $('#idcopy')[0].files[0];
+          var file2 = $('#por')[0].files[0];
+          fd.append('idcopy', file1);          
+          fd.append('proof', file2);
+          
+          for (let index = 0; index < data.length; index++) {
+					var element = data[index].split("=");
+					fd.append(element[0] , decodeURIComponent(element[1]));
+					
+				}
           if($('#res-form').valid()){
             $.ajax(
             {
               url: "./apply.php",
               method: "POST",
-              data: $("#res-form").serialize(),
+              data: fd,
+					    contentType: false,
+					    processData: false,
               success: function(response){
                 //after getting a success response from the server, show user a sweetAlert and redirect to login
                 if(response === 'success'){
@@ -839,6 +885,28 @@ document.getElementById('idcopy').onchange = function (){
       if (size > 2){
           document.getElementById('error-message').innerHTML="Please select size less than 2 MB";
           document.getElementById('idcopy').value="";
+      } else {
+            document.getElementById('error-message').innerHTML="";
+
+      }
+    }
+
+}
+document.getElementById('bursaryLetter').onchange = function (){
+    var image=document.getElementById('bursaryLetter').value;
+    if(image!=''){
+      var checkimg = image.toLowerCase();
+      if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
+          document.getElementById('error-message').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
+          document.getElementById('bursaryLetter').value="";
+      }else{
+        document.getElementById('error-message').nnerHTML="";
+      }
+      var image=document.getElementById('bursaryLetter');
+      var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
+      if (size > 2){
+          document.getElementById('error-message').innerHTML="Please select size less than 2 MB";
+          document.getElementById('bursaryLetter').value="";
       } else {
             document.getElementById('error-message').innerHTML="";
 

@@ -18,7 +18,7 @@ if (isset($_POST['register'])){
   $password_confirmation = trim($_POST['password_confirmationPHP']);
   $role = strtolower(trim($_POST['role_valuePHP']));
   $applied = 'No';
-  
+  $fullname = $first_name . ' ' . $last_name;
 
   //Validation on the server side
 
@@ -124,6 +124,11 @@ if (isset($_POST['register'])){
 
   //Execute the prepared statement and store the results
   if(mysqli_stmt_execute($stmt)){
+    $image ="";
+    $query = "INSERT INTO avatar (email, full_name, role, image) VALUES ('$email', '$fullname', '$role', '$image')";
+    if(!mysqli_query($conn,$query)){
+      exit("Failed to insert avatar");
+    };
     exit("success");
     
   };

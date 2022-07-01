@@ -11,11 +11,10 @@
      
         $first_name = $_SESSION['firstname'];
         $last_name = $_SESSION['lastname'];
-        $email = $_SESSION['email'];
         $password = $_SESSION['password'];
         $role = 'recruiter';
         $applied = 'Yes';
-    
+        $fullname = $first_name . ' ' . $last_name;
         $sql = "INSERT INTO registration (first_name, last_name, email, password, role, applied) VALUES (?, ?, ?, ?, ?, ?)";
         //initialize the prepared statement object
         $stmt = mysqli_stmt_init($conn);
@@ -62,6 +61,12 @@
 
             if($result2){
               $_SESSION['role'] = 'dual-student';
+              $role2=$_SESSION['role'];
+              $image = '';
+              $query = "INSERT INTO avatar (email, full_name, role, image) VALUES ('$email', '$fullname', '$role', '$image')";
+              if(!mysqli_query($conn,$query)){
+                exit("Failed to insert avatar");
+              };
               exit('success');
             }else{
 

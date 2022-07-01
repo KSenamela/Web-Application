@@ -27,7 +27,7 @@ function insertAll(){
   $id_number =  mysqli_real_escape_string($conn, trim($_POST['idnumber']));
   $first_name = mysqli_real_escape_string($conn, trim($_POST['firstname']));
   $last_name =  mysqli_real_escape_string($conn, trim($_POST['lastname']));
-  $email =  mysqli_real_escape_string($conn, trim($_POST['email']));
+  $email =  mysqli_real_escape_string($conn,trim($_POST['email']));
   $phone=  mysqli_real_escape_string($conn, trim($_POST['phonenumber']));
   $gender =  mysqli_real_escape_string($conn, trim($_POST['gender'])); 
   $race =  mysqli_real_escape_string($conn, trim($_POST['race']));
@@ -65,7 +65,9 @@ function insertAll(){
   $message = "We are still processing your application";
   $query = "INSERT INTO residence_application (id_number, Residence_address, Room_number, status, message) VALUES (?,?,?,?,?)";
   $stmt2 = mysqli_stmt_init($conn);
-
+  $StoreFirstChoice = false;
+  $StoreSecondChoice = true;
+  $StoreThirdChoice = true;
   if(!mysqli_stmt_prepare($stmt2, $query)){
     //kill the connection because syntax errors got caught
     exit('<div class="alert alert-danger">Oops! Something went wrong! Please try again or contact the administrator</div>');

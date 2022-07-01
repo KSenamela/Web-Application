@@ -30,11 +30,25 @@ $(document).ready(function(){
       return false;
     }
   });
-
   // check other option if selected and remove hide-option class
-  
+  $("select.funding").change(function(){
+    var selectedfunding = $(this).children("option:selected").val();
+    
+    if(selectedfunding == "Bursary"){
+      
+      $("#bursaryLetter").removeClass("hide-other");
+      $("#bursar-label").removeClass("hide-other");
+    }
+    else{
+      $("#bursaryLetter").addClass("hide-other");
+      $("#bursar-label").addClass("hide-other");
+    }
+    
+  });
+
   $("select.institution").change(function(){
     var selectedinstitution = $(this).children("option:selected").val();
+    alert("HERE");
 
     if(selectedinstitution == "Other"){
       $("#other-institution").removeClass("hide-other");
@@ -44,8 +58,6 @@ $(document).ready(function(){
     }
 
 
-    
-  });
 
       // var selectedresidence = $("select.residence").children("option:selected").val();
       // $.ajax({
@@ -60,6 +72,7 @@ $(document).ready(function(){
       //   dataType: "text",
       // });
 
+  });
 });
 
 

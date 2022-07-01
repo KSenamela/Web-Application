@@ -159,6 +159,12 @@
       mysqli_query($conn, $sql);
     }
 
+    $image = '';
+    $role2 = $_SESSION['role'];
+    $query = "INSERT INTO avatar (email, full_name, role, image) VALUES ('$email', '$fullname', '$role2', '$image')";
+    if(!mysqli_query($conn,$query)){
+      exit("Failed to insert avatar");
+    };
     exit("success");
     
   }else{

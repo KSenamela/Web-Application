@@ -27,6 +27,14 @@
   
     }
 
+    $query = "SELECT * FROM student_application WHERE email='$email'";
+    $run_query = mysqli_query($conn, $query);
+    $data = mysqli_fetch_assoc($run_query);
+  
+    
+    $role = $_SESSION['role'];
+    $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='student'"));
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +56,8 @@
     <link href="./profile/css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="./profile/css/colors/default.css" id="theme" rel="stylesheet">
+    <link href="./profile/css/avatar.css" id="theme" rel="stylesheet">
+
     <style>
 
     .msg-badge {
@@ -111,8 +121,19 @@
                         
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href=""
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="./assets/images/users/Profile.jpeg" alt="user" class="" /> <span
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php
+                                    if(!empty($avatar['image'])){
+                                        ?>
+                                        <img src="./avatar/<?php echo $avatar['image']?>" alt="user" class="" /> 
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <img src="./assets/images/users/account.jpg" alt="user" class="" /> 
+                                        <?php
+                                    }
+                                ?>
+                                <span
                                     class="hidden-md-down"><?php echo $_SESSION['fullname'] ?> &nbsp;</span> </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown"></ul>
                         </li>
@@ -228,23 +249,46 @@
                     <div class="col-lg-4 col-xlg-3 col-md-5">
                         <div class="card">
                             <div class="card-body">
-                                <center class="mt-4"> <img src="./assets/images/users/Profile.jpeg" class="img-circle"
-                                        width="150" />
+                                <center class="mt-4"> 
+                                <form action="" method="post" enctype="multipart/form" id="avatar-form">
+                                    <div class="upload">
+                                        <?php
+                                            if(!empty($avatar['image'])){
+                                                ?>
+                                                <img src="./avatar/<?php echo $avatar['image']?>" alt="user" width="150" /> 
+                                                <?php
+                                            }else{
+                                                ?>
+                                                <img src="./assets/images/users/account.jpg" alt="user" class="" width="150"/> 
+                                                <?php
+                                            }
+                                        ?>
+                              
+                                        <div class="round">
+                                            <input type="hidden" name="id_number">
+                                            <input type="hidden" name="full_name">
+                                            <input type="file" id="image" name="image" accept= ".jpg, .png, .jpeg" />
+                                            <i class="fa fa-camera" style="color: #fff;"></i>
+                                        </div>
+                                    </div>
+                                    </form>
                                     <h2 class="card-title mt-2"><?php echo $_SESSION['fullname'] ?></h2>
                                     <h4 class="card-subtitle">Role: <small style="color: skyblue; font-weight: bold; font-size: 16px">Student</small></h4>
                                     <?php
-                                    if($data['application_status'] == 'Accepted'){
-                                        ?>
-                                         <h4 class="card-subtitle">Application Status: <small style="color: #4DED30; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                    if(!empty($data)){
+                                        if($data['application_status'] == 'Accepted'){
+                                            ?>
+                                            <h4 class="card-subtitle">Application Status: <small style="color: #4DED30; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                            <?php
+                                        }else if($data['application_status'] == 'Unsuccessful'){
+                                            ?>
+                                            <h4 class="card-subtitle">Application Status: <small style="color: #FF7F7F; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
                                         <?php
-                                    }else if($data['application_status'] == 'Unsuccessful'){
-                                        ?>
-                                        <h4 class="card-subtitle">Application Status: <small style="color: #FF7F7F; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
-                                       <?php
-                                    }else{
-                                        ?>
-                                         <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
-                                        <?php
+                                        }else if($data['application_status'] == 'Processing'){
+                                            ?>
+                                            <h4 class="card-subtitle">Application Status: <small style="color: orange; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                            <?php
+                                        }
                                     }
                                     ?>
 
@@ -383,6 +427,7 @@
     <script src="./profile/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
+    <script src="./profile/js/avatar.js"></script>
 
     <script>
         $(document).ready(function(){
