@@ -2,7 +2,7 @@
 session_start();
 include '../server/dbconnect_server.php';
 
-    $sql = "SELECT * FROM residences WHERE Residence_address= '43/45 Aanbloom Street, Jan Hofmeyer' AND room_taken = 0";
+    $sql = "SELECT * FROM residences WHERE Residence_address= '43/45 Aandbloom Street, Jan Hofmeyer' AND Room_Taken = 0";
     $run_query = mysqli_query($conn, $sql);
 
     if(mysqli_num_rows($run_query) > 0){

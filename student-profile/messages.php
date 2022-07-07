@@ -1,5 +1,5 @@
 <?php 
-    error_reporting(0);
+    // error_reporting(0);
     session_start();
     include "../server/dbconnect_server.php";
 
@@ -10,19 +10,28 @@
     }else{
         header('Location: ../login.php');
     }
+    $email = $_SESSION['email'];
 
+    //SETTING ROLES FOR PROFILE PICTURE CHANGE
     $query = "SELECT * FROM student_application WHERE email='$email'";
     $run_query = mysqli_query($conn, $query);
     $data = mysqli_fetch_assoc($run_query);
   
-    $email = $_SESSION['email'];
     if($_SESSION['role'] =="dual-student"){
         $role = "student";
     }else if($_SESSION['role'] =="dual-recruiter"){
         $role = "recruiter";
+    }else{
+        $role = $_SESSION['role'];
     }
     $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='$role'"));
   
+    //REMOVE MESSAGE BADGE WHEN ROWS ARE 0 FOR READ = 0
+    $msg_query = "SELECT * FROM messages WHERE email='$email' AND read_=0";
+    $msg_results = mysqli_query($conn, $msg_query);
+    if($msg_results->num_rows > 0) {
+        $msg_row = mysqli_fetch_assoc($msg_results);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +41,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Fontawesome -->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="../fontawesome/css/all.css" rel="stylesheet">
+    <title>Messages</title>
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Studentinn icon -->
@@ -148,10 +160,15 @@
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        </li>
+                        <?php
+                            $getCount = $msg_results->num_rows;
+                            ?>
+                            <li id="msg-go"> <a class="waves-effect waves-dark" aria-expanded="false">
+                                <i class="fa-solid fa-message"></i>
+                                <span class="hide-menu">Messages</span> <span class="msg-badge"><?php echo $getCount ?></span></a>
+                            </li>
+                            <?php
+                        ?>
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -161,6 +178,25 @@
 
                                         <span class="hide-menu">Apply</span></a>
                                     </li>                                
+                                <?php
+                            }
+                        ?>
+                        <?php 
+
+                            if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'student') {
+                                ?> 
+
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/rec-stu-form.php" aria-expanded="false">
+                                        <i class="fa-solid fa-briefcase"></i>
+                                        <span class="hide-menu">Become a recruiter</span></a>
+                                    </li>                             
+                                <?php
+                            }else if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'recruiter') {
+                                ?> 
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/stu-rec-form.php" aria-expanded="false">
+                                        <i class="fa-solid fa-graduation-cap"></i>
+                                        <span class="hide-menu">Become a resident</span></a>
+                                    </li>                              
                                 <?php
                             }
                         ?>
@@ -251,13 +287,30 @@
                 <!-- Start Page Content -->
                 
                 <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                This is some text within a card block.
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                        $query_ = "SELECT * FROM messages ORDER BY message_date desc";
+                        $run_ = mysqli_query($conn, $query_);
+                        
+                        
+
+                        if(mysqli_num_rows($run_) > 0){
+                        foreach($run_ as $row){
+                            ?>
+                                <div class="col-12" >
+                                    <div class="card" style="border-radius: 50px; border: 1px solid #ccc;">
+                                        <div class="card-body">
+                                            <?php echo $row['message'] ?>
+                                            <strong class="mt-2 d-flex" style="color: grey; font-size: 10px"><?php echo $row['message_date'] ?></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php
+                        }
+                    }
+
+
+                    ?>
+
                 </div>
                 
                 <!-- End PAge Content -->
@@ -274,7 +327,7 @@
             
             <!-- footer -->
             
-            <footer class="footer"> © 2022 Falcon Tech Div by <a href="https://www.FalconTechDiv.com/">FalconTechDiv.com</a> </footer>
+            <footer class="footer"> © 2022 StudentInn. All rights reserved by <a href="https://www.falcontechdiv.com/">Studentsinn.co.za</a> </footer>
             
             <!-- End footer -->
             

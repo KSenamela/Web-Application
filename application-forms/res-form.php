@@ -623,7 +623,7 @@
                     id="bursaryLetter"
                     name="bursaryLetter"
                     />
-                    <span id="error-message"></span>
+                    <span id="error-message2"></span>
                   </div>
                 </div>
 
@@ -804,6 +804,11 @@
           var file2 = $('#por')[0].files[0];
           fd.append('idcopy', file1);          
           fd.append('proof', file2);
+          if($('#bursaryLetter')[0].files[0] != ""){
+          var file3 = $('#bursaryLetter')[0].files[0];
+          fd.append('bursaryLetter', file3);          
+          }
+
           
           for (let index = 0; index < data.length; index++) {
 					var element = data[index].split("=");
@@ -897,18 +902,18 @@ document.getElementById('bursaryLetter').onchange = function (){
     if(image!=''){
       var checkimg = image.toLowerCase();
       if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
-          document.getElementById('error-message').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
+          document.getElementById('error-message2').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
           document.getElementById('bursaryLetter').value="";
       }else{
-        document.getElementById('error-message').nnerHTML="";
+        document.getElementById('error-message2').nnerHTML="";
       }
       var image=document.getElementById('bursaryLetter');
       var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
       if (size > 2){
-          document.getElementById('error-message').innerHTML="Please select size less than 2 MB";
+          document.getElementById('error-message2').innerHTML="Please select size less than 2 MB";
           document.getElementById('bursaryLetter').value="";
       } else {
-            document.getElementById('error-message').innerHTML="";
+            document.getElementById('error-message2').innerHTML="";
 
       }
     }

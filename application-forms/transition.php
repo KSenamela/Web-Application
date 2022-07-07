@@ -67,6 +67,9 @@
               if(!mysqli_query($conn,$query)){
                 exit("Failed to insert avatar");
               };
+
+              $text = mysqli_real_escape_string($conn, "Hi<br/><br/>We have recieved your recruiter application. Please keep checking your application status under <strong style='font-weight:bold'>APPLICATIONS</strong> on your profile.<br/><br/> Thank you for taking interest in us. <br/><br/> Regards<br/><br/>StudentINN");
+              mysqli_query($conn, "INSERT INTO messages(email, message, read_) VALUES ('$email','$text', 0)");
               exit('success');
             }else{
 
@@ -90,7 +93,8 @@
       exit('Oops! You are a registered recruiter already!');
     }
    
-  }else{
+  }
+  else{
     exit('Oops! You are a registered recruiter already!');
   }
 

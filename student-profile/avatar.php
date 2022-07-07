@@ -15,6 +15,15 @@
       $data = mysqli_fetch_assoc($run_query);
   
     }
+    if($_SESSION['role'] =="dual-student"){
+        $role = "student";
+    }else if($_SESSION['role'] =="dual-recruiter"){
+        $role = "recruiter";
+    }else{
+        $role = $_SESSION['role'];
+
+    }
+
     if(isset($_FILES['image']['name'])){
 
         $name = $_SESSION['fullname'];
@@ -30,13 +39,13 @@
         $imageFormat = strtolower(end($imageFormat));
         if(!in_array($imageFormat, $allowedFormat)){
             //echo and error message here, wrong format
-            exit("Here 1");
+            exit("Wrong format. Please only upload the following formats:jpg,png and jpeg");
 
         }
         else if($imageSize > 2000000){
             //echo error message too large
             //redirect to profile page
-            exit("Here 2");
+            exit("The size is too large. The allowed maximum size is 2MB");
         }
         else{
 

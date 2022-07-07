@@ -153,7 +153,7 @@ function validateAll(firstNameValue, lastNameValue, emailValue, passwordValue, r
                     window.location.href = "./login.php";
                   })
                 }else{
-                  $("#response-msg").html(response);
+                  // $("#response-msg").html(response);
                 }
                 
               },

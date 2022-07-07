@@ -16,14 +16,22 @@
     }else{
         header('Location: ../login.php');
     }
-
+    //Collect data from database and populate the profile fields, eg email, name etc
     $query = "SELECT * FROM recruiter_application WHERE email='$email'";
     $run_query = mysqli_query($conn, $query);
     $data = mysqli_fetch_assoc($run_query);
   
-    
+    //change profile picture
     $role = $_SESSION['role'];
     $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='$role'"));
+
+    //reset message number on the badge after message link is clicked
+    //RESET MESSAGE BADGE WHEN ROWS ARE 0 FOR READ = 0
+    $msg_query = "SELECT * FROM messages WHERE email='$email' AND read_=0";
+    $msg_results = mysqli_query($conn, $msg_query);
+    if($msg_results->num_rows > 0) {
+        $msg_row = mysqli_fetch_assoc($msg_results);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,8 +118,19 @@
                         
                         <li class="nav-item dropdown u-pro">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href=""
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="./assets/images/users/Profile.jpeg" alt="user" class="" /> <span
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php
+                                    if(!empty($avatar['image'])){
+                                        ?>
+                                        <img src="./avatar/<?php echo $avatar['image']?>" alt="user" class="" /> 
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <img src="./assets/images/users/account.jpg" alt="user" class="" /> 
+                                        <?php
+                                    }
+                                ?>
+                                <span
                                     class="hidden-md-down"><?php echo $_SESSION['fullname'] ?> &nbsp;</span> </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown"></ul>
                         </li>
@@ -142,10 +161,15 @@
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        </li>
+                        <?php
+                            $getCount = $msg_results->num_rows;
+                            ?>
+                            <li id="msg-go"> <a class="waves-effect waves-dark" aria-expanded="false">
+                                <i class="fa-solid fa-message"></i>
+                                <span class="hide-menu">Messages</span> <span class="msg-badge"><?php echo $getCount ?></span></a>
+                            </li>
+                            <?php
+                        ?>
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -264,14 +288,14 @@
                                     
                                     ?>
                                     <?php
-                                        if ( $_SESSION['applied'] == 'Yes') {
+                                        if ( $data['application_status'] == 'Accepted') {
 
                                             $fetch = "SELECT referral_code FROM recruiter_application WHERE email = '$email'";
                                             $run = mysqli_query($conn, $fetch);
                                             if($run->num_rows > 0){
                                                 $get_code = mysqli_fetch_assoc($run);
                                                 ?>
-                                                    <h6 style="color: #455a64; font-weight: 400; font-size: 15px">Referral code <small style="color: skyblue; font-weight: bold; font-size: 16px"><?php echo $get_code['referral_code'] ?></small></h6>                                              
+                                                    <h6 style="color: #455a64; font-weight: 400; font-size: 15px">Referral code <small style="color: skyblue; font-weight: bold; font-size: 16px"><?php echo $data['referral_code'] ?></small></h6>                                              
                                                 <?php
                                                 
                                             }
@@ -350,7 +374,7 @@
             
             <!-- footer -->
             
-            <footer class="footer"> © 2022 Falcon Tech Division by <a href="https://www.falcontechdiv.com">FalconTechDiv.com</a> </footer>
+            <footer class="footer"> © 2022 StudentInn. All rights reserved by <a href="https://www.falcontechdiv.com/">Studentsinn.co.za</a> </footer>
             
             <!-- End footer -->
             
@@ -377,6 +401,8 @@
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
     <script src="./profile/js/avatar.js"></script>
+    <script src="./profile/js/msg.js"></script>
+
 
 </body>
 

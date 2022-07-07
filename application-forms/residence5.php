@@ -2,9 +2,8 @@
 session_start();
 include '../server/dbconnect_server.php';
 
-    $sql = "SELECT * FROM residences WHERE Residence_address= '50 Auckland Avenue, Auckland park' AND room_taken = 0";
+    $sql = "SELECT * FROM residences WHERE Residence_address= '50 Auckland Avenue, Auckland Park' AND Room_Taken = 0";
     $run_query = mysqli_query($conn, $sql);
-    print_r($run_query);
 
     if(mysqli_num_rows($run_query) > 0){
         foreach($run_query as $row){

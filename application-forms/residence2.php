@@ -2,7 +2,7 @@
 session_start();
 include '../server/dbconnect_server.php';
 
-    $sql = "SELECT * FROM residences WHERE Residence_address= '19 Rus Road, Vredepark' AND room_taken = 0";
+    $sql = "SELECT * FROM residences WHERE Residence_address= '19 Rus Road Vredepark' AND Room_Taken = 0";
     $run_query = mysqli_query($conn, $sql);
     print_r($run_query);
 

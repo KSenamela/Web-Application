@@ -106,7 +106,8 @@ if (isset($_POST['register'])){
       exit('<div class="alert alert-danger">Oops! something went wrong, Please try again.</div>');
     }
 
-  //Query the database
+
+  //Query the database for registration table
   $sql = "INSERT INTO registration (first_name,last_name, email, password, role, applied) VALUES (?, ?, ?, ?, ?, ?)";
   //initialize the prepared statement object
   $stmt = mysqli_stmt_init($conn);
@@ -126,6 +127,11 @@ if (isset($_POST['register'])){
   if(mysqli_stmt_execute($stmt)){
     $image ="";
     $query = "INSERT INTO avatar (email, full_name, role, image) VALUES ('$email', '$fullname', '$role', '$image')";
+
+    //save messages like this in the message table
+    $text = mysqli_real_escape_string($conn, "Hi<br/><br/>Thank you for signing up! We've sent you a link in your email inbox, Please verify your email. <br/><br/> Regards<br/><br/>StudentINN");
+    mysqli_query($conn, "INSERT INTO messages(email, message, read_) VALUES ('$email','$text', 0)");
+    
     if(!mysqli_query($conn,$query)){
       exit("Failed to insert avatar");
     };

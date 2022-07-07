@@ -11,18 +11,36 @@
         header('Location: ../login.php');
     }
 
+    $email = $_SESSION['email'];
     $query = "SELECT * FROM student_application WHERE email='$email'";
     $run_query = mysqli_query($conn, $query);
-    $data = mysqli_fetch_assoc($run_query);
   
-    $email = $_SESSION['email'];
+    if($run_query->num_rows > 0){
+        $data = mysqli_fetch_assoc($run_query);
+        $idnumber = $data['id_number'];
+    }else{
+        $query = "SELECT * FROM recruiter_application WHERE email='$email'";
+        $run_query = mysqli_query($conn, $query);
+        $data = mysqli_fetch_assoc($run_query);
+        $idnumber = $data['id_number'];
+    }
+
     if($_SESSION['role'] =="dual-student"){
         $role = "student";
     }else if($_SESSION['role'] =="dual-recruiter"){
         $role = "recruiter";
+    }else{
+        $role = $_SESSION['role'];
     }
     $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='$role'"));
   
+    //reset message number on the badge after message link is clicked
+    //RESET MESSAGE BADGE WHEN ROWS ARE 0 FOR READ = 0
+    $msg_query = "SELECT * FROM messages WHERE email='$email' AND read_=0";
+    $msg_results = mysqli_query($conn, $msg_query);
+    if($msg_results->num_rows > 0) {
+        $msg_row = mysqli_fetch_assoc($msg_results);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +51,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="nostudent-profile,nofollow">
-    <title>Student Profile</title>
+    <title>Applications</title>
     
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- StudentInn icon -->
@@ -42,7 +60,9 @@
     <link href="./assets/node_modules/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="./profile/css/style.css" rel="stylesheet">
-    <!-- You can change the theme colors from here -->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="./profile/css/tables.css" rel="stylesheet">
+
     <link href="./profile/css/colors/default.css" id="theme" rel="stylesheet">
     <style>
 
@@ -155,11 +175,15 @@
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-
-                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        </li >
+                        <?php
+                            $getCount = $msg_results->num_rows;
+                            ?>
+                            <li id="msg-go"> <a class="waves-effect waves-dark" aria-expanded="false">
+                                <i class="fa-solid fa-message"></i>
+                                <span class="hide-menu">Messages</span> <span class="msg-badge"><?php echo $getCount ?></span></a>
+                            </li>
+                            <?php
+                        ?>
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -172,20 +196,39 @@
                                 <?php
                             }
                         ?>
+                        <?php 
+
+                            if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'student') {
+                                ?> 
+
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/rec-stu-form.php" aria-expanded="false">
+                                        <i class="fa-solid fa-briefcase"></i>
+                                        <span class="hide-menu">Become a recruiter</span></a>
+                                    </li>                             
+                                <?php
+                            }else if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'recruiter') {
+                                ?> 
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/stu-rec-form.php" aria-expanded="false" style="color: #67757c !important;">
+                                        <i class="fa-solid fa-graduation-cap" style="color: #67757c !important;"></i>
+                                        <span class="hide-menu">Become a resident</span></a>
+                                    </li>                              
+                                <?php
+                            }
+                        ?>
                         <li> 
                             <div class="nav-link hide-menu" href="../application-forms/res-form.php" aria-expanded="false">
                                 <?php 
                                     if($_SESSION['role'] == 'dual-student'){
                                         ?> 
-                                            <i class="fa-solid fa-repeat"></i>
-                                            <span class="hide-menu">Switch Accounts</span>                                        
+                                            <i class="fa-solid fa-repeat" style="color: #67757c !important;"></i>
+                                            <span class="hide-menu" style="color: #67757c !important;">Switch Accounts</span>                                        
                                             <form action="" method="post">
                                                 <div class="waves-effect waves-dark nav-link sb-nav-link-icon">
-                                                    <i class="fa-solid fa-graduation-cap"></i>
+                                                    <i class="fa-solid fa-graduation-cap" style="color: #67757c !important;"></i>
                                                     <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color:  #20aee3; border: none;">
                                                 </div>
                                                 <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
-                                                    <i class="fa-solid fa-briefcase"></i>
+                                                    <i class="fa-solid fa-briefcase" style="color: #67757c !important;"></i>
                                                     <input type="button" name= "Recruiter Account" id="re-acc" value="Recruiter Account" style="background: #fff; color: #787f91; border: none;">
                                                 </div>
                                             </form>
@@ -193,15 +236,15 @@
                                     }
                                     else if($_SESSION['role'] == 'dual-recruiter'){
                                         ?> 
-                                            <i class="fa-solid fa-repeat"></i>
-                                            <span class="hide-menu">Switch Accounts</span>                                        
+                                            <i class="fa-solid fa-repeat" style="color: #67757c !important;"></i>
+                                            <span class="hide-menu" style="color: #67757c !important;">Switch Accounts</span>                                        
                                             <form action="" method="post">
                                                 <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
-                                                    <i class="fa-solid fa-graduation-cap"></i>
+                                                    <i class="fa-solid fa-graduation-cap" style="color: #67757c !important;"></i>
                                                     <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color: #787f91; border: none;">
                                                 </div>
                                                 <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
-                                                    <i class="fa-solid fa-briefcase"></i>
+                                                    <i class="fa-solid fa-briefcase" style="color: #67757c !important;"></i>
                                                     <input type="button" name= "Recruiter Account" id="re-acc" value="Recruiter Account" style="background: #fff; color: #20aee3; border: none;">
                                                 </div>
                                             </form>
@@ -236,10 +279,10 @@
                 
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h3 class="text-themecolor">Table Basic</h3>
+                        <h3 class="text-themecolor">Applications</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                            <li class="breadcrumb-item active">Table Basic</li>
+                            <li class="breadcrumb-item active">Applications</li>
                         </ol>
                     </div>
 
@@ -250,78 +293,145 @@
                 
                 <!-- Start Page Content -->
                 
-                <div class="row">
-                    <!-- column -->
-                    <div class="col-12">
-                        <div class="card">
+                <div class="card mb-4">
+                    <?php
+                        if($_SESSION['role']== "dual-student" || $_SESSION['role']== "student"){
+                                ?>
+                                        <div class="card-header" style="background-color:#2C5364; color: #fff; ">
+                                            <i class="fas fa-table me-1"></i>
+                                            Residence Application Records
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="datatablesSimple">
+                                                <thead style="background-color:#3494E6; color: #fff; ">
+                                                    <tr>
+                                                        <th>ID No.</th>
+                                                        <th>Residence Address</th>
+                                                        <th>Room No.</th>
+                                                        <th>Status</th>
+                                                        <th>Application Date</th>
+                                                        <th>Message</th>
+                                                    
+
+                                                    </tr>
+                                                </thead>
+                                
+                                                <tbody>
+                                                    <?php
+                                                    $query = "SELECT * FROM residence_application WHERE id_number='$idnumber'";
+                                                    $run_query = mysqli_query($conn, $query);
+                                                    
+                                                        if(mysqli_num_rows($run_query) > 0){
+                                                            foreach($run_query as $row){
+                                                            ?>
+                                                                <tr>
+                                                                <td><?= $row['id_number']?></td>
+                                                                <td><?= $row['residence_address']?></td>
+                                                                <td><?= $row['room_number']?></td>
+                                                                <?php
+                                                                    if($row['status'] == 'Accepted'){
+                                                                        ?>
+                                                                            <td style="color:limegreen; font-weight:bold"><?= $row['status']?></td>
+                                                                        <?php
+                                                                    }else{
+                                                                        ?>
+                                                                            <td style="color:orange; font-weight:bold"><?= $row['status']?></td>
+
+                                                                        <?php
+                                                                    }
+                                                                ?>
+
+                                                                <td><?= $row['application_date']?></td>
+                                                                <td><?= $row['message']?></td>
+                                                        
+                                                            
+                                                                </tr>
+                                                            <?php
+                                                            }
+                                                        }
+                                                    ?>
+                            
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            <?php
+                        }else{
+                            ?>
+                            <div class="card-header" style="background-color:#2C5364; color: #fff; ">
+                                <i class="fas fa-table me-1"></i>
+                                Recruiter Job Application Records
+                            </div>
                             <div class="card-body">
-                                <h4 class="card-title">Basic Table</h4>
-                                <h6 class="card-subtitle">Add class <code>.table</code></h6>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Deshmukh</td>
-                                                <td>Prohaska</td>
-                                                <td>@Genelia</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Deshmukh</td>
-                                                <td>Gaylord</td>
-                                                <td>@Ritesh</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Sanghani</td>
-                                                <td>Gusikowski</td>
-                                                <td>@Govinda</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Roshan</td>
-                                                <td>Rogahn</td>
-                                                <td>@Hritik</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Joshi</td>
-                                                <td>Hickle</td>
-                                                <td>@Maruti</td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Nigam</td>
-                                                <td>Eichmann</td>
-                                                <td>@Sonu</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table id="datatablesSimple">
+                                    <thead style="background-color:#3494E6; color: #fff; ">
+                                        <tr>
+                                            <th>ID No.</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Status</th>
+                                            <th>Application Date</th>
+                                        
+
+                                        </tr>
+                                    </thead>
+                    
+                                    <tbody>
+                                        <?php
+                                        $query = "SELECT * FROM recruiter_application WHERE id_number='$idnumber'";
+                                        $run_query = mysqli_query($conn, $query);
+                                        
+                                            if(mysqli_num_rows($run_query) > 0){
+                                                foreach($run_query as $row){
+                                                ?>
+                                                    <tr>
+                                                    <td><?= $row['id_number']?></td>
+                                                    <td><?= $row['first_name']?></td>
+                                                    <td><?= $row['last_name']?></td>
+                                                    <?php
+                                                        if($row['application_status'] == 'Accepted'){
+                                                            ?>
+                                                                <td style="color:limegreen; font-weight:bold"><?= $row['application_status']?></td>
+                                                            <?php
+                                                        }else{
+                                                            ?>
+                                                                <td style="color:orange; font-weight:bold"><?= $row['application_status']?></td>
+
+                                                            <?php
+                                                        }
+                                                    ?>
+                                                    
+                                                    <td><?= $row['application_date']?></td>
+                                            
+                                                
+                                                    </tr>
+                                                <?php
+                                                }
+                                            }
+                                        ?>
+                
+                                        
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
+                    </div>                               
+                <?php                            
+                        }
+                    ?>
+                    
                 <!-- End PAge Content -->
                 
-            </div>
+            
             
             <!-- End Container fluid  -->
             
             
             <!-- footer -->
             
-            <footer class="footer"> © 2022 Falcon Tech Division by <a href="https://www.falcontechdiv.com/">FalconTechDiv.com</a> </footer>
+            <footer class="footer"> © 2022 StudentInn. All rights reserved by <a href="https://www.falcontechdiv.com/">Studentsinn.co.za</a> </footer>
             
             <!-- End footer -->
             
@@ -347,9 +457,14 @@
     <script src="./profile/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
+    <script src="./profile/js/msg.js"></script>
     <!-- jQuery peity -->
     <script src="./assets/node_modules/peity/jquery.peity.min.js"></script>
     <script src="./assets/node_modules/peity/jquery.peity.init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="../js/datatables-simple-demo.js"></script>
+
+
 
     <script>
         $(document).ready(function(){

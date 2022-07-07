@@ -22,19 +22,19 @@
 
     $query = "SELECT * FROM student_application WHERE email='$email'";
     $run_query = mysqli_query($conn, $query);
-    if($run_query ->num_rows > 0){
-      $data = mysqli_fetch_assoc($run_query );
-  
-    }
-
-    $query = "SELECT * FROM student_application WHERE email='$email'";
-    $run_query = mysqli_query($conn, $query);
     $data = mysqli_fetch_assoc($run_query);
   
-    
+    //Change profile picture
     $role = $_SESSION['role'];
     $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='student'"));
-
+    
+    //reset message number on the badge after message link is clicked
+    //RESET MESSAGE BADGE WHEN ROWS ARE 0 FOR READ = 0
+    $msg_query = "SELECT * FROM messages WHERE email='$email' AND read_=0";
+    $msg_results = mysqli_query($conn, $msg_query);
+    if($msg_results->num_rows > 0) {
+        $msg_row = mysqli_fetch_assoc($msg_results);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -164,11 +164,15 @@
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        
-                        </li>
+                        <?php
+                            $getCount = $msg_results->num_rows;
+                            ?>
+                            <li id="msg-go"> <a class="waves-effect waves-dark" aria-expanded="false">
+                                <i class="fa-solid fa-message"></i>
+                                <span class="hide-menu">Messages</span> <span class="msg-badge"><?php echo $getCount ?></span></a>
+                            </li>
+                            <?php
+                        ?>
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -401,7 +405,7 @@
             
             <!-- footer -->
             
-            <footer class="footer"> © 2022 Falcon Tech Division by <a href="https://www.falcontechdiv.com">FalconTechDiv.com</a> </footer>
+            <footer class="footer"> © 2022 StudentInn. All rights reserved by <a href="https://www.falcontechdiv.com/">Studentsinn.co.za</a> </footer>
             
             <!-- End footer -->
             
@@ -428,6 +432,8 @@
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
     <script src="./profile/js/avatar.js"></script>
+    <script src="./profile/js/msg.js"></script>
+
 
     <script>
         $(document).ready(function(){

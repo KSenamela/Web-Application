@@ -24,6 +24,7 @@ function insertAll(){
     $referral_code = '0000'; //no recruiter
   }
 
+
   $id_number =  mysqli_real_escape_string($conn, trim($_POST['idnumber']));
   $first_name = mysqli_real_escape_string($conn, trim($_POST['firstname']));
   $last_name =  mysqli_real_escape_string($conn, trim($_POST['lastname']));
@@ -45,6 +46,71 @@ function insertAll(){
   $kin_name =  mysqli_real_escape_string($conn, trim($_POST['kinname']));
   $kin_phone = mysqli_real_escape_string($conn, trim($_POST['kinphone']));
 
+//Validate uploads section
+//validate id copy upload
+
+  $allowedFormat = ['jpg', 'png', 'jpeg', 'pdf'];
+  $nameUser = $_SESSION['fullname'];
+  $moveLetter = true;
+  if(isset($_FILES['idcopy']['name'])){
+    $idcopy_name = $_FILES['idcopy']['name'];
+    $idcopy_size = $_FILES['idcopy']['size'];
+    $tmpIdcopy = $_FILES['idcopy']['tmp_name'];
+    $idcopy_ext = explode('.', $idcopy_name);
+    $idcopy_ext = strtolower(end($idcopy_ext));
+    if(!in_array($idcopy_ext, $allowedFormat)){
+      exit("Wrong document format. Please only upload the following formats:jpg,png and jpeg");
+    }else if($idcopy_size > 2000000){
+      exit("The size is too large. The allowed maximum size is 2MB");      
+    }else{
+      $newDocsName = $nameUser . '-' . 'ID Copy' . '-' . date('Y-m-d') . '-' . date('H.i.s') . '-' . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . '.' .$idcopy_ext;
+      $StoreUpload = "INSERT INTO documents(email, full_name, file_name, upload_name) VALUES ('$email', '$nameUser', '$idcopy_name', '$newDocsName')";
+      if(mysqli_query($conn, $StoreUpload)){
+        $moveIDcopy = move_uploaded_file($tmpIdcopy, '../upload/' . $newDocsName);
+      }
+    }
+  }
+//validate proof of registration upload
+
+  if(isset($_FILES['proof']['name'])){
+    $proof_name = $_FILES['proof']['name'];
+    $proof_size = $_FILES['proof']['size'];
+    $tmpProof = $_FILES['proof']['tmp_name'];
+    $proof_ext = explode('.', $proof_name);
+    $proof_ext = strtolower(end($proof_ext));
+    if(!in_array($proof_ext, $allowedFormat)){
+      exit("Wrong document format. Please only upload the following formats:jpg,png and jpeg");
+    }else if($proof_size > 2000000){
+      exit("The size is too large. The allowed maximum size is 2MB");      
+    }else{
+      $newDocsName = $nameUser. '-' . 'Proof of registration' . '-' . date('Y-m-d') . '-' . date('H.i.s') . '-'  . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . '.' .$proof_ext;
+    
+      $StoreUpload = "INSERT INTO documents(email, full_name, file_name, upload_name) VALUES ('$email', '$nameUser', '$proof_name', '$newDocsName')";
+      if(mysqli_query($conn, $StoreUpload)){
+        $moveproof = move_uploaded_file($tmpProof, '../upload/' . $newDocsName);
+      }
+    }
+  }
+//validate bursary letter upload
+  if(isset($_FILES['bursaryLetter']['name'])){
+    $bursaryLetter_name = $_FILES['bursaryLetter']['name'];
+    $bursaryLetter_size = $_FILES['bursaryLetter']['size'];
+    $tmpbursaryLetter = $_FILES['bursaryLetter']['tmp_name'];
+    $bursaryLetter_ext = explode('.', $bursaryLetter_name);
+    $bursaryLetter_ext = strtolower(end($bursaryLetter_ext));
+    if(!in_array($bursaryLetter_ext, $allowedFormat)){
+      exit("Wrong document format. Please only upload the following formats:jpg,png and jpeg");
+    }else if($bursaryLetter_size > 2000000){
+      exit("The size is too large. The allowed maximum size is 2MB");      
+    }else{
+      $newDocsName = $nameUser. '-' . 'Bursary Letter' . '-' . date('Y-m-d') . '-' . date('H.i.s') . '-'  . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . '.' .$bursaryLetter_ext;
+    
+      $StoreUpload = "INSERT INTO documents(email, full_name, file_name, upload_name) VALUES ('$email', '$nameUser', '$bursaryLetter_name', '$newDocsName')";
+      if(mysqli_query($conn, $StoreUpload)){
+        $moveproof = move_uploaded_file($tmpbursaryLetter, '../upload/' . $newDocsName);
+      }
+    }
+  }
   //Query the database
   $sql = "INSERT INTO student_application (id_number,first_name,last_name, email, phone, gender, race, institution, course, year_of_study, study_completion_date, funding_type, student_number, referral_code, street, city, province, postal_code, country, kin_name, kin_number, application_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   //initialize the prepared statement object
@@ -113,11 +179,35 @@ function insertAll(){
       mysqli_query($conn, $sql);
     }
 
+    $text = mysqli_real_escape_string($conn, "Hi<br/><br/>We have recieved your residence application. Please keep checking your application status under <strong style='font-weight:bold'>APPLICATIONS</strong> on your profile.<br/><br/> Thank you for taking interest in us. <br/><br/> Regards<br/><br/>StudentINN");
+    mysqli_query($conn, "INSERT INTO messages(email, message, read_) VALUES ('$email','$text', 0)");
+
+    sendMail("$first_name", "$last_name", "$email");
     exit("success");
     
   }else{
     exit('<div class="alert alert-danger">Oops! Something went wrong! Please try again or contact the administrator</div>');
   }
 
+}
+
+function sendMail($first_name, $last_name, $email){
+
+  $to = $email;
+  $subject = "Residence Application";
+  $message ="
+Dear " . $first_name . " " . $last_name . '
+  
+We have received your residence application. We will process your application as soon as possible.
+  
+Keep on checking your status under APPLICATIONS on your profile.
+  
+Thank you for taking interest in us.
+  
+Regards
+  
+StudentInn Management Team';
+  $headers = "Management Team";
+  mail($to, $subject, $message);
 }
 

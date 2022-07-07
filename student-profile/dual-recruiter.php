@@ -24,9 +24,18 @@
     $run_query = mysqli_query($conn, $query);
     $data = mysqli_fetch_assoc($run_query);
   
-    
+    //changing profile picture
     $role = $_SESSION['role'];
     $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='recruiter'"));
+
+    //reset message number on the badge after message link is clicked
+    //RESET MESSAGE BADGE WHEN ROWS ARE 0 FOR READ = 0
+    $msg_query = "SELECT * FROM messages WHERE email='$email' AND read_=0";
+    $msg_results = mysqli_query($conn, $msg_query);
+    if($msg_results->num_rows > 0) {
+        $msg_row = mysqli_fetch_assoc($msg_results);
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -157,10 +166,15 @@
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        </li>
+                        <?php
+                            $getCount = $msg_results->num_rows;
+                            ?>
+                            <li id="msg-go"> <a class="waves-effect waves-dark" aria-expanded="false">
+                                <i class="fa-solid fa-message"></i>
+                                <span class="hide-menu">Messages</span> <span class="msg-badge"><?php echo $getCount ?></span></a>
+                            </li>
+                            <?php
+                        ?>
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -270,7 +284,7 @@
                                     if(!empty($data)){
                                         if($data['application_status'] == 'Accepted'){
                                             ?>
-                                            <h4 class="card-subtitle">Application Status: <small style="color: #4DED30; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
+                                            <h4 class="card-subtitle">Application Status: <small style="color: limegreen; font-weight: bold; font-size: 16px"><?php echo $data['application_status'] ?></small> </h6>
                                             <?php
                                         }else if($data['application_status'] == 'Unsuccessful'){
                                             ?>
@@ -283,7 +297,22 @@
                                         }
                                     }
                                     ?>
-                                    <h6 style="color: #455a64; font-weight: 500; font-size: 15px">Referral code: <small style="color: skyblue; font-weight: bold; font-size: 16px"><?php echo $data['referral_code']?></small></h6>
+                                    <?php
+                                        if ( $data['application_status'] == 'Accepted') {
+                                            ?>
+                                            <h4 class="card-subtitle">Commission: <small style="color: limegreen; font-weight: bold; font-size: 16px">R<?php echo $data['withdrawable_amount'] ?></small> </h6>                                            
+                                            <?php
+                                            
+                                        }
+                                    ?>
+                                    <?php
+                                        if ( $data['application_status'] == 'Accepted') {
+                                            ?>
+                                                <h6 style="color: #455a64; font-weight: 400; font-size: 15px">Referral code: <small style="color: skyblue; font-weight: bold; font-size: 16px"><?php echo $data['referral_code'] ?></small></h6>                                              
+                                            <?php
+                                            
+                                        }
+                                    ?>
 
                                 </center>
                             </div>
@@ -360,7 +389,7 @@
             
             <!-- footer -->
             
-            <footer class="footer"> © 2022 Falcon Tech Division by <a href="https://www.falcontechdiv.com">FalconTechDiv.com</a> </footer>
+            <footer class="footer"> © 2022 StudentInn. All rights reserved by <a href="https://www.falcontechdiv.com/">Studentsinn.co.za</a> </footer>
             
             <!-- End footer -->
             
@@ -388,6 +417,8 @@
     <script src="./profile/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
+    <script src="./profile/js/msg.js"></script>
+
 
 
     <script>

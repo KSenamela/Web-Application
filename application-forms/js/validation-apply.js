@@ -48,7 +48,6 @@ $(document).ready(function(){
 
   $("select.institution").change(function(){
     var selectedinstitution = $(this).children("option:selected").val();
-    alert("HERE");
 
     if(selectedinstitution == "Other"){
       $("#other-institution").removeClass("hide-other");

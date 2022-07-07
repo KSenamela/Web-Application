@@ -1,5 +1,5 @@
 <?php 
-    error_reporting(0);
+    // error_reporting(0);
     session_start();
     include "../server/dbconnect_server.php";
 
@@ -7,21 +7,39 @@
       if(!$_SESSION['role'] == 'student' && !$_SESSION['role'] == 'recruiter' && !$_SESSION['role'] == 'dual-recruiter' && !$_SESSION['role'] == 'dual-student'){
           header('Location: ../login.php');
       }
-  }else{
-      header('Location: ../login.php');
-  }
+    }else{
+        header('Location: ../login.php');
+    }
+    $email = $_SESSION['email'];
 
-  $query = "SELECT * FROM student_application WHERE email='$email'";
-  $run_query = mysqli_query($conn, $query);
-  $data = mysqli_fetch_assoc($run_query);
+    if($_SESSION['role'] == 'student' || $_SESSION['role'] == 'dual-student'){
+      $query = "SELECT * FROM student_application WHERE email='$email'";
+      $run_query = mysqli_query($conn, $query);
+      $data = mysqli_fetch_assoc($run_query);
+    }
+    if($_SESSION['role'] == 'recruiter' || $_SESSION['role'] == 'dual-recruiter'){
+      $query = "SELECT * FROM student_application WHERE email='$email'";
+      $run_query = mysqli_query($conn, $query);
+      $data = mysqli_fetch_assoc($run_query);
+    }
 
-  $email = $_SESSION['email'];
-  if($_SESSION['role'] =="dual-student"){
-      $role = "student";
-  }else if($_SESSION['role'] =="dual-recruiter"){
-      $role = "recruiter";
-  }
-  $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='$role'"));
+
+    if($_SESSION['role'] =="dual-student"){
+        $role = "student";
+    }else if($_SESSION['role'] =="dual-recruiter"){
+        $role = "recruiter";
+    }else{
+      $role = $_SESSION['role'];
+    }
+    $avatar = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM avatar WHERE email='$email' AND role='$role'"));
+
+    //reset message number on the badge after message link is clicked
+    //RESET MESSAGE BADGE WHEN ROWS ARE 0 FOR READ = 0
+    $msg_query = "SELECT * FROM messages WHERE email='$email' AND read_=0";
+    $msg_results = mysqli_query($conn, $msg_query);
+    if($msg_results->num_rows > 0) {
+        $msg_row = mysqli_fetch_assoc($msg_results);
+    }
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +52,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="nostudent-profile,nofollow">
-    <title>Student Profile</title>
+    <title>Payments</title>
     <!-- Font Awesome-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google Fonts Roboto -->
@@ -42,18 +60,23 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
     />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/Studentinn-icon.png">
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
   
     <link rel="canonical" href="https://www.wrappixel.com/templates/adminwrap-lite/" />
     <!-- StudentInn icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/Studentinn-icon.png">
     <!-- Bootstrap Core CSS -->
     <link href="./assets/node_modules/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="./profile/css/style.css" rel="stylesheet">
+    <link href="./profile/css/tables.css" rel="stylesheet">
     <!-- page css -->
     <link href="./profile/css/pages/icon-page.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="./profile/css/colors/default.css" id="theme" rel="stylesheet">
+
     <style>
 
       .msg-badge {
@@ -64,7 +87,9 @@
       border-radius: 3px;
   
       }
-  
+      .error{
+        color: red;
+      }
       </style>
 </head>
 
@@ -144,11 +169,15 @@
                             <i class="fa-solid fa-money-check-dollar"></i>
                             <span class="hide-menu">Payments</span></a>
                         </li>
-
-                        <li> <a class="waves-effect waves-dark" href="messages.php" aria-expanded="false">
-                        <i class="fa-solid fa-message"></i>
-                        <span class="hide-menu">Messages</span> <span class="msg-badge">255</span></a>
-                        </li>
+                        <?php
+                            $getCount = $msg_results->num_rows;
+                            ?>
+                            <li id="msg-go"> <a class="waves-effect waves-dark" aria-expanded="false">
+                                <i class="fa-solid fa-message"></i>
+                                <span class="hide-menu">Messages</span> <span class="msg-badge"><?php echo $getCount ?></span></a>
+                            </li>
+                            <?php
+                        ?>
                         <?php 
 
                             if ( $_SESSION['applied'] == 'No') {
@@ -161,6 +190,25 @@
                                 <?php
                             }
                         ?>
+                        <?php 
+
+                            if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'student') {
+                                ?> 
+
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/rec-stu-form.php" aria-expanded="false" style="color: #67757c !important;">
+                                        <i class="fa-solid fa-briefcase" style="color: #67757c !important;"></i>
+                                        <span class="hide-menu">Become a recruiter</span></a>
+                                    </li>                             
+                                <?php
+                            }else if ( $_SESSION['applied'] == 'Yes' && $_SESSION['role'] == 'recruiter') {
+                                ?> 
+                                    <li> <a class="waves-effect waves-dark nav-link" href="../application-forms/stu-rec-form.php" aria-expanded="false" style="color: #67757c !important;">
+                                        <i class="fa-solid fa-graduation-cap" style="color: #67757c !important;"></i>
+                                        <span class="hide-menu">Become a resident</span></a>
+                                    </li>                              
+                                <?php
+                            }
+                        ?>
                         <li> 
                           <div class="nav-link hide-menu" href="../application-forms/res-form.php" aria-expanded="false">
 
@@ -168,15 +216,15 @@
                                 
                                 if($_SESSION['role'] == 'dual-student'){
                                   ?> 
-                                      <i class="fa-solid fa-repeat"></i>
-                                      <span class="hide-menu">Switch Accounts</span>
+                                      <i class="fa-solid fa-repeat" style="color: #67757c !important;"></i>
+                                      <span class="hide-menu" style="color: #67757c !important;">Switch Accounts</span>
                                       <form action="" method="post">
                                           <div class="waves-effect waves-dark nav-link sb-nav-link-icon">
-                                              <i class="fa-solid fa-graduation-cap"></i>
+                                              <i class="fa-solid fa-graduation-cap" style="color: #67757c !important;"></i>
                                               <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color:  #20aee3; border: none;">
                                           </div>
                                           <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
-                                              <i class="fa-solid fa-briefcase"></i>
+                                              <i class="fa-solid fa-briefcase" style="color: #67757c !important;"></i>
                                               <input type="button" name= "Recruiter Account" id="re-acc" value="Recruiter Account" style="background: #fff; color: #787f91; border: none;">
                                           </div>
 
@@ -185,15 +233,15 @@
                               }
                               else if($_SESSION['role'] == 'dual-recruiter'){
                                   ?> 
-                                      <i class="fa-solid fa-repeat"></i>
-                                      <span class="hide-menu">Switch Accounts</span>
+                                      <i class="fa-solid fa-repeat" style="color: #67757c !important;"></i>
+                                      <span class="hide-menu" style="color: #67757c !important;">Switch Accounts</span>
                                       <form action="" method="post">
                                           <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
-                                              <i class="fa-solid fa-graduation-cap"></i>
+                                              <i class="fa-solid fa-graduation-cap" style="color: #67757c !important;"></i>
                                               <input type="button" name= "student-acc" id="st-acc" value="Student Account" style="background: #fff; color: #787f91; border: none;">
                                           </div>
                                           <div class="waves-effect waves-dark nav-link sb-nav-link-icon active">
-                                              <i class="fa-solid fa-briefcase"></i>
+                                              <i class="fa-solid fa-briefcase" style="color: #67757c !important;"></i>
                                               <input type="button" name= "Recruiter Account" id="re-acc" value="Recruiter Account" style="background: #fff; color: #20aee3; border: none;">
                                           </div>
 
@@ -224,7 +272,7 @@
         
         <!-- Page wrapper  -->
         
-        <div class="page-wrapper bg-dark">
+        <div class="page-wrapper">
             
             <!-- Container fluid  -->
             
@@ -234,10 +282,10 @@
                 
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h3 class="text-themecolor">Font-awesome</h3>
+                        <h3 class="text-themecolor">Payments</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                            <li class="breadcrumb-item active">Font-awesome</li>
+                            <li class="breadcrumb-item active">Payments</li>
                         </ol>
                     </div>
 
@@ -246,386 +294,372 @@
                 <!-- End Bread crumb and right sidebar toggle -->
                 
                 
-                <!-- Start Page Content -->
-    <div class="container my-5">
-      <div class="card mx-auto">
-        <div class="form-heading">
-          <h1>Accommodation Application</h1>
-          <p>Enter your Personal Data</p>
-        </div>
+                <!-- Start main content -->
+                <?php
+                if($_SESSION['role'] == 'student' || $_SESSION['role'] == 'dual-student'){
+                  ?>
+                            
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Upload Proof of Payment
+                  </button>
 
-        <form>
-          <!-- Card body -->
-          <div class="card-body px-5 mt-4">
-            <!-- Personal details -->
-            <div class="row gx-xl-5">
-              <div class="col-md-4">
-                <h5>Personal Details</h5>
-                <p class="text-muted">
-                  Please fill out this part with your personal information, and
-                  be sure to complete out all of the form's fields.
-                </p>
-              </div>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Payment Approval Request</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="success-msg" class="mt-4 text-center row"></div>
+                          <form id="paymentForm" method="post" enctype="multipart/form">
+                          <!-- ID NUMBER -->
+                          <div class="form-group">
+                            <div class="col-md-12">
+                              <input 
+                                  type="hidden"
+                                  class="form-control form-control-line"
+                                  name="idnumber"
+                                  id="idnumber"
+                                  value="<?php echo $data['id_number']; ?>"
+                                  >
+                            </div>
+                          </div>
+                          <!-- Full Name -->
+                          <div class="form-group">
+                            <div class="col-md-12">
+                              <input 
+                                  type="hidden"
+                                  class="form-control form-control-line"
+                                  name="full_name"
+                                  id="full_name"
+                                  value="<?php echo $data['first_name'] . ' ' . $data['last_name']; ?>"
+                                  >
+                            </div>
+                          </div>
+                          <!-- Number of Months paid for--> 
+                          <div class="form-group">
+                            <label class="col-md-12">Payment is for how many months?</label>
+                            <div class="col-md-2">
+                            <select name="numMonths" id="numMonths" class="form-control form-control-line counter">
+                              <?php 
+                                for ($i=1; $i < 13 ; $i++) { 
+                                  ?>
+                                    <option  value="<?= $i ?>"><?= $i ?></option>
+                                  <?php
+                                }
+                              ?>
+                            </select>
+                            </div>
+                          </div>
+                          <!-- Months paid for -->
+                          <label class="col-md-12">Which Month?</label>
+                          <div class="form-group" id="monthSelect">
+                            <div class="col-md-4 mb-2" >
+                                <select name="months[]" class="form-control form-control-line counter">
+                                <option value="Jan">Jan</option>
+                                <option value="Feb">Feb</option>
+                                <option value="Mar">Mar</option>
+                                <option value="Apr">Apr</option>
+                                <option value="May">May</option>
+                                <option value="Jun">Jun</option>
+                                <option value="Jul">Jul</option>
+                                <option value="Aug">Aug</option>
+                                <option value="Sep">Sep</option>
+                                <option value="Oct">Oct</option>
+                                <option value="Nov">Nov</option>
+                                <option value="Dec">Dec</option>
+                                </select>
+                            </div>
+                          </div>
+                        <!--  Upload file -->
+                          <div class="form-group">
+                            <label class="col-md-12">Upload Proof of Payment</label>
+                            <div class="col-md-12">
+                              <input 
+                                  type="file"
+                                  class="form-control form-control-line"
+                                  name="uploadRequest"
+                                  id="uploadRequest"
+                                  >
+                                  <span class="error" id="error-msg"></span>
+                            </div>
+                          </div>
+                        </div>
 
-              <div class="col-md-8">
-                <div class="mb-3">
-                  <label for="first_name" class="form-label">First name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="first_name"
-                    maxlength="50"
-                    style="max-width: 500px"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="last_name" class="form-label">Last name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="last_name"
-                    maxlength="50"
-                    style="max-width: 500px"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="id_number" class="form-label">ID Number</label>
-                  <!-- min="0" oninput="validity.valid||(value='');" --These attributes prevent negative numbers from being entered by user-->
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="id_number"
-                    min="0"
-                    oninput="validity.valid||(value='');"
-                    style="max-width: 500px"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email address</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    maxlength="100"
+                        <div class="form-group text-center">
+                          <span class="error" id="failed-msg"></span>
+                        </div>
 
-                    style="max-width: 500px"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="phone_number" class="form-label"
-                    >Phone number</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="phone_number"
-                    min="0"
-                    oninput="validity.valid||(value='');"
-                    style="max-width: 300px"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="institution" class="form-label"
-                    >Institution</label
-                  >
-                  <select
-                    id="institution"
-                    class="form-select mb-3"
-                    style="max-width: 300px"
-                    aria-label="Default select example"
-                  >
-                    <option selected value="1">
-                      University of Johannesburg
-                    </option>
-                    <option value="2">University of Witwatersrand</option>
-                    <option value="3">Other</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="funding" class="form-label">Funding</label>
-                  <select
-                    id="funding"
-                    class="form-select mb-3"
-                    style="max-width: 300px"
-                    aria-label="Default select example"
-                  >
-                    <option selected value="1">NSFAS</option>
-                    <option value="2">Bursary</option>
-                    <option value="3">Cash</option>
-                  </select>
-                </div>
-              </div>
-            </div>
 
-            <hr class="my-5" />
-
-            <!-- Residence -->
-            <div class="row gx-xl-5">
-              <div class="col-md-4">
-                <h5>Residence</h5>
-                <p class="text-muted">
-                  Please select three residences for which you would want to
-                  apply. And while you are not required to pick a maximum of
-                  three, it is in your best interest to do so in order to
-                  increase your chances of admission.
-                </p>
-              </div>
-
-              <div class="col-md-8">
-                <div class="row">
-                  <div class="col-md-8">
-                    <label for="Residence" class="form-label"
-                      >Residence Address</label
-                    >
-                    <select
-                      id="first_choice"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option selected value="1">
-                        13 5th Street Vrededorp
-                      </option>
-                      <option value="2">19 Rus Road, Vredepark</option>
-                      <option value="3">
-                        43/45 Aanbloom Street, Jan Hofmeyer
-                      </option>
-                      <option value="4">3 Pypie Draai, Jan Hofmeyer</option>
-                      <option value="5">
-                        50 Auckland Avenue, Auckland park
-                      </option>
-                    </select>
-
-                    <select
-                      id="second_choice"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option value="1">13 5th Street Vrededorp</option>
-                      <option value="2">19 Rus Road, Vredepark</option>
-                      <option selected value="3">
-                        43/45 Aanbloom Street, Jan Hofmeyer
-                      </option>
-                      <option value="4">3 Pypie Draai, Jan Hofmeyer</option>
-                      <option value="5">
-                        50 Auckland Avenue, Auckland park
-                      </option>
-                    </select>
-
-                    <select
-                      id="third_choice"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option value="1">13 5th Street Vrededorp</option>
-                      <option value="2">19 Rus Road, Vredepark</option>
-                      <option value="3">
-                        43/45 Aanbloom Street, Jan Hofmeyer
-                      </option>
-                      <option value="4">3 Pypie Draai, Jan Hofmeyer</option>
-                      <option selected value="5">
-                        50 Auckland Avenue, Auckland park
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <hr class="my-5" />
-
-            <!-- Home Address -->
-            <div class="row gx-xl-5">
-              <div class="col-md-4">
-                <h5>Home address</h5>
-                <p class="text-muted">
-                  We'd like to know where you're from, so please enter your home
-                  address.
-                </p>
-              </div>
-
-              <div class="col-md-8">
-                <div class="mb-3">
-                  <label for="exampleInput6" class="form-label"
-                    >Street address</label
-                  >
-                  <input type="text" class="form-control" id="exampleInput6" />
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="exampleInput7" class="form-label">City</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInput7"
-                      />
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" id="stu-btn" class="btn btn-primary">Submit Payment</button>
+                        </div>
+                      </div>
+                      </form>
                     </div>
                   </div>
-
-                  <div class="col-md-6">
-                    <label for="exampleInput8" class="form-label"
-                      >Province</label
-                    >
-                    <select
-                      id="exampleInput8"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option selected value="1">Eastern Cape</option>
-                      <option value="2">Free State</option>
-                      <option value="3">Gauteng</option>
-                      <option value="4">KwaZulu-Natal</option>
-                      <option value="5">Limpopo</option>
-                      <option value="6">Mpumalanga</option>
-                      <option value="7">Northern Cape</option>
-                      <option value="8">North West</option>
-                      <option value="9">Western Cape</option>
-                      <option value="9">International</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="exampleInput9" class="form-label"
-                        >Postal code</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInput9"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <label for="first_name0" class="form-label">Country</label>
-                    <select
-                      id="first_name0"
-                      class="form-select mb-3"
-                      aria-label="Default select example"
-                    >
-                      <option selected value="1">South Africa</option>
-                      <option value="2">International</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <hr class="my-5" />
-
-            <!-- Next of Kin -->
-            <div class="row gx-xl-5">
-              <div class="col-md-4">
-                <h5>Next of Kin</h5>
-                <p class="text-muted">
-                  Please provide the contact information of a close relative so that we can contact them if we are unable to contact you.
-                </p>
-              </div>
-
-              <div class="col-md-8">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="first_name1" class="form-label"
-                        >Full Name</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="first_name1"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="phone_number2" class="form-label"
-                        >Phone</label
-                      >
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="phone_number2"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="my-5" />
-
-          <!-- Next of Kin -->
-          <div class="row gx-xl-5">
-            <div class="col-md-4">
-              <h5>Upload Documents</h5>
-              <p class="text-muted">
-                Please upload any supporting documents; the maximum file size is <strong>2MB</strong>, and the file types accepted are PDF, JPG, JPEG, and PNG.
-              </p>
-            </div>
-
-            <div class="col-md-8">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="first_name1" class="form-label"
-                      >ID copy</label
-                    >
-                    <input
-                    type="file" 
-                    class="form-control" 
-                    id="idcopy"
-                    />
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label for="phone_number2" class="form-label"
-                      >Proof of registration</label
-                    >
-                    <input
-                    type="file" 
-                    class="form-control" 
-                    id="por"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-          <!-- Card footer -->
-          <div class="card-footer text-end py-4 px-5 bg-light border-0">
-            <button
-              class="btn btn-link btn-rounded"
-              data-ripple-color="primary"
-            >
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-primary btn-rounded">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-                
                 <!-- End PAge Content -->
                 
-            </div>
+                <div class="card mb-4 mt-4">
+                    <?php
+                    $idnumber = $data['id_number'];
+                    $queryIt = "SELECT * FROM payments WHERE id_number='$idnumber'";
+                    $run_it = mysqli_query($conn, $queryIt);
+                    
+                      ?>
+                              <div class="card-header" style="background-color:#2C5364; color: #fff; ">
+                                  <i class="fas fa-table me-1"></i>
+                                  Payment Approval Requests
+                              </div>
+                              <div class="card-body">
+                                  <table id="datatablesSimple">
+                                      <thead style="background-color:#3494E6; color: #fff; ">
+                                          <tr>
+                                              <th>ID No.</th>
+                                              <th>Full Name</th>
+                                              <th>Month</th>
+                                              <th>Approved</th>
+                                              <th>Payment Date</th>
+                                          
+                                          </tr>
+                                      </thead>
+                      
+                                      <tbody>
+                                          <?php
+
+                                              if(mysqli_num_rows($run_it) > 0){
+                                                  foreach($run_it as $row){
+                                                  ?>
+                                                      <tr>
+                                                      <td><?= $row['id_number']?></td>
+                                                      <td><?= $row['full_name']?></td>
+                                                      <td><?= $row['month']?></td>
+                                                      <?php
+                                                      if($row['approved'] == 'Not yet'){
+                                                        ?>
+                                                        <td style="color:orange; font-weight:bold;"><?= $row['approved']?></td>
+                                                        
+                                                        <?php
+                                                      }else if($row['approved'] == 'Yes'){
+                                                        ?>
+                                                        <td style="color:limegreen; font-weight:bold;"><?= $row['approved']?></td>
+                                                        <?php
+                                                      }else{
+                                                        ?>
+                                                        <td style="color:red; font-weight:bold;"><?= $row['approved']?></td>
+                                                        <?php
+                                                      }
+                                                      ?>
+                                                      <td><?= $row['payment_date']?></td>
+                                              
+                                                  
+                                                      </tr>
+                                                  <?php
+                                                  }
+                                              }
+                                            
+                                          ?>
+          
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>                               
+                  <?php
+                ?>
+
+    
+                                        
+        <?php
+
+            }else{
+              ?>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Request Payment
+                  </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Request Payment</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="success-msg" class="mt-4 text-center row"></div>
+                          <form id="req-paymentForm" method="post" enctype="multipart/form">
+                          <!-- ID NUMBER -->
+                          <div class="form-group">
+                            <div class="col-md-12">
+                              <input 
+                                  type="hidden"
+                                  class="form-control form-control-line"
+                                  name="idnumber"
+                                  value="<?php echo $data['id_number']; ?>"
+
+                                  >
+                            </div>
+                          </div>
+                          <!--Card Holder -->
+                          <div class="form-group">
+                            <label class="col-md-12">Account Holder</label>
+                            <div class="col-md-12">
+                              <input 
+                                  type="text"
+                                  class="form-control form-control-line"
+                                  placeholder="e.g Mr K Senamela"
+                                  name = "cardHolder"
+                                  id = "cardHolder"
+                                  >
+                            </div>
+                          </div>
+                          <!-- Account number -->
+                          <div class="form-group">
+                            <label class="col-md-12">Account Number</label>
+                            <div class="col-md-12">
+                              <input 
+                                  type="number"
+                                  class="form-control form-control-line"
+                                  name="accountNumber"
+                                  id="accountNumber"
+                                  >
+                            </div>
+                          </div>
+                          <!-- Account number -->
+                          <div class="form-group">
+                            <label class="col-md-12">Bank Name</label>
+                            <div class="col-md-12">
+                              <input 
+                                  type="text"
+                                  class="form-control form-control-line"
+                                  name="BankName"
+                                  id="BankName"
+                                  maxlength="20"
+                                  >
+                            </div>
+                          </div>
+                          <!-- Account number -->
+                          <div class="form-group">
+                            <label class="col-md-12">Branch Code</label>
+                            <div class="col-md-12">
+                              <input 
+                                  type="text"
+                                  class="form-control form-control-line"
+                                  name="BranchCode"
+                                  id="BranchCode"
+                                  maxlength="20"
+                                  minlength="2"
+                                  >
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                          <span class="error" id="failed-msg"></span>
+                        </div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" id="rec-btn" class="btn btn-primary">Request Payment</button>
+                        </div>
+                      </div>
+                      </form>
+                    </div>
+                  </div>
+                <!-- End PAge Content -->
+                
+                <div class="card mb-4 mt-4">
+                    <?php
+                    $idnumber = $data['id_number'];
+                    $queryIt = "SELECT * FROM payment_request WHERE id_number='$idnumber'";
+                    $run_it = mysqli_query($conn, $queryIt);
+                    
+                      ?>
+                              <div class="card-header" style="background-color:#2C5364; color: #fff; ">
+                                  <i class="fas fa-table me-1"></i>
+                                  Payment Approval Requests
+                              </div>
+                              <div class="card-body">
+                                  <table id="datatablesSimple">
+                                      <thead style="background-color:#3494E6; color: #fff; ">
+                                          <tr>
+                                              <th>ID No.</th>
+                                              <th>Account Holder</th>
+                                              <th>Account Number</th>
+                                              <th>Bank Name</th>
+                                              <th>Approved</th>
+                                              <th>Request Date</th>
+                                          
+                                          </tr>
+                                      </thead>
+                      
+                                      <tbody>
+                                          <?php
+
+                                          
+                                              if(mysqli_num_rows($run_it) > 0){
+                                                  foreach($run_it as $row){
+                                                  ?>
+                                                      <tr>
+                                                      <td><?= $row['id_number']?></td>
+                                                      <td><?= $row['account_holder']?></td>
+                                                      <td><?= $row['account_number']?></td>
+                                                      <td><?= $row['bank_name']?></td>
+                                                      <?php
+                                                      if($row['approved']  == 'Not yet'){
+                                                        ?>
+                                                          <td style="color:orange; font-weight:bold;"><?= $row['approved']?></td>
+                                                        
+                                                        <?php
+                                                      }else if($row['approved'] == 'Yes'){
+                                                        ?>
+                                                        <td style="color:limegreen; font-weight:bold;"><?= $row['approved']?></td>
+                                                      
+                                                      <?php
+                                                      }else{
+                                                        ?>
+                                                        <td style="color:red; font-weight:bold;"><?= $row['approved']?></td>
+                                                      
+                                                      <?php
+                                                      }
+                                                      ?>
+                                                      <td><?= $row['payment_request_date']?></td>
+                                              
+                                                  
+                                                      </tr>
+                                                  <?php
+                                                  }
+                                              }
+                                            
+                                          ?>
+          
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>                               
+                  <?php
+                    ?>
+
+    
+                          
+              <?php
+            }
             
+    ?>
+
             <!-- End Container fluid  -->
             
             
             <!-- footer -->
             
-            <footer class="footer"> © 2022 Falcon Tech Division by <a href="https://www.falcontechdiv.com/">falcontechdiv.com</a> </footer>
+            <footer class="footer"> © 2022 StudentInn. All rights reserved by <a href="https://www.falcontechdiv.com/">Studentsinn.co.za</a> </footer>
             
             <!-- End footer -->
             
@@ -642,6 +676,8 @@
     
     <script src="./assets/node_modules/jquery/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
+    <script src="./profile/js/jquery.validate.min.js"></script>
+    <script src="./profile/js/additional-methods.js"></script>
     <script src="./assets/node_modules/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="./profile/js/perfect-scrollbar.jquery.min.js"></script>
@@ -652,10 +688,138 @@
     <!--Custom JavaScript -->
     <script src="./profile/js/custom.min.js"></script>
     <!-- Form -->
-    <script src="./profile//js/validation-apply.js"></script>
-    <script type="text/javascript" src="./profile/js/mdb.min.js"></script>
+    <script src="./profile/js/validation-apply.js"></script>
+    <script src="./profile/js/msg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="../js/datatables-simple-demo.js"></script>
+
     <script>
         $(document).ready(function(){
+          // validate recruiter request payment form
+          $("#req-paymentForm").validate({
+            rules:{
+              cardHolder:{
+                required: true,
+                minlength: 2,
+                maxlength: 100,
+                letterswithbasicpunc: true
+              },
+              BankName:{
+                required: true,
+                minlength: 2,
+                maxlength: 50,
+                lettersonly: true
+              },
+              accountNumber:{
+                required: true,
+                minlength: 8,
+                maxlength:20,
+                integer: true
+              },
+              BranchCode:{
+                required: true,
+                minlength: 4,
+                maxlength:20,
+                branch: true
+              },
+
+            }
+          });
+
+          $("#rec-btn").click(function(){
+            if($('#req-paymentForm').valid()){
+              $.ajax({
+                url: 'submitPayment.php',
+                method: 'POST',
+                data: $('#req-paymentForm').serialize(),
+                success : function(response){ 
+                  if(response == 'success'){
+                      $("#success-msg").html('<span id="success-msg" class="alert alert-success">Submitted successfully</span>');
+                      $("#cardHolder").val('');
+                      $("#accountNumber").val('');
+                      $("#BankName").val('');
+                      $("#BranchCode").val('');
+                  }else{
+                    $("#failed-msg").html(response);
+                  }
+                }
+
+              });
+            }
+
+          });
+          // validate student request payment form
+
+          $("#paymentForm").validate({
+            rules:{
+                months:{
+                  required:true,
+                },
+                uploadRequest:{
+                  required:true,
+                },
+                numMonths:{
+                  required:true,
+                },
+            }
+          });
+          //Student payment approval request button clicked
+          $("#uploadRequest").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings("#uploadRequest").addClass("selected").html(fileName);
+
+          });
+
+          $("#stu-btn").click(function(){
+        
+            if($("#uploadRequest").val() == ""){
+              $("#error-msg").html("Please select a file to upload");
+            }else{
+              $("#error-msg").html("");
+              //Append values in the formData object
+              var paymentApproval = new FormData();
+              var file = $('#uploadRequest')[0].files[0];
+              var id = $("#idnumber").val();
+              var full_name= $("#full_name").val();
+              paymentApproval.append('uploadRequest', file);
+              paymentApproval.append('idnumber', id);
+              paymentApproval.append('full_name', full_name);
+
+              //append the inputs with the same name in the formData
+              $('select[name="months[]"]').each(function(index, member){
+                var value = $(member).val();
+                paymentApproval.append('months[]', value );
+                
+                
+              })
+
+
+              
+              if($('#paymentForm').valid()){
+                $.ajax({
+                  url: "./submitPayment.php",
+                  method: "POST",
+                  data: paymentApproval,
+                  contentType: false,
+                  processData: false,
+                  success: function(response){
+                    if(response == 'success'){
+                          
+                      $("#success-msg").html('<span id="success-msg" class="alert alert-success">Submitted successfully</span>');
+                      $("#uploadRequest").val('')
+                    }else{
+                      $("#failed-msg").html(response);
+                    }
+                  }
+                });
+                
+              }
+
+            }
+
+          });
+
+
             $("#st-acc").on("click", function(){
                 $.ajax(
                     {
@@ -680,8 +844,72 @@
                     }
                 );
             })
+
+          $("select.counter").change(function(){
+                var counter = $(this).children("option:selected").val(); //value
+                var form = $("#paymentForm").serialize();
+                
+                // form.append(counter);
+                $.ajax({
+                  url: "months.php",
+                  method: "POST",
+                  dataType: "text",
+                  data:form,
+                  success: function(response){
+                    $("#monthSelect").empty();
+                    
+                    for(let index = 1; index <= response; index++) {
+
+                      $("#monthSelect").prepend(`<div class="col-md-4 mb-2">
+                                <select name="months[]" class="form-control form-control-line counter">
+                                <option value="Jan">Jan</option>
+                                <option value="Feb">Feb</option>
+                                <option value="Mar">Mar</option>
+                                <option value="Apr">Apr</option>
+                                <option value="May">May</option>
+                                <option value="Jun">Jun</option>
+                                <option value="Jul">Jul</option>
+                                <option value="Aug">Aug</option>
+                                <option value="Sep">Sep</option>
+                                <option value="Oct">Oct</option>
+                                <option value="Nov">Nov</option>
+                                <option value="Dec">Dec</option>
+                                </select>
+                            </div>`);
+
+                    }
+                   
+                  
+                  }
+                })
+          });
         });
+
+  document.getElementById('uploadRequest').onchange = function (){
+    var image=document.getElementById('uploadRequest').value;
+    if(image!=''){
+      var checkimg = image.toLowerCase();
+      if(!checkimg.match(/(\.jpg|\.png|\.JPG|\.PNG|\.jpeg|\.JPEG|\.PDF|\.pdf)$/)){
+          document.getElementById('error-msg').innerHTML="The file types accepted are PDF, JPG, JPEG, and PNG";
+          document.getElementById('uploadRequest').value="";
+      }else{
+        document.getElementById('error-msg').nnerHTML="";
+      }
+      var image=document.getElementById('uploadRequest');
+      var size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
+      if (size > 2){
+          document.getElementById('error-msg').innerHTML="Please Select Size Less Than 2 MB";
+          document.getElementById('uploadRequest').value="";
+      } else {
+            document.getElementById('error-msg').innerHTML="";
+
+      }
+    }
+
+}
     </script>
+
+
 </body>
 
 </html>
