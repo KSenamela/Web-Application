@@ -149,8 +149,24 @@
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-danger text-white mb-4">
-                            <div class="card-body text-center">30</div>
+                        <?php
+
+                                $query_ = "SELECT count(*) as count FROM registration";
+                                $run_query_ = mysqli_query($conn, $query_);
+
+                                if(mysqli_num_rows($run_query_) > 0){
+                                    foreach($run_query_ as $row){
+                                    ?>
+
+                                        <div class="card-body text-center"><?= $row['count']?></div>
+
+
+                                    <?php
+                                    }
+                                }
+                            ?>
                             <div class="card-footer text-center">
+
                                 <p class="small text-white" >Total Number of Students</p>
                             </div>
                         </div>
@@ -161,11 +177,11 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Students and Recruiters' Records
+                        Registered Users' Records
                     </div>
                     <div class="card-body">
-                        <table id="datatablesSimple">
-                            <thead>
+                        <table id="datatablesSimple" >
+                            <thead style="background: #41295a; color: #fff">
                                 <tr>
                                     <th>ID No.</th>
                                     <th>First Name</th>

@@ -67,15 +67,16 @@
                     <i class="fas fa-table me-1"></i>
                     Student Records
                 </div>
+                <!-- id="studentTable" -->
                 <div class="card-body">
-                    <table id="studentTable" class="table table-striped table-bordered table-responsive">
+                    <table  id="datatablesSimple" >
                         <thead style="background: #41295a; color: #fff">
                             <tr>
                                 <th>ID No.</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Email Address</th>
+                                <th>Full Name</th>
                                 <th>Phone No.</th>
+                                <th>Residence Address</th>
+                                <th>Room Number</th>
                                 <th>Status</th>
                                 <th>Status Change</th>
                                 <th>Application Date</th>
@@ -85,7 +86,19 @@
                         </thead>
                         <tbody>
                             <?php
-                                $sql = "SELECT * FROM student_application";
+                                $sql = "SELECT 
+                                    student_application.id_number,
+                                    first_name,
+                                    last_name,
+                                    email,
+                                    phone,
+                                    residence_address,
+                                    room_number,
+                                    residence_application.status,
+                                    residence_application.application_date
+                                 FROM student_application
+                                 INNER JOIN residence_application
+                                 ON student_application.id_number = residence_application.id_number";
                                 $run_query = mysqli_query($conn, $sql);
 
                                 if($run_query->num_rows > 0){
@@ -93,45 +106,45 @@
                                     ?>
                                         <tr>
                                             <td><?=$row['id_number']?></td>
-                                            <td><?=$row['first_name']?></td>
-                                            <td><?=$row['last_name']?></td>
-                                            <td><?=$row['email']?></td>
+                                            <td><?=$row['first_name'] . ' ' . $row['last_name']?></td>
                                             <td><?=$row['phone']?></td>
+                                            <td><?=$row['residence_address']?></td>
+                                            <td><?=$row['room_number']?></td>
                                             <?php
-                                            if($row['application_status'] == 'Processing'){
+                                            if($row['status'] == 'Processing'){
                                                 ?>
 
                                                     <td style="color:orange; font-weight:bold">  
-                                                        <?= $row['application_status'] ?>
+                                                        <?= $row['status'] ?>
                                                     </td>
                                                 <?php
-                                            }else if($row['application_status'] == 'Accepted'){
+                                            }else if($row['status'] == 'Accepted'){
                                                 ?>
 
                                                 <td style="color:limegreen; font-weight:bold">
-                                                    <?= $row['application_status'] ?>
+                                                    <?= $row['status'] ?>
                                                 </td>
                                             <?php
                                             }else{
                                                 ?>
                                                 <td style="color:red; font-weight:bold">  
-                                                    <?= $row['application_status'] ?>
+                                                    <?= $row['status'] ?>
                                                 </td>
                                             <?php
                                             }
                                             ?>
                                             <td>
-                                                <button type="button" name="accept" class="accept btn btn-outline-success" style="border-radius:10px;" value="<?php echo $row['id_number'] ?>">Accept</button>
-                                                <button type="button" name="reject" class="reject btn btn-outline-danger"style="border-radius:10px;" value="<?php echo $row['id_number'] ?>">Reject</button>
+                                                <button type="button" name="accept" class="accept btn btn-outline-success mb-2" style="border-radius:10px;" value="<?php echo $row['id_number'] . '.' . $row['residence_address'] . '.' . $row['room_number']?>">Accept</button>
+                                                <button type="button" name="reject" class="reject btn btn-outline-danger mb-2" style="border-radius:10px;"  value="<?php echo $row['id_number'] . '.' . $row['residence_address'] . '.' . $row['room_number']?>">Reject</button>
                                             
                                             </td>
 
                                             <td><?=$row['application_date']?></td>
 
                                             <td>
-                                                <a href="" class="btn btn-primary">View</a>
-                                                <a href="" class="btn btn-success">Edit</a>
-                                                <a href="" class="btn btn-danger">Delete</a>
+                                                <a href="" class="btn btn-primary mb-2">View</a>
+                                                <a href="" class="btn btn-success mb-2">Edit</a>
+                                                <a href="" class="btn btn-danger mb-2">Delete</a>
                                                
                                             </td>
                                         </tr>                                    
@@ -161,9 +174,10 @@
 
                     var id_number = $(this).val();
                     $.ajax({
-                        url: './statusUpdate.php?accept=' + id_number,
+                        url: './statusUpdateStu.php?accept=' + id_number,
                         method: 'GET',
                         success : function(response){
+
                             if(response == "success"){
                                 location.reload(true);
                             }
@@ -175,11 +189,11 @@
 
 
                     var id_number = $(this).val();
-
                     $.ajax({
-                        url: './statusUpdate.php?reject=' + id_number,
+                        url: './statusUpdateStu.php?reject=' + id_number,
                         method: 'GET',
                         success : function(response){
+                            
                             if(response == "success"){
                                 location.reload(true);
                             }

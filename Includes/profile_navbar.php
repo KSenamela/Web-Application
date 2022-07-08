@@ -1,5 +1,5 @@
 <?php 
-    error_reporting(0);
+    // error_reporting(0);
     session_start();
     include './server/dbconnect_server.php';
     //If the user is not logged in redirect to the login page...
