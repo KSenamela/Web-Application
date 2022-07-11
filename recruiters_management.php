@@ -27,17 +27,21 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Student Records
                             </a>
-                            <a class="nav-link" href="recruiters_management.php" style="background:gray;">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            <a class="nav-link" href="recruiters_management.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
                                 Recruiter Records
                             </a>
                             <a class="nav-link" href="payment-tracker.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-comments-dollar"></i></div>
                                 Payment Tracker
                             </a>
+                            <a class="nav-link" href="recruiter-payments.php">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                                Recruiter Payments
+                            </a>
 
                             <div class="sb-sidenav-menu-heading">Account</div>
-                            <a class="nav-link" href="index.php">
+                            <a class="nav-link" href="./server/logout.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
                                 Logout
                             </a>

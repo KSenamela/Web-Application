@@ -333,7 +333,13 @@
                                                                         ?>
                                                                             <td style="color:limegreen; font-weight:bold"><?= $row['status']?></td>
                                                                         <?php
-                                                                    }else{
+                                                                    }else if($row['status'] == 'Unsuccessful'){
+                                                                        ?>
+                                                                            <td style="color:red; font-weight:bold"><?= $row['status']?></td>
+
+                                                                        <?php
+                                                                    }
+                                                                    else{
                                                                         ?>
                                                                             <td style="color:orange; font-weight:bold"><?= $row['status']?></td>
 

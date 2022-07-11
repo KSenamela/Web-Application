@@ -51,12 +51,16 @@
                                 Student Records
                             </a>
                             <a class="nav-link" href="recruiters_management.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
                                 Recruiter Records
                             </a>
                             <a class="nav-link" href="payment-tracker.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-comments-dollar"></i></div>
                                 Payment Tracker
+                            </a>
+                            <a class="nav-link" href="recruiter-payments.php">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                                Recruiter Payments
                             </a>
 
                             <div class="sb-sidenav-menu-heading">Account</div>
@@ -175,7 +179,7 @@
                 </div>
 
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header" style="background-color: darkblue; color: white;">
                         <i class="fas fa-table me-1"></i>
                         Registered Users' Records
                     </div>
@@ -188,6 +192,7 @@
                                     <th>Surname</th>
                                     <th>Email</th>
                                     <th>Role</th>
+                                    <th>Applied</th>
                                     <th>Date Registered</th>
                                     <!-- <th>Payment Method</th>
                                     <th>Registered Date</th>
@@ -212,6 +217,7 @@
                                             <td><?= $row['last_name']?></td>
                                             <td><?= $row['email']?></td>
                                             <td><?= $row['role']?></td>
+                                            <td><?= $row['applied']?></td>
                                             <td><?= $row['registration_date']?></td>
                                     
                                         

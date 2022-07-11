@@ -103,7 +103,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="id_number" class="form-label">ID number/Passport number</label>
-                  <!-- min="0" oninput="validity.valid||(value='');" --These attributes prevent negative numbers from being entered by user-->
+
                   <input
                     type="text"
                     class="form-control"
