@@ -12,7 +12,7 @@
     $row = mysqli_fetch_assoc($result);
     $_SESSION['applied'] = $row['applied'];
     if($_SESSION['applied'] == 'Yes'){
-      header('Location: ../Login.php');
+      header('Location: ../login.php');
     }
   }
 
@@ -627,7 +627,7 @@
               class="btn btn-link btn-rounded"
               data-ripple-color="primary"
               id="cancel"
-              href="../Login.php"
+              href="../login.php"
             >
               Cancel
             </a>
@@ -781,7 +781,7 @@
                     title: 'Application Successful!',
                     text: 'Check your status under APPLICATIONS on your profile!',
                   }).then(function(){
-                    window.location.href = "../Login.php";
+                    window.location.href = "../login.php";
                   })
                 }else{
                   $("#fillAll").html(response);

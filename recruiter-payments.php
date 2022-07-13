@@ -8,7 +8,7 @@
   }
     //If the user is not logged in redirect to the login page...
     if (!isset($_SESSION['email'])) {
-        header('Location: ./Login.php');
+        header('Location: ./login.php');
     }
 
 ?>

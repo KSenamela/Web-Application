@@ -75,7 +75,7 @@
                                     ?>
 
                                          <li class="nav-item">
-                                            <a class="nav-link" href="./Login.php"><i class="fa-solid fa-user-large pe-2"></i>My Account</a>
+                                            <a class="nav-link" href="./login.php"><i class="fa-solid fa-user-large pe-2"></i>My Account</a>
                                         </li>
 
                                          <a href="./server/logout.php" class="btn btn-brand ms-lg-3">Logout</a>
@@ -84,7 +84,7 @@
                                 }else{
                                     ?>
   
-                                        <a href="./Login.php" class="btn btn-brand ms-lg-3">Login</a>
+                                        <a href="./login.php" class="btn btn-brand ms-lg-3">Login</a>
                                         </ul>
                                     <?php
                                 }
@@ -102,7 +102,7 @@
                         <h1 class="text-uppercase text-white my-3 display-2">Welcome To Student-INN</h1>
                         <h5 class="text-white">Your new home with the best Res Life experience!</h5>
                         <a href="register.php" class="btn btn-hero my-3">Register</a>
-                        <a href="Login.php" class="btn btn-hero ms-md-3" style="padding: 9px 36px !important;">Login</a>
+                        <a href="login.php" class="btn btn-hero ms-md-3" style="padding: 9px 36px !important;">Login</a>
                     </div>
                 </div>
             </div>

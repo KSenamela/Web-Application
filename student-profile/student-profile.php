@@ -9,7 +9,7 @@
 
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] != 'student'){
-            header('Location: ../Login.php');
+            header('Location: ../login.php');
         }
         //Check if the logged in user has already applied and hide the apply link if they already did
         $email = $_SESSION['email'];
@@ -19,7 +19,7 @@
         $_SESSION['applied'] = $row['applied'];
     }
     else{
-        header('Location: ../Login.php');
+        header('Location: ../login.php');
     }
 
     //collect data from database and populate the profile fields

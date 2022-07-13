@@ -10,7 +10,7 @@
 
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] != 'dual-recruiter'){
-            header('Location: ../Login.php');
+            header('Location: ../login.php');
             exit;
         }
         //Check if the logged in user has already applied and hide the apply link if they already did
@@ -20,7 +20,7 @@
         $row = mysqli_fetch_assoc($result);
         $_SESSION['applied'] = $row['applied'];
     }else{
-        header('Location: ../Login.php');
+        header('Location: ../login.php');
         exit;
     }
 
