@@ -8,13 +8,13 @@ if (!$conn){
 }
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\SMTP;
+// use PHPMailer\PHPMailer\Exception;
 
-require '../PHPMailer/src/Exception.php';
-require '../to/PHPMailer/src/PHPMailer.php';
-require '../to/PHPMailer/src/SMTP.php';
+// require '../PHPMailer/src/Exception.php';
+// require '../to/PHPMailer/src/PHPMailer.php';
+// require '../to/PHPMailer/src/SMTP.php';
 
 if (isset($_POST['register'])){
   //destroy all active sessions before registering a new user
@@ -152,7 +152,7 @@ if (isset($_POST['register'])){
       exit("Failed to insert avatar");
     };
 
-    sendEmail($first_name, $email, $token);
+    // sendEmail($first_name, $email, $token);
    
     exit("success");
     
