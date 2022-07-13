@@ -57,13 +57,13 @@
                                 <a class="nav-link" href="index.php">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="admin.php">About</a>
+                                <a class="nav-link" href="#">About</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="student-profile.php">Recruiter</a>
+                                <a class="nav-link" href="#">Recruiter</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">Rooms</a>
+                                <a class="nav-link" href="#">Rooms</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="./contact-us/contact-us.php">Contact Us</a>
