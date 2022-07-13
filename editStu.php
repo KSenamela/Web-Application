@@ -2,7 +2,7 @@
 
   error_reporting(0);
   session_start();
-    $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+    $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -118,7 +118,7 @@
 
   //get the id_number in the database before updating
   function originalEmail($id_number){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -132,7 +132,7 @@
 
   //change email in the registration table
   function registration($original_email, $email, $first_name, $last_name){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -149,7 +149,7 @@
   }
   //change email in the avatar table
   function avatar($original_email, $email, $first_name , $last_name){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -167,7 +167,7 @@
 
   //change email in the documents table
   function documents($original_email, $email, $first_name , $last_name){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -185,7 +185,7 @@
 
   //change email in the messages table
   function messages($original_email, $email){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -201,7 +201,7 @@
   }
   //change email in the payments table
   function payments($id_number, $first_name , $last_name){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -218,7 +218,7 @@
 
   //add a function that updates student and recruiter application table the email address and phone number
   function studentUpdate($original_email, $email, $phone){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());
@@ -235,7 +235,7 @@
   }
 
   function recruiterUpdate($original_email, $email, $phone){
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+      $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
   if (!$conn){
     die("Could not connect:" . mysqli_error());

@@ -1,8 +1,9 @@
 
 
 <?php 
-    
-    $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+    //error_reporting(0);
+    session_start();
+    $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
 
     if (!$conn){
       die("Could not connect:" . mysqli_error());
@@ -13,33 +14,10 @@
         if($_SESSION['role'] != 'admin'){
             header('Location: ./login.php');
         }
-    }
-
-    $query = "SELECT count(*) as count FROM registration";
-    $run_query = mysqli_query($conn, $query);
-    
-    if(mysqli_num_rows($run_query) > 0){
-        foreach($run_query as $row){
-        ?>
-
-            <div class="card-body text-center"><?= $row['count']?></div>
-
-        <?php
-        }
-    }
-?>
-<?php 
-    // error_reporting(0);
-    session_start();
-      $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
-
-  if (!$conn){
-    die("Could not connect:" . mysqli_error());
-  }
-    //If the user is not logged in redirect to the login page...
-    if (!isset($_SESSION['email'])) {
+    }else{
         header('Location: ./login.php');
     }
+
 
 ?>
 

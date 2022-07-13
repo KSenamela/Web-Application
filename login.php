@@ -3,7 +3,12 @@
 
  session_start();
      // We need to use sessions, so you should always start sessions using the below code.
-     include "./server/dbconnect_server.php";
+     $conn = mysqli_connect("us-cdbr-east-06.cleardb.net", "b854e33ee1a535", "43878545", "heroku_2765aee846ef442");
+
+     if (!$conn){
+       die("Could not connect:" . mysqli_error());
+     }
+   
      //If the user is not logged in redirect to the login page...
 
  if (isset($_SESSION['email'])) {
