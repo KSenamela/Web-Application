@@ -6,6 +6,8 @@ CREATE TABLE registration(
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL,
     applied VARCHAR(5) NOT NULL,
+    verified VARCHAR(255) NOT NULL,
+    token VARCHAR(5) NOT NULL,
     registration_date DATETIME NOT NULL DEFAULT NOW()
 
 );
