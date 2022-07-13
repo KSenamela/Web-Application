@@ -12,10 +12,10 @@
 
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] != 'admin'){
-            header('Location: ./login.php');
+            header('Location: ./Login.php');
         }
     }else{
-        header('Location: ./login.php');
+        header('Location: ./Login.php');
     }
 
 

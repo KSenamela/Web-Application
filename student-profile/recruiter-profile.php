@@ -9,7 +9,7 @@
 
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] != 'recruiter'){
-            header('Location: ../login.php');
+            header('Location: ../Login.php');
         }
         //Check if the logged in user has already applied and hide the apply link if they already did
         $email = $_SESSION['email'];
@@ -18,7 +18,7 @@
         $row = mysqli_fetch_assoc($result);
         $_SESSION['applied'] = $row['applied'];
     }else{
-        header('Location: ../login.php');
+        header('Location: ../Login.php');
     }
     //Collect data from database and populate the profile fields, eg email, name etc
     $query = "SELECT * FROM recruiter_application WHERE email='$email'";

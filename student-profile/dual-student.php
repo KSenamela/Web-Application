@@ -9,7 +9,7 @@
 
     if (isset($_SESSION['email'])) {
         if($_SESSION['role'] != 'dual-student'){
-            header('Location: ../login.php');
+            header('Location: ../Login.php');
             exit;
         }
         //Check if the logged in user has already applied and hide the apply link if they already did
@@ -20,7 +20,7 @@
         $_SESSION['applied'] = $row['applied'];
     }else{
 
-        header('Location: ../login.php');
+        header('Location: ../Login.php');
         exit;
     }
 

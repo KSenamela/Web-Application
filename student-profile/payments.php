@@ -9,10 +9,10 @@
 
     if (isset($_SESSION['email'])) {
       if(!$_SESSION['role'] == 'student' && !$_SESSION['role'] == 'recruiter' && !$_SESSION['role'] == 'dual-recruiter' && !$_SESSION['role'] == 'dual-student'){
-          header('Location: ../login.php');
+          header('Location: ../Login.php');
       }
     }else{
-        header('Location: ../login.php');
+        header('Location: ../Login.php');
     }
     $email = $_SESSION['email'];
 

@@ -12,7 +12,7 @@
   $row = mysqli_fetch_assoc($result);
   $_SESSION['applied'] = $row['applied'][1];
   if($_SESSION['applied'] == 'Yes'){
-      header('Location: ../login.php');
+      header('Location: ../Login.php');
   }
 ?>
 <!-- STUDENT ACCOUNT APPLYING FOR RECRUITER POSITION -->
@@ -153,7 +153,7 @@
               class="btn btn-link btn-rounded"
               data-ripple-color="primary"
               id="cancel"
-              href="../login.php"
+              href="../Login.php"
             >
               Cancel
             </a>
@@ -189,7 +189,7 @@
                   title: 'Application Successful!',
                   text: 'Check your status under APPLICATIONS on your profile!',
                   }).then(function(){
-                    window.location.href = "../login.php";
+                    window.location.href = "../Login.php";
                   })
                 }else{
                   $("#fillAll").html(response);
