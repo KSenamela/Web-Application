@@ -1,6 +1,11 @@
 <?php
   session_start();
-  include '../server/dbconnect_server.php';
+    $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+
+  if (!$conn){
+    die("Could not connect:" . mysqli_error());
+  };
+  
   $email = $_SESSION['email'];
   $sql = "SELECT * FROM registration WHERE email='$email'";
   $result = mysqli_query($conn, $sql);

@@ -1,6 +1,10 @@
 <?php
   session_start();
-  include '../server/dbconnect_server.php';
+    $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+
+  if (!$conn){
+    die("Could not connect:" . mysqli_error());
+  };
 
   if(isset($_SESSION['email'])){
     $email = $_SESSION['email'];
@@ -46,14 +50,36 @@
       .hide-other{
         display: none;
       }
-      .border-color{
+      .border-color{ 
         border: 2px solid green;
+      }
+
+      .loader{
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: lightgrey;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+      }
+
+      .disappear{
+        display: none;
       }
 
     </style>
   </head>
 
   <body>
+ 
+    <div class="loader disappear">
+      <img src="./img/150x150.gif">
+    </div>
+
     <div class="container my-5">
       <div class="card mx-auto">
         <div class="form-heading">
@@ -680,7 +706,7 @@
             required: true,
             minlength: 2,
             maxlength: 50,
-            lettersonly: true
+            letterswithbasicpunc: true
           },
           lastname:{
             required: true,
@@ -796,7 +822,8 @@
         });
 
         $("#submit-btn").on("click", function() {
-
+          $(".loader").removeClass("disappear");
+          
           $("#fillAll").removeClass('alert alert-danger form-control');
           var data = $("#res-form").serialize().split("&");
           var fd = new FormData();
@@ -814,8 +841,9 @@
 					var element = data[index].split("=");
 					fd.append(element[0] , decodeURIComponent(element[1]));
 					
-				}
+				  }
           if($('#res-form').valid()){
+
             $.ajax(
             {
               url: "./apply.php",
@@ -826,6 +854,8 @@
               success: function(response){
                 //after getting a success response from the server, show user a sweetAlert and redirect to login
                 if(response === 'success'){
+                  $(".loader").addClass("disappear");
+
                   Swal.fire({
                     icon: 'success',
                     title: 'Application Successful!',
@@ -919,6 +949,7 @@ document.getElementById('bursaryLetter').onchange = function (){
     }
 
 }
+
   </script>
   </body>
 </html>

@@ -1,6 +1,10 @@
 <?php
   session_start();
-  include '../server/dbconnect_server.php';
+    $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+
+  if (!$conn){
+    die("Could not connect:" . mysqli_error());
+  };
 
   if (isset($_SESSION['email'])) {
       $email = $_SESSION['email'];
@@ -52,10 +56,31 @@
         border: 2px solid green;
       }
 
+      .loader{
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: lightgrey;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+      }
+
+      .disappear{
+        display: none;
+      }
     </style>
   </head>
 
   <body>
+
+  <div class="loader disappear">
+      <img src="./img/150x150.gif">
+  </div>
+
     <div class="container my-5">
       <div class="card mx-auto">
         <div class="form-heading">
@@ -441,6 +466,7 @@
       });
 
         $("#submit-btn").on("click", function() {
+          $(".loader").removeClass("disappear");
 
           $("#fillAll").removeClass('alert alert-danger form-control');
           if($('#res-form').valid()){
@@ -452,6 +478,8 @@
               success: function(response){
                 //after getting a success response from the server, show user a sweetAlert and redirect to login
                 if(response === 'success'){
+                  $(".loader").addClass("disappear");
+
                   Swal.fire({
                     icon: 'success',
                     title: 'Application Successful!',

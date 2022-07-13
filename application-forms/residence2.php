@@ -1,6 +1,10 @@
 <?php
 session_start();
-include '../server/dbconnect_server.php';
+  $conn = mysqli_connect("localhost", "students_admin", "Lin@95#25252525", "students_studentinndb");
+
+  if (!$conn){
+    die("Could not connect:" . mysqli_error());
+  };
 
     $sql = "SELECT * FROM residences WHERE Residence_address= '19 Rus Road Vredepark' AND Room_Taken = 0";
     $run_query = mysqli_query($conn, $sql);
