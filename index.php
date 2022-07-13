@@ -102,7 +102,7 @@
                         <h1 class="text-uppercase text-white my-3 display-2">Welcome To Student-INN</h1>
                         <h5 class="text-white">Your new home with the best Res Life experience!</h5>
                         <a href="register.php" class="btn btn-hero my-3">Register</a>
-                        <a href="login.php" class="btn btn-hero ms-md-3" style="padding: 9px 36px !important;">Login</a>
+                        <a href="Login.php" class="btn btn-hero ms-md-3" style="padding: 9px 36px !important;">Login</a>
                     </div>
                 </div>
             </div>
