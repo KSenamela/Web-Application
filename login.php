@@ -83,13 +83,13 @@
                                 <a class="nav-link" href="./index.php">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="about.html">About</a>
+                                <a class="nav-link" href="#">About</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#home ">Recruiter</a>
+                                <a class="nav-link" href="#">Recruiter</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#home ">Rooms</a>
+                                <a class="nav-link" href="#">Rooms</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="./contact-us/contact-us.php">Contact Us</a>
